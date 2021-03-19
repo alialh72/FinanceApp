@@ -10,6 +10,7 @@ Want to save up for a new car? You can set a budget!
 Want to learn about basic financial terms and concepts? Watch one of our informative videos!
 Want to see where you are spending most of your money? Just take a look at your spendings page, dummy!
 
+
 Our totally legit and not doctored testimonials:
 
 Ali - "Wow this app is so cool"
