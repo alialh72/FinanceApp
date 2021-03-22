@@ -4,15 +4,15 @@ public class Transactions {
 
     private String date;
     private categories category;
-    private String seller;
+    private String merchant;
     private categories type;
-    private float value;
+    private double value;
 
-    Transactions(String d, categories t, categories c, String s, float v){
+    Transactions(String d, categories t, categories c, String m, double v){
         date = d;
         type = t;
         category = c;
-        seller = s;
+        merchant = m;
         value = v;
     }
 
@@ -24,19 +24,17 @@ public class Transactions {
         return category.toString();
     }
 
-    public String getSeller(){
-        return seller;
+    public String getMerchant(){
+        return merchant;
     }
 
     public String getType(){
         return type.toString();
     }
 
-    public float getValue(){
+    public double getValue(){
         return value;
     }
-
-
 
 
 

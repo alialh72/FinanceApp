@@ -1,5 +1,6 @@
 package com.example.financeapp;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -7,26 +8,50 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.DefaultValueFormatter;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import java.text.DateFormat;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Date;
 import java.util.List;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -47,7 +72,19 @@ public class HomeFragment extends Fragment {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
+    //Textviews
+    private TextView accountBalanceText;
+    private TextView monthlySpendingText, monthlyIncomeText;
+    private TextView monthName;
+    private TextView youveSpent;
+
+
     private PieChart spendingPieChart;
+
+
+    public static ArrayList<Integer> colors = new ArrayList<>();
+
+
 
 
     public HomeFragment() {
@@ -94,6 +131,8 @@ public class HomeFragment extends Fragment {
 
         setSlider();
 
+        initText();
+
         setupPieChart();
         loadPieChartData();
     }
@@ -102,19 +141,58 @@ public class HomeFragment extends Fragment {
     private void findViews(){
         viewPager2 = getView().findViewById(R.id.viewpagerimage);
         spendingPieChart = getView().findViewById(R.id.monthlyspendingpiechart);
+        accountBalanceText = getView().findViewById(R.id.accountBalanceText);
+        monthlySpendingText = getView().findViewById(R.id.monthlySpendingText);
+        monthlyIncomeText = getView().findViewById(R.id.monthlyIncomeText);
+        monthName = getView().findViewById(R.id.monthSpendingText);
+        youveSpent = getView().findViewById(R.id.youvespent);
+    }
+
+    private void initText(){
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance("CAD"));
+
+        accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
+        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getTotalSpending()));
+        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getTotalIncome()));
+
+
+
+        //setting up month
+
+
+        String month = MainActivity.month;
+        Log.d(TAG, "initText: month: " + month);
+
+        monthName.setText("Your "+month+ " Spending:");
+
+
+        //you've spending
+        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending()) +" so far");
+
+
+        //setting up color array
+        if (colors.size() == 0){
+            colors.add(Color.parseColor("#A3A0FB"));
+            colors.add(Color.parseColor("#55d8fe"));
+            colors.add(Color.parseColor("#ffda83"));
+            colors.add(Color.parseColor("#ff8373"));
+            colors.add(Color.parseColor("#D195FD"));
+            colors.add(Color.parseColor("#4777FF"));
+            colors.add(Color.parseColor("#FFB575"));
+        }
     }
 
 
     private void setSlider(){
+        List<Item> items = new ArrayList<>();
 
-        List<SliderItem> sliderItems = new ArrayList<>();
-        sliderItems.add(new SliderItem("Page 1", "Radical"));
-        sliderItems.add(new SliderItem("Marhaba", "Goodbye"));
-        sliderItems.add(new SliderItem("Word", "Cool Description"));
-        sliderItems.add(new SliderItem("Bad", "Thats simply amazing"));
-        sliderItems.add(new SliderItem("Glad", "Just unvelibeable"));
+        items.add(new Item(0, new SliderItem("Page 1", "Radical")));
+        items.add(new Item(1, new SliderItem("30", "itworked")));
+        items.add(new Item(0, new SliderItem("Amazing", "It means amazing")));
 
-        viewPager2.setAdapter(new SliderAdapter(sliderItems, viewPager2));
+        viewPager2.setAdapter(new SliderAdapter(items, viewPager2));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
@@ -139,7 +217,7 @@ public class HomeFragment extends Fragment {
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
                 sliderHandler.removeCallbacks(sliderRunnable);
-                sliderHandler.postDelayed(sliderRunnable, 3000);
+                sliderHandler.postDelayed(sliderRunnable, 10000);
             }
         });
     }
@@ -152,58 +230,84 @@ public class HomeFragment extends Fragment {
 
     };
 
-    private void setupPieChart(){
+    public void setupPieChart(){
         spendingPieChart.setDrawHoleEnabled(true);
-        spendingPieChart.setUsePercentValues(true);
-        spendingPieChart.setEntryLabelTextSize(12);
-        spendingPieChart.setEntryLabelColor(Color.BLACK);
-
-        spendingPieChart.setCenterText("Expenses by Category");
-        spendingPieChart.setCenterTextSize(24);
-
+        spendingPieChart.setUsePercentValues(false);
+        spendingPieChart.setDrawEntryLabels(false);
         spendingPieChart.getDescription().setEnabled(false);
 
 
-
-
         Legend l = spendingPieChart.getLegend();
-        l.setEnabled(false);
-
+        l.setWordWrapEnabled(true);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        l.setDrawInside(false);
+        l.setTextSize(15.f);
+        l.setXEntrySpace(15.f);
+        l.setYEntrySpace(3.f);
+        l.setEnabled(true);
     }
 
     private void loadPieChartData(){
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+        ArrayList<String> second = new ArrayList<>();
 
-        entries.add(new PieEntry(0.2f, "Food & Dining"));
-        entries.add(new PieEntry(0.15f, "Medical"));
-        entries.add(new PieEntry(0.1f, "Entertainment"));
-        entries.add(new PieEntry(0.25f, "Electricity & Gas"));
-        entries.add(new PieEntry(0.3f, "Housing"));
+        for (Transactions t : MainActivity.UserInfo.getSpendings()){
+            String c = t.getCategory();
 
-        ArrayList<Integer> colors = new ArrayList<>();
-        for (int color : ColorTemplate.MATERIAL_COLORS){
-            colors.add(color);
+            boolean isthere = false;
+            for(PieEntry p : entries){
+                if (p.getLabel().contains(c)){
+                    isthere = true;
+                }
+            }
+
+
+            if(isthere == false){
+                double percentage = MainActivity.UserInfo.getValueByCategory(c);
+                DecimalFormat df = new DecimalFormat("#.##");
+                df.format(percentage);
+                second.add(c);
+                entries.add(new PieEntry((float) percentage,c));
+            }
+            else{ }
         }
 
-        for (int color : ColorTemplate.VORDIPLOM_COLORS){
-            colors.add(color);
-        }
+        Log.d(TAG, "loadPieChartData: colors: "+ colors);
 
-        PieDataSet dataSet = new PieDataSet(entries, "Expenses");
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        format.setCurrency(Currency.getInstance("CAD"));
+
+        PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
 
         PieData data = new PieData(dataSet);
-        data.setDrawValues(true);
-        data.setValueFormatter(new PercentFormatter(spendingPieChart));
-        data.setValueTextSize(12f);
-        data.setValueTextColor(Color.BLACK);
+        data.setDrawValues(false);
 
         spendingPieChart.setData(data);
         spendingPieChart.invalidate();
 
-        spendingPieChart.animateY(1400, Easing.EaseInOutQuad);
-    }
+        spendingPieChart.animate();
 
+        spendingPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //display msg when value
+                int x = spendingPieChart.getData().getDataSet().getEntryIndex((PieEntry) e);
+                String label = second.get(x);
+                Toast.makeText(getActivity(), label + ": "+format.format(e.getY()), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        spendingPieChart.setNoDataText("Start adding transactions to see your spending");
+    }
 
 
 }

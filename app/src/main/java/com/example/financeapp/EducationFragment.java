@@ -2,11 +2,14 @@ package com.example.financeapp;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +26,8 @@ public class EducationFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private categories Categories;
 
     public EducationFragment() {
         // Required empty public constructor
@@ -61,4 +66,11 @@ public class EducationFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_education, container, false);
     }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+    }
+
+
 }

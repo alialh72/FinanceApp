@@ -3,6 +3,7 @@ package com.example.financeapp;
 public enum categories {
     FOOD("Food & Drink"),
     ENTERTAINMENT("Entertainment"),
+    EDUCATION("Education"),
     BILLS("Bills & Utillity"),
     CAR("Auto & Transport"),
     TAX("Tax"),

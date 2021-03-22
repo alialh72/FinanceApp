@@ -12,11 +12,11 @@ import static android.content.ContentValues.TAG;
 public class userInfo {
 
     public static ArrayList<Transactions> transactions = new ArrayList<>();
-    public static float accountBalance;
+    public static double accountBalance;
     public categories Categories;
 
 
-    public void addTransaction(categories category, String seller, float value){
+    public void addTransaction(categories category, String merchant, double value){
         categories type;
 
         if (value < 0){
@@ -28,7 +28,11 @@ public class userInfo {
 
 
         String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        transactions.add(new Transactions(date, type,category, seller, value));
+        Log.d(TAG, "addTransaction: date: " + date);
+        transactions.add(new Transactions(date, type,category, merchant, value));
+
+        updateBalance(value);
+
         Log.d(TAG, "addTransaction: Transactions: "+transactions);
     }
 
@@ -36,24 +40,55 @@ public class userInfo {
         transactions.remove(position);
     }
 
-    public void getTotalSpending(){
-        float runningtotal = 0;
+    public void updateBalance(double value){
+        accountBalance += value;
+        Log.d(TAG, "updateBalance: New Account Balance: " + accountBalance);
+    }
+
+    public double getTotalSpending(){
+        double runningtotal = 0;
         for (Transactions t : transactions){
             if (t.getType().contains("Expense")){
                 runningtotal += Math.abs(t.getValue());
             }
             else{ }
         }
+
+        return runningtotal;
     }
 
-    public void getTotalIncome(){
-        float runningtotal = 0;
+    public double getTotalIncome(){
+        double runningtotal = 0;
         for (Transactions t : transactions){
             if (t.getType().contains("Income")){
-                runningtotal += Math.abs(t.getValue());
+                runningtotal += t.getValue();
             }
             else{ }
         }
+
+        return runningtotal;
+    }
+
+    public double getValueByCategory(String category){
+        double runningtotal = 0;
+        for (Transactions t : transactions){
+            if (t.getCategory().contains(category)){
+                runningtotal += Math.abs(t.getValue());
+            }
+        }
+        return runningtotal;
+    }
+
+    public ArrayList<Transactions> getSpendings(){
+        ArrayList<Transactions> spendings = new ArrayList<>();
+
+        for (Transactions t : transactions){
+            if (t.getValue() < 0){
+                spendings.add(t);
+            }
+        }
+
+        return spendings;
     }
 
 
