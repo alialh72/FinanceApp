@@ -108,7 +108,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:tint="#00B13C" />
+                            app:tint="@color/maingreen" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -160,7 +160,7 @@
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:tint="#E61E1A" />
+                            app:tint="@color/red" />
 
                         <TextView
                             android:id="@+id/textView2"
@@ -275,7 +275,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/accountbreakdown"
                 android:layout_width="356dp"
-                android:layout_height="450dp"
+                android:layout_height="wrap_content"
                 android:layout_marginBottom="90dp"
                 android:background="@drawable/nooutline"
                 android:padding="20dp"
@@ -316,6 +316,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/textView" />
 
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/transactionsRecyclerView"
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginBottom="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView6" />
 
 
 

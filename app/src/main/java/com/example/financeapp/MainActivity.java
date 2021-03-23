@@ -20,6 +20,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,14 +34,17 @@ public class MainActivity extends AppCompatActivity {
     private View decorView;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
+    public static ArrayList<gradientColors> gradients = new ArrayList<>();
+    public static HashMap<String, gradientColors> gradientsCategories = new HashMap<String, gradientColors>();
 
+    public static String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     public static String month;
     public static String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     public static ArrayList<Integer> colors = new ArrayList<>();
 
-
-    public categories Categories; //categories enum
+    public categoriesEnum.MainCategories MainCategories;
+    public categoriesEnum.SubCategory SubCategories; //categories enum
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,13 +96,13 @@ public class MainActivity extends AppCompatActivity {
     private void createSampleTransactions(){
         UserInfo.updateBalance(32124.42); //Set starting balance
 
-        UserInfo.addTransaction(Categories.FOOD, "McDonald's", -35.50);
-        UserInfo.addTransaction(Categories.ENTERTAINMENT, "Movies", -14.95);
-        UserInfo.addTransaction(Categories.INCOME, "Salary", 4200.00);
-        UserInfo.addTransaction(Categories.BILLS, "BC Hydro", -250.75);
-        UserInfo.addTransaction(Categories.PETS, "PetSmart", -55.50);
-        UserInfo.addTransaction(Categories.HEALTH, "Planet Urmom", -40.52);
-        UserInfo.addTransaction(Categories.INCOME, "Stimmy Check", 1400);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.FOOD, "McDonald's", -35.50);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.MOVIES, "Movies", -14.95);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.INCOME, "Salary", 4200.00);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.UTILITIES, "BC Hydro", -250.75);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.PETFOOD, "PetSmart", -55.50);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.GYM, "Planet Fitness", -40.52);
+        UserInfo.addTransaction(categoriesEnum.SubCategory.INCOME, "Stimmy Check", 1400);
     }
 
     public void AddButton(View view){
@@ -106,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void tester(View view){
-        MainActivity.UserInfo.addTransaction(Categories.TRAVEL, "Hawaii", -205.50);
+        MainActivity.UserInfo.addTransaction(categoriesEnum.SubCategory.PLANE, "Hawaii", -205.50);
     }
 
     public void setupVars(){
@@ -131,6 +136,26 @@ public class MainActivity extends AppCompatActivity {
 
         month = months[monthPosition-1];
 
+        gradients.add(new gradientColors("#FEC180", "#FF8993"));
+        gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
+        gradients.add(new gradientColors("#A254F2", "#8005c8"));
+        gradients.add(new gradientColors("#FFF175", "#FFDA83"));
+        gradients.add(new gradientColors("#4777FF", "#3594E8"));
+        gradients.add(new gradientColors("#D195FD", "#FE89E2"));
+        gradients.add(new gradientColors("#55D8FE", "#47FFC2"));
+
+        gradients.add(new gradientColors("#FEC180", "#FF8993"));
+        gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
+        gradients.add(new gradientColors("#A254F2", "#8005c8"));
+        gradients.add(new gradientColors("#FFF175", "#FFDA83"));
+        gradients.add(new gradientColors("#4777FF", "#3594E8"));
+        gradients.add(new gradientColors("#D195FD", "#FE89E2"));
+
+        int i = 0;
+        for(categoriesEnum.MainCategories mainCategories : categoriesEnum.MainCategories.values()){
+            gradientsCategories.put(mainCategories.getDisplayableType(), gradients.get(i));
+            i++;
+        }
 
     }
 

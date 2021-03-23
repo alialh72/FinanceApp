@@ -3,15 +3,18 @@ package com.example.financeapp;
 public class Transactions {
 
     private String date;
-    private categories category;
+    private String MainCategory;
+    private categoriesEnum.MainCategories type;
     private String merchant;
-    private categories type;
+    private categoriesEnum.SubCategory SubCategory;
     private double value;
 
-    Transactions(String d, categories t, categories c, String m, double v){
+    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategory sc, String m, double v){
         date = d;
         type = t;
-        category = c;
+        SubCategory = sc;
+        MainCategory = sc.getDisplayableType();
+
         merchant = m;
         value = v;
     }
@@ -20,16 +23,20 @@ public class Transactions {
         return date;
     }
 
-    public String getCategory(){
-        return category.toString();
+    public String getMainCategory(){
+        return SubCategory.getDisplayableType();
     }
+
+    public String getSubCategoryLabel(){ return SubCategory.getLabel(); }
+
+    public categoriesEnum.SubCategory getSubCategory(){ return SubCategory; }
 
     public String getMerchant(){
         return merchant;
     }
 
     public String getType(){
-        return type.toString();
+        return type.getDisplayableType();
     }
 
     public double getValue(){

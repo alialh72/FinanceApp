@@ -68,7 +68,7 @@ public class HomeFragment extends Fragment {
     private TextView monthName;
     private TextView youveSpent;
 
-
+    private RecyclerView transactionsRecyclerView;
 
     private PieChart spendingPieChart;
 
@@ -126,7 +126,7 @@ public class HomeFragment extends Fragment {
         setupPieChart();
         loadPieChartData();
 
-
+        loadRecyclerViews();
     }
 
 
@@ -138,6 +138,7 @@ public class HomeFragment extends Fragment {
         monthlyIncomeText = getView().findViewById(R.id.monthlyIncomeText);
         monthName = getView().findViewById(R.id.monthSpendingText);
         youveSpent = getView().findViewById(R.id.youvespent);
+        transactionsRecyclerView = getView().findViewById(R.id.transactionsRecyclerView);
     }
 
     private void initText(){
@@ -238,7 +239,7 @@ public class HomeFragment extends Fragment {
         ArrayList<String> second = new ArrayList<>();
 
         for (Transactions t : MainActivity.UserInfo.getSpendings()){
-            String c = t.getCategory();
+            String c = t.getMainCategory();
 
             boolean isthere = false;
             for(PieEntry p : entries){
@@ -293,7 +294,13 @@ public class HomeFragment extends Fragment {
         spendingPieChart.setNoDataText("Start adding transactions to see your spending");
     }
 
-
+    private void loadRecyclerViews(){
+        Log.d(TAG, "initRecyclerView: init recyclerview locals");
+        transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getActivity());
+        transactionsRecyclerView.setAdapter(transactionsAdapter);
+        transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+    }
 
 
 }

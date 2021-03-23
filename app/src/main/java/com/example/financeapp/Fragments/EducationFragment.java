@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.financeapp.R;
-import com.example.financeapp.categories;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +27,6 @@ public class EducationFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private categories Categories;
 
     public EducationFragment() {
         // Required empty public constructor

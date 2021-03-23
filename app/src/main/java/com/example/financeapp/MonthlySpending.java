@@ -116,7 +116,7 @@ public class MonthlySpending extends AppCompatActivity {
         ArrayList<String> second = new ArrayList<>();
 
         for (Transactions t : MainActivity.UserInfo.getSpendings()){
-            String c = t.getCategory();
+            String c = t.getMainCategory();
 
             boolean isthere = false;
             for(PieEntry p : entries){

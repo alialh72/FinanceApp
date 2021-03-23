@@ -12,12 +12,13 @@ import static android.content.ContentValues.TAG;
 public class userInfo {
 
     public static ArrayList<Transactions> transactions = new ArrayList<>();
-    public static double accountBalance;
-    public categories Categories;
+    public static double accountBalance = 0;
+    public categoriesEnum.MainCategories Categories;
+    public categoriesEnum.SubCategory SubCategories;
 
 
-    public void addTransaction(categories category, String merchant, double value){
-        categories type;
+    public void addTransaction(categoriesEnum.SubCategory subCategory, String merchant, double value){
+        categoriesEnum.MainCategories type;
 
         if (value < 0){
             type = Categories.EXPENSE;
@@ -27,9 +28,8 @@ public class userInfo {
         }
 
 
-        String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
-        Log.d(TAG, "addTransaction: date: " + date);
-        transactions.add(new Transactions(date, type,category, merchant, value));
+        Log.d(TAG, "addTransaction: date: " + MainActivity.date);
+        transactions.add(new Transactions(MainActivity.date, type, subCategory, merchant, value));
 
         updateBalance(value);
 
@@ -72,7 +72,7 @@ public class userInfo {
     public double getValueByCategory(String category){
         double runningtotal = 0;
         for (Transactions t : transactions){
-            if (t.getCategory().contains(category)){
+            if (t.getMainCategory().contains(category)){
                 runningtotal += Math.abs(t.getValue());
             }
         }
