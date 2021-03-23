@@ -2,40 +2,25 @@ package com.example.financeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.example.financeapp.Fragments.HomeFragment;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Date;
-
-import javax.security.auth.Destroyable;
 
 import static android.content.ContentValues.TAG;
 
@@ -153,11 +138,11 @@ public class MonthlySpending extends AppCompatActivity {
 
 
 
-        Log.d(TAG, "loadPieChartData: colors: "+ HomeFragment.colors);
+        Log.d(TAG, "loadPieChartData: colors: "+ MainActivity.colors);
 
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setColors(HomeFragment.colors);
+        dataSet.setColors(MainActivity.colors);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(false);

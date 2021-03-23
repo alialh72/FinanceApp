@@ -1,11 +1,11 @@
-package com.example.financeapp;
+package com.example.financeapp.Slider;
 
-public class SliderItem {
+public class SliderItem1 {
 
     private String slidetext;
     private String description;
 
-    SliderItem(String t, String z){
+    public SliderItem1(String t, String z){
         description = z;
         slidetext = t;
     }

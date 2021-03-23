@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="60dp"
     android:elevation="10dp"
-    android:background="@drawable/roundedbgincome"
+    android:background="@drawable/topbarcolor"
     android:paddingLeft="5dp"
     android:paddingRight="15dp">
 

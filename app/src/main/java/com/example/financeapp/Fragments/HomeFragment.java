@@ -1,14 +1,12 @@
-package com.example.financeapp;
+package com.example.financeapp.Fragments;
 
-import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
@@ -18,37 +16,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.anychart.AnyChart;
-import com.anychart.AnyChartView;
-import com.anychart.chart.common.dataentry.DataEntry;
-import com.anychart.chart.common.dataentry.ValueDataEntry;
-import com.anychart.charts.Pie;
-import com.github.mikephil.charting.animation.Easing;
+import com.example.financeapp.RecyclerViews.transactionRecyclerAdapter;
+import com.example.financeapp.Slider.Item;
+import com.example.financeapp.MainActivity;
+import com.example.financeapp.R;
+import com.example.financeapp.Slider.SliderAdapter;
+import com.example.financeapp.Slider.SliderItem1;
+import com.example.financeapp.Transactions;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.github.mikephil.charting.utils.ViewPortHandler;
 
-import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Currency;
-import java.util.Date;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
@@ -79,10 +69,10 @@ public class HomeFragment extends Fragment {
     private TextView youveSpent;
 
 
+
     private PieChart spendingPieChart;
 
 
-    public static ArrayList<Integer> colors = new ArrayList<>();
 
 
 
@@ -135,6 +125,8 @@ public class HomeFragment extends Fragment {
 
         setupPieChart();
         loadPieChartData();
+
+
     }
 
 
@@ -173,24 +165,16 @@ public class HomeFragment extends Fragment {
 
 
         //setting up color array
-        if (colors.size() == 0){
-            colors.add(Color.parseColor("#A3A0FB"));
-            colors.add(Color.parseColor("#55d8fe"));
-            colors.add(Color.parseColor("#ffda83"));
-            colors.add(Color.parseColor("#ff8373"));
-            colors.add(Color.parseColor("#D195FD"));
-            colors.add(Color.parseColor("#4777FF"));
-            colors.add(Color.parseColor("#FFB575"));
-        }
+
     }
 
 
     private void setSlider(){
         List<Item> items = new ArrayList<>();
 
-        items.add(new Item(0, new SliderItem("Page 1", "Radical")));
-        items.add(new Item(1, new SliderItem("30", "itworked")));
-        items.add(new Item(0, new SliderItem("Amazing", "It means amazing")));
+        items.add(new Item(0, new SliderItem1("Page 1", "Radical")));
+        items.add(new Item(1, new SliderItem1("30", "itworked")));
+        items.add(new Item(0, new SliderItem1("Amazing", "It means amazing")));
 
         viewPager2.setAdapter(new SliderAdapter(items, viewPager2));
 
@@ -274,14 +258,14 @@ public class HomeFragment extends Fragment {
             else{ }
         }
 
-        Log.d(TAG, "loadPieChartData: colors: "+ colors);
+        Log.d(TAG, "loadPieChartData: colors: "+ MainActivity.colors);
 
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("CAD"));
 
         PieDataSet dataSet = new PieDataSet(entries, "");
-        dataSet.setColors(colors);
+        dataSet.setColors(MainActivity.colors);
 
         PieData data = new PieData(dataSet);
         data.setDrawValues(false);
@@ -308,6 +292,8 @@ public class HomeFragment extends Fragment {
 
         spendingPieChart.setNoDataText("Start adding transactions to see your spending");
     }
+
+
 
 
 }

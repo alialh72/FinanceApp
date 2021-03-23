@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Slider;
 
 public class Item {
 

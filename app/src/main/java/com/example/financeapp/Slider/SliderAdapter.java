@@ -1,6 +1,5 @@
-package com.example.financeapp;
+package com.example.financeapp.Slider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +9,19 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.financeapp.R;
+
 import java.util.List;
 
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static final String TAG = "";
-    private List<SliderItem> sliderItems;
+    private List<SliderItem1> sliderItem1s;
     private List<Item> items;
     private ViewPager2 viewPager2;
 
-    SliderAdapter(List<Item> items, ViewPager2 viewPager2) {
+    public SliderAdapter(List<Item> items, ViewPager2 viewPager2) {
         this.items = items;
-        this.sliderItems = sliderItems;
         this.viewPager2 = viewPager2;
     }
 
@@ -60,10 +60,10 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == 0){
-            ((SliderViewHolder) holder).setSliderText((SliderItem) items.get(position).getObject());
+            ((SliderViewHolder) holder).setSliderText((SliderItem1) items.get(position).getObject());
         }
         else{
-            ((SecondViewHolder) holder).setSliderText((SliderItem) items.get(position).getObject());
+            ((SecondViewHolder) holder).setSliderText((SliderItem1) items.get(position).getObject());
         }
     }
 
@@ -88,12 +88,12 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             description = itemView.findViewById(R.id.definition);
         }
 
-        void setSliderText(SliderItem sliderItem){
-            texx.setText(sliderItem.getText());
+        void setSliderText(SliderItem1 sliderItem1){
+            texx.setText(sliderItem1.getText());
         }
 
-        void setDesc(SliderItem sliderItem){
-            description.setText(sliderItem.getDesc());
+        void setDesc(SliderItem1 sliderItem1){
+            description.setText(sliderItem1.getDesc());
         }
 
 
@@ -110,12 +110,12 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             description = itemView.findViewById(R.id.wordoftheday);
         }
 
-        void setSliderText(SliderItem sliderItem){
-            texx.setText(sliderItem.getText());
+        void setSliderText(SliderItem1 sliderItem1){
+            texx.setText(sliderItem1.getText());
         }
 
-        void setDesc(SliderItem sliderItem){
-            description.setText(sliderItem.getDesc());
+        void setDesc(SliderItem1 sliderItem1){
+            description.setText(sliderItem1.getDesc());
         }
 
 

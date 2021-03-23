@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Fragments;
 
 import android.os.Bundle;
 
@@ -9,7 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.Locale;
+import com.example.financeapp.R;
+import com.example.financeapp.categories;
 
 /**
  * A simple {@link Fragment} subclass.

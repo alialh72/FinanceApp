@@ -7,6 +7,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,6 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,6 +36,9 @@ public class MainActivity extends AppCompatActivity {
     public static String month;
     public static String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
+    public static ArrayList<Integer> colors = new ArrayList<>();
+
+
     public categories Categories; //categories enum
 
     @Override
@@ -44,26 +49,25 @@ public class MainActivity extends AppCompatActivity {
 
         findViews();
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().hide();
-        }
+        setupVars();
+
+
 
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
 
-        DateFormat dateFormat = new SimpleDateFormat("M");
-        Date date = new Date();
-        Log.d("Month",dateFormat.format(date));
 
-        int monthPosition = Integer.parseInt(dateFormat.format(date));
-
-        month = months[monthPosition-1];
 
         createSampleTransactions();
     }
 
     private void hideStatusBar(){
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
@@ -103,6 +107,31 @@ public class MainActivity extends AppCompatActivity {
 
     public void tester(View view){
         MainActivity.UserInfo.addTransaction(Categories.TRAVEL, "Hawaii", -205.50);
+    }
+
+    public void setupVars(){
+        //setup colors list
+        if (colors.size() == 0){
+            colors.add(Color.parseColor("#A3A0FB"));
+            colors.add(Color.parseColor("#55d8fe"));
+            colors.add(Color.parseColor("#ffda83"));
+            colors.add(Color.parseColor("#ff8373"));
+            colors.add(Color.parseColor("#D195FD"));
+            colors.add(Color.parseColor("#4777FF"));
+            colors.add(Color.parseColor("#FFB575"));
+        }
+
+
+        //setup month
+        DateFormat dateFormat = new SimpleDateFormat("M");
+        Date date = new Date();
+        Log.d("Month",dateFormat.format(date));
+
+        int monthPosition = Integer.parseInt(dateFormat.format(date));
+
+        month = months[monthPosition-1];
+
+
     }
 
     public void marchSpendingClicked(View view){
