@@ -35,6 +35,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -295,11 +296,21 @@ public class HomeFragment extends Fragment {
     }
 
     private void loadRecyclerViews(){
+        //get 5 most recent transactions
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getActivity());
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),getActivity());
         transactionsRecyclerView.setAdapter(transactionsAdapter);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+    }
+
+    private ArrayList<Transactions> getRecentTransactions(){
+        ArrayList<Transactions> Localtransactions = new ArrayList<>();
+        int pos;
+        for (pos = MainActivity.UserInfo.transactions.size()-1; Localtransactions.size()<4;pos--){
+            Localtransactions.add(MainActivity.UserInfo.transactions.get(pos));
+        }
+        return Localtransactions;
     }
 
 

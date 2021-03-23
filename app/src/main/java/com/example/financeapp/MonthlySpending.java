@@ -1,6 +1,8 @@
 package com.example.financeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.financeapp.Fragments.HomeFragment;
+import com.example.financeapp.RecyclerViews.transactionRecyclerAdapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -32,6 +35,9 @@ public class MonthlySpending extends AppCompatActivity {
 
     private TextView pageName;
     private TextView pieChartCenterText, pieChartValue, pieChartPercentage;
+    private TextView transactionCategoryText;
+
+    private RecyclerView transactionsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +62,8 @@ public class MonthlySpending extends AppCompatActivity {
         pieChartValue = findViewById(R.id.money);
         pieChartPercentage = findViewById(R.id.percentage);
         pageName = findViewById(R.id.pagename);
+        transactionCategoryText = findViewById(R.id.transactionCategory);
+        transactionsRecyclerView = findViewById(R.id.transactionsRecyclerView);
     }
 
     private void initText(){
@@ -190,8 +198,20 @@ public class MonthlySpending extends AppCompatActivity {
         DecimalFormat df = new DecimalFormat("#%");
         pieChartPercentage.setText(df.format(percentage) + " of "+MainActivity.month+ " spending");
 
-
+        transactionCategoryText.setText(label+":");
+        loadRecyclerViewForCategory(label);
     }
+
+
+    private void loadRecyclerViewForCategory(String category){
+        //get 5 most recent transactions
+        Log.d(TAG, "initRecyclerView: init recyclerview locals");
+        transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(MainActivity.UserInfo.getTransactionsByCategory(category), this);
+        transactionsRecyclerView.setAdapter(transactionsAdapter);
+        transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+    }
+
 
 
 }

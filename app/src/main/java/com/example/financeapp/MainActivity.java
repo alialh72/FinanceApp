@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         UserInfo.addTransaction(categoriesEnum.SubCategory.INCOME, "Stimmy Check", 1400);
     }
 
-    public void AddButton(View view){
+    public void addTransaction(View view){
         Log.d(TAG, "AddButton: Total Spending: " + MainActivity.UserInfo.getTotalSpending());
         Log.d(TAG, "AddButton: Account Balance: " + MainActivity.UserInfo.accountBalance);
     }

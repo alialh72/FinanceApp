@@ -91,5 +91,17 @@ public class userInfo {
         return spendings;
     }
 
+    public ArrayList<Transactions> getTransactionsByCategory(String category){
+        ArrayList<Transactions> filteredlist = new ArrayList<>();
+
+        for (Transactions t : transactions){
+            if (t.getMainCategory().equals(category)){
+                filteredlist.add(t);
+            }
+        }
+
+        return filteredlist;
+    }
+
 
 }

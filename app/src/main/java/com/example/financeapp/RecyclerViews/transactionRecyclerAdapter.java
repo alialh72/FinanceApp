@@ -26,17 +26,14 @@ import java.util.Currency;
 public class transactionRecyclerAdapter extends RecyclerView.Adapter<transactionRecyclerAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<Transactions> Localtransactions = new ArrayList<>();
+    private ArrayList<Transactions> transactions = new ArrayList<>();
     private Context mContext;
 
 
-    public transactionRecyclerAdapter(Context context){
-        //get 5 most recent transactions
-        int pos;
-        for (pos = MainActivity.UserInfo.transactions.size()-1; Localtransactions.size()<4;pos--){
-            Localtransactions.add(MainActivity.UserInfo.transactions.get(pos));
-        }
-        Log.d(TAG, "transactionRecycler: Localtransactions: "+Localtransactions);
+    public transactionRecyclerAdapter(ArrayList<Transactions> transactions,Context context){
+        this.transactions = transactions;
+
+        Log.d(TAG, "transactionRecycler: Localtransactions: "+transactions);
 
         mContext = context;
 
@@ -56,10 +53,10 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
         Log.d(TAG, "onBindViewHolder: called.");
 
-        holder.merchantTextView.setText(Localtransactions.get(position).getMerchant());
-        holder.categoryTextView.setText(Localtransactions.get(position).getSubCategoryLabel());
+        holder.merchantTextView.setText(transactions.get(position).getMerchant());
+        holder.categoryTextView.setText(transactions.get(position).getSubCategoryLabel());
 
-        double value = Localtransactions.get(position).getValue();
+        double value = transactions.get(position).getValue();
         if (value < 0){
             holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         }
@@ -71,17 +68,17 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(2);
         format.setCurrency(Currency.getInstance("CAD"));
-        holder.valueTextView.setText(format.format(Localtransactions.get(position).getValue()));
+        holder.valueTextView.setText(format.format(transactions.get(position).getValue()));
 
 
-        if(Localtransactions.get(position).getDate().equals(MainActivity.date)){
+        if(transactions.get(position).getDate().equals(MainActivity.date)){
             holder.dateTextView.setText("Today");
         }
         else{
             holder.dateTextView.setText(MainActivity.date);
         }
 
-        gradientColors gradient = MainActivity.gradientsCategories.get(Localtransactions.get(position).getSubCategory().getDisplayableType());
+        gradientColors gradient = MainActivity.gradientsCategories.get(transactions.get(position).getSubCategory().getDisplayableType());
 
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BR_TL,
@@ -92,7 +89,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
 
         //set image
-        int resID = mContext.getResources().getIdentifier(Localtransactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
+        int resID = mContext.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
         holder.iconImg.setImageResource(resID);
 
 
@@ -110,7 +107,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
     @Override
     public int getItemCount() {
-        return Localtransactions.size();
+        return transactions.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
