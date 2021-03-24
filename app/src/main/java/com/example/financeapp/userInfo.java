@@ -42,7 +42,7 @@ public class userInfo {
 
 
         Log.d(TAG, "addTransaction: date: " + MainActivity.date);
-        transactions.add(new Transactions(MainActivity.date, type, subCategory, merchant, value));
+        transactions.add(new Transactions(MainActivity.date, type, subCategory, merchant, String.valueOf(value)));
 
         updateBalance(value);
 
@@ -64,19 +64,22 @@ public class userInfo {
                 }
                 else {
                     ArrayList<Object> node = (ArrayList<Object>) task.getResult().child("Transactions").getValue();
-                    username = (String) task.getResult().child(String.valueOf(userid)).child("name").getValue();
+                    username = (String) task.getResult().child("name").getValue();
                     for (int i = 0; i < node.size(); i++){
                         HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i);
                         String date = transactionhashmap.get("date");
                         String merchant = transactionhashmap.get("merchant");
                         categoriesEnum.SubCategory subCategory = categoriesEnum.SubCategory.LOOKUP.get(transactionhashmap.get("subCategoryLabel"));
                         categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
-                        //double value = Double.valueOf(transactionhashmap.get("value"));
+                        String value = transactionhashmap.get("value");
 
-                        //transactions.add(new Transactions(date, type, subCategory, merchant, value));
+                        transactions.add(new Transactions(date, type, subCategory, merchant, value));
                     }
-
-                    setBalance((Double) task.getResult().child(String.valueOf(userid)).child("balance").getValue());
+                    long longbalance = (long) task.getResult().child("balance").getValue();
+                    double b = longbalance;
+                    Log.d(TAG, "onComplete: num: "+ b);
+                    setBalance(b);
+                    Log.d(TAG, "onComplete: transactions: "+transactions);
                 }
             }
         });
@@ -97,7 +100,7 @@ public class userInfo {
 
     public void setBalance(double balance){
         accountBalance = balance;
-        Log.d(TAG, "setBalance: " + balance);
+        //Log.d(TAG, "setBalance: " + String.valueOf(balance));
     }
 
     public double getTotalSpending(){

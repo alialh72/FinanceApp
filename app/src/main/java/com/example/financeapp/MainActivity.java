@@ -12,9 +12,11 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -60,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //UserInfo.setUser(1);
 
         hideStatusBar();
 
         findViews();
+
+
 
         setupVars();
 
@@ -81,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-        createSampleTransactions();
+        //createSampleTransactions();
     }
 
     private void hideStatusBar(){
@@ -186,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void transactions(View view){
+    public void clickedTransactionsContainer(View view){
         //transactions
 
     }

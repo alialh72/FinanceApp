@@ -11,11 +11,14 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +72,7 @@ public class HomeFragment extends Fragment {
     private TextView monthlySpendingText, monthlyIncomeText;
     private TextView monthName;
     private TextView youveSpent;
+    private ProgressBar progressBar;
 
     private RecyclerView transactionsRecyclerView;
 
@@ -122,18 +126,48 @@ public class HomeFragment extends Fragment {
 
         findViews();
 
-        setSlider();
+        if(MainActivity.UserInfo.username == null){
+            MainActivity.UserInfo.setUser(1);
+            progressBar.setVisibility(View.VISIBLE);
+            new CountDownTimer(2000, 1000) {
 
-        initText();
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    // do something after 1s
+                }
 
-        setupPieChart();
-        loadPieChartData();
+                @Override
+                public void onFinish() {
+                    setSlider();
 
-        loadRecyclerViews();
+                    initText();
+                    setupPieChart();
+                    loadPieChartData();
+
+                    loadRecyclerViews();
+                    progressBar.setVisibility(View.INVISIBLE);
+                }
+
+            }.start();
+        }
+
+        else{
+            setSlider();
+
+            initText();
+            setupPieChart();
+            loadPieChartData();
+
+            loadRecyclerViews();
+        }
+
+
+
     }
 
 
     private void findViews(){
+        progressBar = getView().findViewById(R.id.progressbar);
         viewPager2 = getView().findViewById(R.id.viewpagerimage);
         spendingPieChart = getView().findViewById(R.id.monthlyspendingpiechart);
         accountBalanceText = getView().findViewById(R.id.accountBalanceText);

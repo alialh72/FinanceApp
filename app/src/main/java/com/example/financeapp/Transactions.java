@@ -7,9 +7,9 @@ public class Transactions {
     private categoriesEnum.MainCategories type;
     private String merchant;
     private categoriesEnum.SubCategory SubCategory;
-    private double value;
+    private String value;
 
-    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategory sc, String m, double v){
+    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategory sc, String m, String v){
         date = d;
         type = t;
         SubCategory = sc;
@@ -39,9 +39,7 @@ public class Transactions {
         return type.getDisplayableType();
     }
 
-    public double getValue(){
-        return value;
-    }
+    public double getValue(){ return Double.parseDouble(value); }
 
 
 
