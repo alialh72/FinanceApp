@@ -1,5 +1,10 @@
 package com.example.financeapp;
 
+import com.google.common.collect.Maps;
+
+import java.util.Arrays;
+import java.util.Map;
+
 public final class categoriesEnum {
 
     public interface CategoryInterface {
@@ -32,6 +37,8 @@ public final class categoriesEnum {
         public String getDisplayableType() {
             return type;
         }
+
+
     }
 
     public enum SubCategory implements CategoryInterface {
@@ -98,6 +105,10 @@ public final class categoriesEnum {
         public String getLabel() {
             return label;
         }
+
+        public static final Map<String, SubCategory> LOOKUP = Maps.uniqueIndex(
+                Arrays.asList(SubCategory.values()),
+                SubCategory::getLabel);
     }
 
 

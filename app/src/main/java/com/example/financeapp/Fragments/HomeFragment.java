@@ -26,6 +26,7 @@ import com.example.financeapp.R;
 import com.example.financeapp.Slider.SliderAdapter;
 import com.example.financeapp.Slider.SliderItem1;
 import com.example.financeapp.Transactions;
+import com.example.financeapp.categoriesEnum;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -118,6 +119,7 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         findViews();
 
         setSlider();

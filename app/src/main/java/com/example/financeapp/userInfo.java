@@ -2,6 +2,10 @@ package com.example.financeapp;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -11,6 +15,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
@@ -47,30 +52,38 @@ public class userInfo {
     public void setUser(int userid){
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Users");
-
+        Log.d(TAG, "setUser: in here");
         // Read from the database
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.child("1").child("Transactions").getValue();
-                Log.d(TAG, "Value is: " + value.get(0));
 
-                username = (String) dataSnapshot.child(String.valueOf(userid)).child("name").getValue();
-            }
-
+        //reference.child("Users").child(userid).child("Transactions")
+        reference.child(String.valueOf(userid)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if (!task.isSuccessful()) {
+                    Log.e("firebase", "Error getting data", task.getException());
+                }
+                else {
+                    ArrayList<Object> node = (ArrayList<Object>) task.getResult().child("Transactions").getValue();
+                    username = (String) task.getResult().child(String.valueOf(userid)).child("name").getValue();
+                    for (int i = 0; i < node.size(); i++){
+                        HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i);
+                        String date = transactionhashmap.get("date");
+                        String merchant = transactionhashmap.get("merchant");
+                        categoriesEnum.SubCategory subCategory = categoriesEnum.SubCategory.LOOKUP.get(transactionhashmap.get("subCategoryLabel"));
+                        categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
+                        //double value = Double.valueOf(transactionhashmap.get("value"));
+
+                        //transactions.add(new Transactions(date, type, subCategory, merchant, value));
+                    }
+
+                    setBalance((Double) task.getResult().child(String.valueOf(userid)).child("balance").getValue());
+                }
             }
         });
 
     }
 
     public void setTransactions(){
-
     }
 
     public void removeTransaction(int position){
@@ -80,6 +93,11 @@ public class userInfo {
     public void updateBalance(double value){
         accountBalance += value;
         Log.d(TAG, "updateBalance: New Account Balance: " + accountBalance);
+    }
+
+    public void setBalance(double balance){
+        accountBalance = balance;
+        Log.d(TAG, "setBalance: " + balance);
     }
 
     public double getTotalSpending(){

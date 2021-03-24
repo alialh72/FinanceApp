@@ -15,4 +15,9 @@
         android:name="com.example.financeapp.Fragments.EducationFragment"
         android:label="fragment_education"
         tools:layout="@layout/fragment_education" />
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.example.financeapp.Fragments.transactionFragment"
+        android:label="fragment_transaction"
+        tools:layout="@layout/fragment_transaction" />
 </navigation>

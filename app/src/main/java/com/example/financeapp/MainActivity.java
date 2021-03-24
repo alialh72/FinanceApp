@@ -1,6 +1,9 @@
 package com.example.financeapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -14,6 +17,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //UserInfo.setUser(1);
+
         hideStatusBar();
 
         findViews();
@@ -75,29 +82,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         createSampleTransactions();
-
-        //reference.child("1").child("Transactions").setValue(UserInfo.transactions);
-
-        // Read from the database
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.child("1").child("Transactions").getValue();
-
-                String username = (String) dataSnapshot.child(String.valueOf(1)).child("name").getValue();
-                Log.d(TAG, "onDataChange: Username: "+username);
-                Log.d(TAG, "Value is: " + value.get(0));
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
     }
 
     private void hideStatusBar(){
@@ -199,6 +183,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void userButton(View view){
+
+    }
+
+    public void transactions(View view){
+        //transactions
 
     }
 
