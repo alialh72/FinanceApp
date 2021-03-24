@@ -15,6 +15,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -57,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
         setupVars();
 
 
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users");
+
+
 
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);
@@ -65,6 +75,29 @@ public class MainActivity extends AppCompatActivity {
 
 
         createSampleTransactions();
+
+        //reference.child("1").child("Transactions").setValue(UserInfo.transactions);
+
+        // Read from the database
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.child("1").child("Transactions").getValue();
+
+                String username = (String) dataSnapshot.child(String.valueOf(1)).child("name").getValue();
+                Log.d(TAG, "onDataChange: Username: "+username);
+                Log.d(TAG, "Value is: " + value.get(0));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
 
     private void hideStatusBar(){
@@ -163,6 +196,10 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, MonthlySpending.class);
         startActivity(intent);
+    }
+
+    public void userButton(View view){
+
     }
 
 }

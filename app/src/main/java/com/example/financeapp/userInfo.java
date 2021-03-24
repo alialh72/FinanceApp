@@ -2,6 +2,12 @@ package com.example.financeapp;
 
 import android.util.Log;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +18,8 @@ import static android.content.ContentValues.TAG;
 public class userInfo {
 
     public static ArrayList<Transactions> transactions = new ArrayList<>();
+    public static String username;
+    public static boolean signedin;
     public static double accountBalance = 0;
     public categoriesEnum.MainCategories Categories;
     public categoriesEnum.SubCategory SubCategories;
@@ -34,6 +42,35 @@ public class userInfo {
         updateBalance(value);
 
         Log.d(TAG, "addTransaction: Transactions: "+transactions);
+    }
+
+    public void setUser(int userid){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users");
+
+        // Read from the database
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                ArrayList<Object> value = (ArrayList<Object>) dataSnapshot.child("1").child("Transactions").getValue();
+                Log.d(TAG, "Value is: " + value.get(0));
+
+                username = (String) dataSnapshot.child(String.valueOf(userid)).child("name").getValue();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+    }
+
+    public void setTransactions(){
+
     }
 
     public void removeTransaction(int position){
