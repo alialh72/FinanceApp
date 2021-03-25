@@ -55,7 +55,6 @@ public class userInfo {
         Log.d(TAG, "setUser: in here");
         // Read from the database
 
-        //reference.child("Users").child(userid).child("Transactions")
         reference.child(String.valueOf(userid)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -86,8 +85,6 @@ public class userInfo {
 
     }
 
-    public void setTransactions(){
-    }
 
     public void removeTransaction(int position){
         transactions.remove(position);
@@ -127,10 +124,10 @@ public class userInfo {
         return runningtotal;
     }
 
-    public double getValueByCategory(String category){
+    public double getValueByCategory(String category, String type){
         double runningtotal = 0;
         for (Transactions t : transactions){
-            if (t.getMainCategory().contains(category)){
+            if (t.getMainCategory().contains(category) && t.getType().equals(type)){
                 runningtotal += Math.abs(t.getValue());
             }
         }
@@ -149,17 +146,18 @@ public class userInfo {
         return spendings;
     }
 
-    public ArrayList<Transactions> getTransactionsByCategory(String category){
+    public ArrayList<Transactions> getTransactionsByCategory(String category, String type){
         ArrayList<Transactions> filteredlist = new ArrayList<>();
 
         for (Transactions t : transactions){
-            if (t.getMainCategory().equals(category)){
+            if (t.getMainCategory().equals(category) && t.getType().equals(type)){
                 filteredlist.add(t);
             }
         }
 
         return filteredlist;
     }
+
 
 
 }

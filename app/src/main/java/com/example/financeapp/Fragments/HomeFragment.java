@@ -72,7 +72,6 @@ public class HomeFragment extends Fragment {
     private TextView monthlySpendingText, monthlyIncomeText;
     private TextView monthName;
     private TextView youveSpent;
-    private ProgressBar progressBar;
 
     private RecyclerView transactionsRecyclerView;
 
@@ -125,10 +124,12 @@ public class HomeFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         findViews();
+        setSlider();
+
+
+
 
         if(MainActivity.UserInfo.username == null){
-            MainActivity.UserInfo.setUser(1);
-            progressBar.setVisibility(View.VISIBLE);
             new CountDownTimer(2000, 1000) {
 
                 @Override
@@ -138,27 +139,23 @@ public class HomeFragment extends Fragment {
 
                 @Override
                 public void onFinish() {
-                    setSlider();
-
                     initText();
                     setupPieChart();
                     loadPieChartData();
 
                     loadRecyclerViews();
-                    progressBar.setVisibility(View.INVISIBLE);
+
                 }
 
             }.start();
         }
-
         else{
-            setSlider();
-
             initText();
             setupPieChart();
             loadPieChartData();
 
             loadRecyclerViews();
+
         }
 
 
@@ -167,7 +164,6 @@ public class HomeFragment extends Fragment {
 
 
     private void findViews(){
-        progressBar = getView().findViewById(R.id.progressbar);
         viewPager2 = getView().findViewById(R.id.viewpagerimage);
         spendingPieChart = getView().findViewById(R.id.monthlyspendingpiechart);
         accountBalanceText = getView().findViewById(R.id.accountBalanceText);
@@ -200,10 +196,6 @@ public class HomeFragment extends Fragment {
 
         //you've spending
         youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending()) +" so far");
-
-
-        //setting up color array
-
     }
 
 
@@ -238,8 +230,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
+
                 sliderHandler.removeCallbacks(sliderRunnable);
-                sliderHandler.postDelayed(sliderRunnable, 10000);
+                sliderHandler.postDelayed(sliderRunnable, 7000);
             }
         });
     }
@@ -287,7 +280,7 @@ public class HomeFragment extends Fragment {
 
 
             if(isthere == false){
-                double percentage = MainActivity.UserInfo.getValueByCategory(c);
+                double percentage = MainActivity.UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType());
                 DecimalFormat df = new DecimalFormat("#.##");
                 df.format(percentage);
                 second.add(c);

@@ -1,9 +1,7 @@
 package com.example.financeapp;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
@@ -16,17 +14,11 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -44,11 +36,13 @@ public class MainActivity extends AppCompatActivity {
     private BottomNavigationView bottomNav;
     private NavController navController;
     private View decorView;
+    private ConstraintLayout overlay;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
     public static HashMap<String, gradientColors> gradientsCategories = new HashMap<String, gradientColors>();
 
+    public static boolean loaded = false;
     public static String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     public static String month;
     public static String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
@@ -66,6 +60,26 @@ public class MainActivity extends AppCompatActivity {
         hideStatusBar();
 
         findViews();
+
+        if(UserInfo.username == null){
+            UserInfo.setUser(1);
+            overlay.setVisibility(View.VISIBLE);
+            new CountDownTimer(2000, 1000) {
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    // do something after 1s
+                }
+
+                @Override
+                public void onFinish() {
+                    overlay.setVisibility(View.GONE);
+                }
+
+            }.start();
+        }
+        else{
+
+        }
 
 
 
@@ -110,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void findViews(){
         bottomNav = findViewById(R.id.bottomNavigationView);
+        overlay = findViewById(R.id.overlay);
     }
 
 
@@ -128,6 +143,13 @@ public class MainActivity extends AppCompatActivity {
     public void addTransaction(View view){
         Log.d(TAG, "AddButton: Total Spending: " + MainActivity.UserInfo.getTotalSpending());
         Log.d(TAG, "AddButton: Account Balance: " + MainActivity.UserInfo.accountBalance);
+
+
+        Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, AddTransactionActivity.class);
+        startActivity(intent);
+
+
     }
 
     public void tester(View view){
@@ -181,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void marchSpendingClicked(View view){
         Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MonthlySpending.class);
+        Intent intent = new Intent(this, MonthlySpendingActivity.class);
         startActivity(intent);
     }
 
@@ -191,7 +213,12 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickedTransactionsContainer(View view){
         //transactions
+        bottomNav.setSelectedItemId(R.id.transactionFragment);
 
+    }
+    
+    public void OverlayClick(View view){
+        Log.d(TAG, "OverlayClick: nothing");
     }
 
 }

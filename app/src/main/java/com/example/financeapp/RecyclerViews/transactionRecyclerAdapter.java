@@ -75,7 +75,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             holder.dateTextView.setText("Today");
         }
         else{
-            holder.dateTextView.setText(MainActivity.date);
+            holder.dateTextView.setText(transactions.get(position).getDate());
         }
 
         gradientColors gradient = MainActivity.gradientsCategories.get(transactions.get(position).getSubCategory().getDisplayableType());
@@ -96,7 +96,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "onClick: clicked on: ");
+                Log.d(TAG, "onClick: clicked on: "+transactions.get(position).getSubCategoryLabel()+ ", "+transactions.get(position).getValue());
 
             }
         });

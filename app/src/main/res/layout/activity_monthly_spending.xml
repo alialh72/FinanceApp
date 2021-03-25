@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F4F7"
-    tools:context=".MonthlySpending">
+    tools:context=".MonthlySpendingActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
                 android:id="@+id/linearconstraint"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
-                android:background="@drawable/draw"
+                android:background="@null"
                 android:elevation="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,6 +35,35 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/arrowback"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:gravity="center"
+                android:onClick="ArrowBack"
+                android:rotation="180"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                app:layout_constraintBottom_toTopOf="@+id/accountbreakdown"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearconstraint"
+                app:tint="#6d6e6f" />
+
+            <ImageView
+                android:id="@+id/arrowforward"
+                android:layout_width="40dp"
+                android:layout_height="20dp"
+                android:adjustViewBounds="true"
+                android:gravity="center"
+                android:onClick="ArrowForward"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                app:layout_constraintBottom_toTopOf="@+id/accountbreakdown"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearconstraint"
+                app:tint="#6d6e6f" />
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -84,11 +113,11 @@
                         android:layout_marginTop="5dp"
                         android:text="CA$421.52"
                         android:textColor="@color/black"
-                        android:textStyle="bold"
                         android:textSize="25dp"
+                        android:textStyle="bold"
+                        app:layout_constraintBottom_toTopOf="@id/percentage"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toTopOf="@id/percentage"
                         app:layout_constraintTop_toBottomOf="@+id/piechartcentercat" />
 
                     <TextView
@@ -113,8 +142,8 @@
                 android:id="@+id/accountbreakdown"
                 android:layout_width="356dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="40dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/nooutline"
                 android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -157,8 +186,6 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

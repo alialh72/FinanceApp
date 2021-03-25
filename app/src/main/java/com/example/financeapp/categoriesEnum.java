@@ -2,7 +2,10 @@ package com.example.financeapp;
 
 import com.google.common.collect.Maps;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class categoriesEnum {
@@ -19,7 +22,6 @@ public final class categoriesEnum {
         EDUCATION("Education"),
         BILLS("Bills & Utility"),
         CAR("Auto & Transport"),
-        GIFTS("Gifts & Donations"),
         HEALTH("Health & Fitness"),
         INCOME("Income"),
         EXPENSE("Expense"),
@@ -47,7 +49,6 @@ public final class categoriesEnum {
         EDUCATION("Education", MainCategories.EDUCATION),
         BILLS("Bills & Utility", MainCategories.BILLS),
         CAR("Auto & Transport", MainCategories.CAR),
-        GIFTS("Gifts & Donations", MainCategories.GIFTS),
         HEALTH("Health & Fitness", MainCategories.HEALTH),
         INCOME("Income", MainCategories.INCOME),
         EXPENSE("Expense", MainCategories.EXPENSE),
@@ -56,6 +57,10 @@ public final class categoriesEnum {
         SHOPPING("Shopping", MainCategories.SHOPPING),
         OTHER("Other", MainCategories.OTHER),
 
+        RESTAURANT("Restaurant", MainCategories.FOOD),
+        FASTFOOD("Fast Food", MainCategories.FOOD),
+        GROCERIES("Groceries", MainCategories.FOOD),
+        COFFEE("Coffee Shop", MainCategories.FOOD),
 
         CLOTHING("Clothing", MainCategories.SHOPPING),
         TOYS("Toys", MainCategories.SHOPPING),
@@ -105,6 +110,7 @@ public final class categoriesEnum {
         public String getLabel() {
             return label;
         }
+
 
         public static final Map<String, SubCategory> LOOKUP = Maps.uniqueIndex(
                 Arrays.asList(SubCategory.values()),

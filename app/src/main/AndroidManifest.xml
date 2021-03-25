@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinanceApp">
-        <activity android:name=".MonthlySpending"></activity>
+        <activity android:name=".CategoryActivity"></activity>
+        <activity android:name=".AddTransactionActivity" />
+        <activity android:name=".MonthlySpendingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

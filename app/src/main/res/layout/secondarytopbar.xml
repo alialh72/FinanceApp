@@ -10,7 +10,7 @@
     android:paddingRight="15dp">
 
     <ImageView
-        android:id="@+id/hamburger"
+        android:id="@+id/arrow"
         android:layout_width="40dp"
         android:layout_height="20dp"
         android:layout_marginLeft="5dp"
@@ -34,7 +34,7 @@
         android:textColor="@color/white"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/hamburger"
+        app:layout_constraintStart_toEndOf="@+id/arrow"
         app:layout_constraintTop_toTopOf="parent" />
 
 

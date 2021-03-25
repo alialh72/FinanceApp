@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.financeapp.Fragments.HomeFragment;
 import com.example.financeapp.RecyclerViews.transactionRecyclerAdapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -23,11 +22,12 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 
 import static android.content.ContentValues.TAG;
 
-public class MonthlySpending extends AppCompatActivity {
+public class MonthlySpendingActivity extends AppCompatActivity {
 
     private PieChart pieChart;
 
@@ -38,6 +38,10 @@ public class MonthlySpending extends AppCompatActivity {
     private TextView transactionCategoryText;
 
     private RecyclerView transactionsRecyclerView;
+
+    private ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
+
+    private int highlightedPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +124,6 @@ public class MonthlySpending extends AppCompatActivity {
     }
 
     private void loadPieChartData(){
-        ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         ArrayList<String> second = new ArrayList<>();
 
         for (Transactions t : MainActivity.UserInfo.getSpendings()){
@@ -135,7 +138,7 @@ public class MonthlySpending extends AppCompatActivity {
 
 
             if(isthere == false){
-                double percentage = MainActivity.UserInfo.getValueByCategory(c);
+                double percentage = MainActivity.UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType());
                 DecimalFormat df = new DecimalFormat("#.##");
                 df.format(percentage);
                 second.add(c);
@@ -161,9 +164,9 @@ public class MonthlySpending extends AppCompatActivity {
 
         pieChart.animate();
 
-        Entry starter = (Entry) entries.get(0);
-        pieChart.highlightValue(0, 0, false);
-        pieChartClicked(starter.getY(), entries.get(0).getLabel());
+        Entry starter = (Entry) entries.get(highlightedPosition);
+        pieChart.highlightValue(highlightedPosition, 0, false);
+        pieChartClicked(starter.getY(), entries.get(highlightedPosition).getLabel());
 
         pieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -207,9 +210,38 @@ public class MonthlySpending extends AppCompatActivity {
         //get 5 most recent transactions
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(MainActivity.UserInfo.getTransactionsByCategory(category), this);
+
+        ArrayList<Transactions> reversed = new ArrayList<>(MainActivity.UserInfo.getTransactionsByCategory(category, categoriesEnum.MainCategories.EXPENSE.getDisplayableType()));
+        Collections.reverse(reversed);
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(reversed, this);
         transactionsRecyclerView.setAdapter(transactionsAdapter);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+    }
+
+    public void ArrowBack(View view){
+        if (highlightedPosition == 0){
+            highlightedPosition = entries.size()-1;
+        }
+        else{
+            highlightedPosition -= 1;
+        }
+
+        Entry starter = (Entry) entries.get(highlightedPosition);
+        pieChart.highlightValue(highlightedPosition, 0, false);
+        pieChartClicked(starter.getY(), entries.get(highlightedPosition).getLabel());
+    }
+
+    public void ArrowForward(View view){
+        if (highlightedPosition == entries.size()-1){
+            highlightedPosition = 0;
+        }
+        else{
+            highlightedPosition += 1;
+        }
+
+        Entry starter = (Entry) entries.get(highlightedPosition);
+        pieChart.highlightValue(highlightedPosition, 0, false);
+        pieChartClicked(starter.getY(), entries.get(highlightedPosition).getLabel());
     }
 
 
