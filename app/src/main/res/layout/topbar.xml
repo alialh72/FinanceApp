@@ -44,6 +44,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/helloUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Guest User"
@@ -56,13 +57,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:id="@+id/addbutton"
+        android:id="@+id/userButton"
         android:layout_width="37dp"
         android:layout_height="wrap_content"
         android:layout_marginRight="10dp"
         android:adjustViewBounds="true"
         android:gravity="center"
-        android:onClick="userButton"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_account"
         app:layout_constraintBottom_toBottomOf="parent"

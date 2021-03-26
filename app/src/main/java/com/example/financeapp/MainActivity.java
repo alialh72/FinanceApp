@@ -2,20 +2,26 @@ package com.example.financeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.example.financeapp.Fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -27,7 +33,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private static final String TAG = "";
     private ViewPager2 viewPager2;
@@ -49,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static ArrayList<Integer> colors = new ArrayList<>();
 
+    public Context context = this;
+
     public categoriesEnum.MainCategories MainCategories;
     public categoriesEnum.SubCategory SubCategories; //categories enum
 
@@ -60,26 +68,6 @@ public class MainActivity extends AppCompatActivity {
         hideStatusBar();
 
         findViews();
-
-        if(UserInfo.username == null){
-            UserInfo.setUser(1);
-            overlay.setVisibility(View.VISIBLE);
-            new CountDownTimer(2000, 1000) {
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    // do something after 1s
-                }
-
-                @Override
-                public void onFinish() {
-                    overlay.setVisibility(View.GONE);
-                }
-
-            }.start();
-        }
-        else{
-
-        }
 
 
 
@@ -202,13 +190,32 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void marchSpendingClicked(View view){
-        Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(this, MonthlySpendingActivity.class);
-        startActivity(intent);
+
+        if (UserInfo.transactions.size()>0){
+            Intent intent = new Intent(this, MonthlySpendingActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
+        }
+
+
     }
 
-    public void userButton(View view){
+    public void loadScreen(){
+        overlay.setVisibility(View.VISIBLE);
+        new CountDownTimer(2000, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                // do something after 1s
+            }
 
+            @Override
+            public void onFinish() {
+                overlay.setVisibility(View.GONE);
+            }
+
+        }.start();
     }
 
     public void clickedTransactionsContainer(View view){

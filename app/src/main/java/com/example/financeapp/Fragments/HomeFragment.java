@@ -1,5 +1,7 @@
 package com.example.financeapp.Fragments;
 
+import android.content.Context;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,8 +18,11 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +44,8 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import org.w3c.dom.Text;
+
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -53,7 +60,7 @@ import static android.content.ContentValues.TAG;
  * Use the {@link HomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -72,12 +79,16 @@ public class HomeFragment extends Fragment {
     private TextView monthlySpendingText, monthlyIncomeText;
     private TextView monthName;
     private TextView youveSpent;
+    private TextView helloUsername;
+    private ImageView userButton, hamburger;
+
+    private TextView startSpendingPie, transactionInfo;
 
     private RecyclerView transactionsRecyclerView;
 
     private PieChart spendingPieChart;
 
-
+    public static Context context;
 
 
 
@@ -129,38 +140,60 @@ public class HomeFragment extends Fragment {
 
 
 
-        if(MainActivity.UserInfo.username == null){
-            new CountDownTimer(2000, 1000) {
+        initText();
+        setupPieChart();
+        loadPieChartData();
 
-                @Override
-                public void onTick(long millisUntilFinished) {
-                    // do something after 1s
-                }
+        loadRecyclerViews();
 
-                @Override
-                public void onFinish() {
-                    initText();
-                    setupPieChart();
-                    loadPieChartData();
 
-                    loadRecyclerViews();
+        userButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), userButton);
+                popupMenu.inflate(R.menu.popup_menu);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        Log.d(TAG, "onMenuItemClick: clicked: "+ item);
 
-                }
+                            MainActivity.UserInfo.setUser(Integer.parseInt((String) item.getTitle()));
+                            ((MainActivity)getActivity()).loadScreen();
+                            new CountDownTimer(2000, 1000) {
+                                @Override
+                                public void onTick(long millisUntilFinished) {
+                                    // do something after 1s
+                                }
 
-            }.start();
-        }
-        else{
-            initText();
-            setupPieChart();
-            loadPieChartData();
+                                @Override
+                                public void onFinish() {
+                                    refreshFragment();
+                                }
 
-            loadRecyclerViews();
+                            }.start();
 
-        }
+                        return false;
+                    }
+                });
+                popupMenu.show();
+                /*
+                */
 
+
+            }
+        });
+
+        hamburger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.UserInfo.removeTransaction(MainActivity.UserInfo.transactions.size()-1);
+                refreshFragment();
+            }
+        });
 
 
     }
+
 
 
     private void findViews(){
@@ -172,6 +205,11 @@ public class HomeFragment extends Fragment {
         monthName = getView().findViewById(R.id.monthSpendingText);
         youveSpent = getView().findViewById(R.id.youvespent);
         transactionsRecyclerView = getView().findViewById(R.id.transactionsRecyclerView);
+        userButton = getView().findViewById(R.id.userButton);
+        startSpendingPie = getView().findViewById(R.id.pieChartStartSpending);
+        transactionInfo = getView().findViewById(R.id.transactionInfo);
+        hamburger = getView().findViewById(R.id.hamburger);
+        helloUsername = getView().findViewById(R.id.helloUsername);
     }
 
     private void initText(){
@@ -196,6 +234,17 @@ public class HomeFragment extends Fragment {
 
         //you've spending
         youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending()) +" so far");
+
+        if(MainActivity.UserInfo.transactions.size() == 0){
+            startSpendingPie.setVisibility(View.VISIBLE);
+            transactionInfo.setText("Start adding transactions to track your spending");
+        }
+        else{
+            startSpendingPie.setVisibility(View.GONE);
+            transactionInfo.setText("Recent Transactions");
+        }
+
+        helloUsername.setText(MainActivity.UserInfo.username);
     }
 
 
@@ -327,20 +376,42 @@ public class HomeFragment extends Fragment {
     private void loadRecyclerViews(){
         //get 5 most recent transactions
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
-        transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),getActivity());
-        transactionsRecyclerView.setAdapter(transactionsAdapter);
-        transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+
+        if (MainActivity.UserInfo.transactions.size() > 0){
+            transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+            transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),getActivity());
+            transactionsRecyclerView.setAdapter(transactionsAdapter);
+            transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        }
+
     }
 
     private ArrayList<Transactions> getRecentTransactions(){
         ArrayList<Transactions> Localtransactions = new ArrayList<>();
-        int pos;
-        for (pos = MainActivity.UserInfo.transactions.size()-1; Localtransactions.size()<4;pos--){
-            Localtransactions.add(MainActivity.UserInfo.transactions.get(pos));
+
+        if(MainActivity.UserInfo.transactions.size() > 4){
+            Log.d(TAG, "getRecentTransactions: size is greater than 4");
+            for (int pos = MainActivity.UserInfo.transactions.size()-1; pos>MainActivity.UserInfo.transactions.size()-5;pos--){
+                Log.d(TAG, "getRecentTransactions: pos: "+pos);
+                Localtransactions.add(MainActivity.UserInfo.transactions.get(pos));
+            }
         }
+        else{
+            int rev = MainActivity.UserInfo.transactions.size()-1;
+            for (int pos = 0; pos < MainActivity.UserInfo.transactions.size(); pos++){
+                Log.d(TAG, "getRecentTransactions: pos: "+pos);
+                Localtransactions.add(MainActivity.UserInfo.transactions.get(rev));
+                rev--;
+            }
+        }
+
         return Localtransactions;
     }
+
+    public void refreshFragment(){
+        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    }
+
 
 
 }

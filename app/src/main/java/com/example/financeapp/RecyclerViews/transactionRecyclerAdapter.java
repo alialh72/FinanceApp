@@ -56,7 +56,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         holder.merchantTextView.setText(transactions.get(position).getMerchant());
         holder.categoryTextView.setText(transactions.get(position).getSubCategoryLabel());
 
-        double value = transactions.get(position).getValue();
+        double value = Double.parseDouble(transactions.get(position).getValue());
         if (value < 0){
             holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         }
@@ -68,7 +68,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(2);
         format.setCurrency(Currency.getInstance("CAD"));
-        holder.valueTextView.setText(format.format(transactions.get(position).getValue()));
+        holder.valueTextView.setText(format.format(Double.parseDouble(transactions.get(position).getValue())));
 
 
         if(transactions.get(position).getDate().equals(MainActivity.date)){

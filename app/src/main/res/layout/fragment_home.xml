@@ -219,6 +219,18 @@
                 app:layout_constraintTop_toBottomOf="@+id/viewpagerimage">
 
                 <TextView
+                    android:id="@+id/pieChartStartSpending"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:elevation="50dp"
+                    android:text="Start adding transactions to track your spending"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
                     android:id="@+id/monthSpendingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -271,14 +283,13 @@
                 android:layout_width="356dp"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="90dp"
-                android:onClick="clickedTransactionsContainer"
                 android:background="@drawable/nooutline"
+                android:onClick="clickedTransactionsContainer"
                 android:padding="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/constraintLayout">
-
 
                 <TextView
                     android:id="@+id/textView"
@@ -303,7 +314,7 @@
                     app:tint="@color/black" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/transactionInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -317,11 +328,11 @@
                     android:layout_width="330dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
-                    android:layout_marginBottom="20dp"
+
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView6" />
+                    app:layout_constraintTop_toTopOf="@+id/transactionInfo" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

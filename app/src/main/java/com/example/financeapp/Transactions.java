@@ -39,7 +39,7 @@ public class Transactions {
         return type.getDisplayableType();
     }
 
-    public double getValue(){ return Double.parseDouble(value); }
+    public String getValue(){ return value; }
 
 
 

@@ -23,8 +23,9 @@ import static android.content.ContentValues.TAG;
 public class userInfo {
 
     public static ArrayList<Transactions> transactions = new ArrayList<>();
-    public static String username;
-    public static boolean signedin;
+    public static String username = "Guest User";
+    public static int accountID;
+    public static boolean signedin = false;
     public static double accountBalance = 0;
     public categoriesEnum.MainCategories Categories;
     public categoriesEnum.SubCategory SubCategories;
@@ -42,18 +43,34 @@ public class userInfo {
 
 
         Log.d(TAG, "addTransaction: date: " + MainActivity.date);
-        transactions.add(new Transactions(MainActivity.date, type, subCategory, merchant, String.valueOf(value)));
+
+        Transactions newTransaction = new Transactions(MainActivity.date, type, subCategory, merchant, String.valueOf(value));
+
+        transactions.add(newTransaction);
 
         updateBalance(value);
+
+        if(signedin == true){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("Users");
+
+            reference.child(String.valueOf(accountID)).child("Transactions").setValue(transactions);
+            reference.child(String.valueOf(accountID)).child("balance").setValue(String.valueOf(accountBalance));
+        }
+
 
         Log.d(TAG, "addTransaction: Transactions: "+transactions);
     }
 
     public void setUser(int userid){
+        transactions = new ArrayList<>();
+
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference reference = database.getReference("Users");
         Log.d(TAG, "setUser: in here");
         // Read from the database
+
+        accountID = userid;
 
         reference.child(String.valueOf(userid)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -74,11 +91,12 @@ public class userInfo {
 
                         transactions.add(new Transactions(date, type, subCategory, merchant, value));
                     }
-                    long longbalance = (long) task.getResult().child("balance").getValue();
-                    double b = longbalance;
+                    double b = Double.parseDouble((String) task.getResult().child("balance").getValue());
                     Log.d(TAG, "onComplete: num: "+ b);
                     setBalance(b);
                     Log.d(TAG, "onComplete: transactions: "+transactions);
+
+                    signedin = true;
                 }
             }
         });
@@ -87,12 +105,26 @@ public class userInfo {
 
 
     public void removeTransaction(int position){
+        double value = Double.parseDouble(transactions.get(position).getValue());
+
         transactions.remove(position);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users");
+        reference.child(String.valueOf(accountID)).child("Transactions").child(String.valueOf(position)).removeValue();
+
+        reverseBalance(value);
     }
 
     public void updateBalance(double value){
         accountBalance += value;
         Log.d(TAG, "updateBalance: New Account Balance: " + accountBalance);
+    }
+
+    public void reverseBalance(double value){
+        accountBalance-= value;
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference reference = database.getReference("Users");
+        reference.child(String.valueOf(accountID)).child("balance").setValue(String.valueOf(accountBalance));
     }
 
     public void setBalance(double balance){
@@ -104,7 +136,7 @@ public class userInfo {
         double runningtotal = 0;
         for (Transactions t : transactions){
             if (t.getType().contains("Expense")){
-                runningtotal += Math.abs(t.getValue());
+                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
             }
             else{ }
         }
@@ -116,7 +148,7 @@ public class userInfo {
         double runningtotal = 0;
         for (Transactions t : transactions){
             if (t.getType().contains("Income")){
-                runningtotal += t.getValue();
+                runningtotal += Double.parseDouble(t.getValue());
             }
             else{ }
         }
@@ -128,7 +160,7 @@ public class userInfo {
         double runningtotal = 0;
         for (Transactions t : transactions){
             if (t.getMainCategory().contains(category) && t.getType().equals(type)){
-                runningtotal += Math.abs(t.getValue());
+                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
             }
         }
         return runningtotal;
@@ -138,7 +170,7 @@ public class userInfo {
         ArrayList<Transactions> spendings = new ArrayList<>();
 
         for (Transactions t : transactions){
-            if (t.getValue() < 0){
+            if (Double.parseDouble(t.getValue()) < 0){
                 spendings.add(t);
             }
         }
