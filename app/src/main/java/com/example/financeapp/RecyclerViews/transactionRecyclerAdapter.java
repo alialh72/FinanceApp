@@ -87,6 +87,13 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
         holder.iconLayout.setBackgroundDrawable(gd);
 
+        if (position == transactions.size()-1){
+            holder.backgroundLayout.setBackgroundResource(R.drawable.outlinetop);
+        }
+        else {
+            holder.backgroundLayout.setBackgroundResource(R.drawable.outline);
+        }
+
 
         //set image
         int resID = mContext.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
@@ -114,7 +121,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
         TextView merchantTextView, categoryTextView, valueTextView, dateTextView;
         ImageView iconImg;
-        ConstraintLayout iconLayout;
+        ConstraintLayout iconLayout, backgroundLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -125,6 +132,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             dateTextView = itemView.findViewById(R.id.date);
             iconImg = itemView.findViewById(R.id.icon);
             iconLayout = itemView.findViewById(R.id.iconconstraint);
+            backgroundLayout = itemView.findViewById(R.id.background);
         }
     }
 

@@ -43,7 +43,7 @@ public final class categoriesEnum {
 
     }
 
-    public enum SubCategory implements CategoryInterface {
+    public enum SubCategories implements CategoryInterface {
         FOOD("Food & Drink", MainCategories.FOOD),
         ENTERTAINMENT("Entertainment", MainCategories.ENTERTAINMENT),
         EDUCATION("Education", MainCategories.EDUCATION),
@@ -98,7 +98,7 @@ public final class categoriesEnum {
         private final String label;
         private final MainCategories category;
 
-        SubCategory(String label, MainCategories category) {
+        SubCategories(String label, MainCategories category) {
             this.label = label;
             this.category = category;
         }
@@ -112,9 +112,9 @@ public final class categoriesEnum {
         }
 
 
-        public static final Map<String, SubCategory> LOOKUP = Maps.uniqueIndex(
-                Arrays.asList(SubCategory.values()),
-                SubCategory::getLabel);
+        public static final Map<String, SubCategories> LOOKUP = Maps.uniqueIndex(
+                Arrays.asList(SubCategories.values()),
+                SubCategories::getLabel);
     }
 
 

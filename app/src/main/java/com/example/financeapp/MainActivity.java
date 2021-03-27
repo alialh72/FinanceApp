@@ -2,6 +2,8 @@ package com.example.financeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
@@ -27,6 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +46,7 @@ public class MainActivity extends AppCompatActivity{
     private NavController navController;
     private View decorView;
     private ConstraintLayout overlay;
+    private DrawerLayout drawerLayout;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
@@ -51,6 +55,7 @@ public class MainActivity extends AppCompatActivity{
     public static boolean loaded = false;
     public static String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     public static String month;
+    public static String monthYear;
     public static String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     public static ArrayList<Integer> colors = new ArrayList<>();
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity{
     public Context context = this;
 
     public categoriesEnum.MainCategories MainCategories;
-    public categoriesEnum.SubCategory SubCategories; //categories enum
+    public categoriesEnum.SubCategories SubCategories; //categories enum
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +116,7 @@ public class MainActivity extends AppCompatActivity{
     }
 
     private void findViews(){
+        drawerLayout = findViewById(R.id.drawerLayout);
         bottomNav = findViewById(R.id.bottomNavigationView);
         overlay = findViewById(R.id.overlay);
     }
@@ -119,29 +125,23 @@ public class MainActivity extends AppCompatActivity{
     private void createSampleTransactions(){
         UserInfo.updateBalance(32124.42); //Set starting balance
 
-        UserInfo.addTransaction(categoriesEnum.SubCategory.FOOD, "McDonald's", -35.50);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.MOVIES, "Movies", -14.95);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.INCOME, "Salary", 4200.00);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.UTILITIES, "BC Hydro", -250.75);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.PETFOOD, "PetSmart", -55.50);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.GYM, "Planet Fitness", -40.52);
-        UserInfo.addTransaction(categoriesEnum.SubCategory.INCOME, "Stimmy Check", 1400);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.FOOD, "McDonald's", -35.50);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.MOVIES, "Movies", -14.95);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.INCOME, "Salary", 4200.00);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.UTILITIES, "BC Hydro", -250.75);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.PETFOOD, "PetSmart", -55.50);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.GYM, "Planet Fitness", -40.52);
+        UserInfo.addTransaction(categoriesEnum.SubCategories.INCOME, "Stimmy Check", 1400);
     }
 
     public void addTransaction(View view){
-        Log.d(TAG, "AddButton: Total Spending: " + MainActivity.UserInfo.getTotalSpending());
-        Log.d(TAG, "AddButton: Account Balance: " + MainActivity.UserInfo.accountBalance);
-
-
         Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, AddTransactionActivity.class);
         startActivity(intent);
-
-
     }
 
     public void tester(View view){
-        MainActivity.UserInfo.addTransaction(categoriesEnum.SubCategory.PLANE, "Hawaii", -205.50);
+        MainActivity.UserInfo.addTransaction(categoriesEnum.SubCategories.PLANE, "Hawaii", -205.50);
     }
 
     public void setupVars(){
@@ -158,13 +158,14 @@ public class MainActivity extends AppCompatActivity{
 
 
         //setup month
-        DateFormat dateFormat = new SimpleDateFormat("M");
+        DateFormat dateFormat = new SimpleDateFormat("MMMM");
         Date date = new Date();
         Log.d("Month",dateFormat.format(date));
 
-        int monthPosition = Integer.parseInt(dateFormat.format(date));
+        month = dateFormat.format(date);
 
-        month = months[monthPosition-1];
+        DateFormat dateFormat2 = new SimpleDateFormat("MMM ''yy");
+        monthYear = dateFormat2.format(date);
 
         gradients.add(new gradientColors("#FEC180", "#FF8993"));
         gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
@@ -223,9 +224,38 @@ public class MainActivity extends AppCompatActivity{
         bottomNav.setSelectedItemId(R.id.transactionFragment);
 
     }
+
+    public void ClickMenu(View view){
+        drawerLayout.openDrawer(GravityCompat.START);
+    }
     
     public void OverlayClick(View view){
         Log.d(TAG, "OverlayClick: nothing");
+    }
+
+    public void NavEducation(View view){
+        bottomNav.setSelectedItemId(R.id.educationFragment);
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void NavTransactions(View view){
+        bottomNav.setSelectedItemId(R.id.transactionFragment);
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void NavHome(View view){
+        bottomNav.setSelectedItemId(R.id.homeFragment);
+        drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    public void NavSpendings(View view){
+        if (UserInfo.transactions.size()>0){
+            Intent intent = new Intent(this, MonthlySpendingActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

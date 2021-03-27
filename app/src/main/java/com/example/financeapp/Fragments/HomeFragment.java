@@ -49,6 +49,7 @@ import org.w3c.dom.Text;
 import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Currency;
 import java.util.List;
@@ -138,12 +139,15 @@ public class HomeFragment extends Fragment{
         setSlider();
 
 
+        try {
+            initText();
+            loadPieChartData();
 
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
-        initText();
         setupPieChart();
-        loadPieChartData();
-
         loadRecyclerViews();
 
 
@@ -183,13 +187,13 @@ public class HomeFragment extends Fragment{
             }
         });
 
-        hamburger.setOnClickListener(new View.OnClickListener() {
+        /*hamburger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity.UserInfo.removeTransaction(MainActivity.UserInfo.transactions.size()-1);
                 refreshFragment();
             }
-        });
+        });*/
 
 
     }
@@ -212,14 +216,14 @@ public class HomeFragment extends Fragment{
         helloUsername = getView().findViewById(R.id.helloUsername);
     }
 
-    private void initText(){
+    private void initText() throws ParseException {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("CAD"));
 
         accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
-        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getTotalSpending()));
-        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getTotalIncome()));
+        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear)));
+        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getTotalIncome(MainActivity.monthYear)));
 
 
 
@@ -233,7 +237,7 @@ public class HomeFragment extends Fragment{
 
 
         //you've spending
-        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending()) +" so far");
+        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear)) +" so far");
 
         if(MainActivity.UserInfo.transactions.size() == 0){
             startSpendingPie.setVisibility(View.VISIBLE);
@@ -313,11 +317,11 @@ public class HomeFragment extends Fragment{
         l.setEnabled(true);
     }
 
-    private void loadPieChartData(){
+    private void loadPieChartData() throws ParseException {
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         ArrayList<String> second = new ArrayList<>();
 
-        for (Transactions t : MainActivity.UserInfo.getSpendings()){
+        for (Transactions t : MainActivity.UserInfo.getSpendings(MainActivity.monthYear)){
             String c = t.getMainCategory();
 
             boolean isthere = false;
@@ -329,7 +333,7 @@ public class HomeFragment extends Fragment{
 
 
             if(isthere == false){
-                double percentage = MainActivity.UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType());
+                double percentage = MainActivity.UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.monthYear);
                 DecimalFormat df = new DecimalFormat("#.##");
                 df.format(percentage);
                 second.add(c);

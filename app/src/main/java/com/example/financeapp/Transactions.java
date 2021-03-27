@@ -6,10 +6,10 @@ public class Transactions {
     private String MainCategory;
     private categoriesEnum.MainCategories type;
     private String merchant;
-    private categoriesEnum.SubCategory SubCategory;
+    private categoriesEnum.SubCategories SubCategory;
     private String value;
 
-    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategory sc, String m, String v){
+    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategories sc, String m, String v){
         date = d;
         type = t;
         SubCategory = sc;
@@ -29,7 +29,7 @@ public class Transactions {
 
     public String getSubCategoryLabel(){ return SubCategory.getLabel(); }
 
-    public categoriesEnum.SubCategory getSubCategory(){ return SubCategory; }
+    public categoriesEnum.SubCategories getSubCategory(){ return SubCategory; }
 
     public String getMerchant(){
         return merchant;

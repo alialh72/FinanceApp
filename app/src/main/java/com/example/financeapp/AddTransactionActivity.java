@@ -470,7 +470,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         }
 
         if (!(value == 0)){
-            categoriesEnum.SubCategory subCategory = categoriesEnum.SubCategory.LOOKUP.get(category);
+            categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
             MainActivity.UserInfo.addTransaction(subCategory, merchantName, value);
             Log.d(TAG, "AddTransaction: Transactions: "+ MainActivity.UserInfo.transactions);
 

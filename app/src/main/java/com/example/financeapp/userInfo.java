@@ -12,6 +12,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,10 +30,10 @@ public class userInfo {
     public static boolean signedin = false;
     public static double accountBalance = 0;
     public categoriesEnum.MainCategories Categories;
-    public categoriesEnum.SubCategory SubCategories;
+    public categoriesEnum.SubCategories SubCategories;
 
 
-    public void addTransaction(categoriesEnum.SubCategory subCategory, String merchant, double value){
+    public void addTransaction(categoriesEnum.SubCategories subCategory, String merchant, double value){
         categoriesEnum.MainCategories type;
 
         if (value < 0){
@@ -85,7 +87,7 @@ public class userInfo {
                         HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i);
                         String date = transactionhashmap.get("date");
                         String merchant = transactionhashmap.get("merchant");
-                        categoriesEnum.SubCategory subCategory = categoriesEnum.SubCategory.LOOKUP.get(transactionhashmap.get("subCategoryLabel"));
+                        categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(transactionhashmap.get("subCategoryLabel"));
                         categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
                         String value = transactionhashmap.get("value");
 
@@ -132,10 +134,17 @@ public class userInfo {
         //Log.d(TAG, "setBalance: " + String.valueOf(balance));
     }
 
-    public double getTotalSpending(){
+
+
+    public double getMonthlySpending(String date) throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
-            if (t.getType().contains("Expense")){
+            SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+            String tDate = format2.format(format1.parse(t.getDate()));
+
+            Log.d(TAG, "getMonthlySpending: tDate: "+ tDate);
+            if (t.getType().contains("Expense") && tDate.equals(date)){
                 runningtotal += Math.abs(Double.parseDouble(t.getValue()));
             }
             else{ }
@@ -144,10 +153,30 @@ public class userInfo {
         return runningtotal;
     }
 
-    public double getTotalIncome(){
+    public double getTotalSpending(String date) throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
-            if (t.getType().contains("Income")){
+            SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+            String tDate = format2.format(format1.parse(t.getDate()));
+
+            if (t.getType().contains("Expense") && tDate.equals(date)){
+                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+            }
+            else{ }
+        }
+
+        return runningtotal;
+    }
+
+    public double getTotalIncome(String date) throws ParseException {
+        double runningtotal = 0;
+        for (Transactions t : transactions){
+            SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+            String tDate = format2.format(format1.parse(t.getDate()));
+
+            if (t.getType().contains("Income") && tDate.equals(date)){
                 runningtotal += Double.parseDouble(t.getValue());
             }
             else{ }
@@ -156,21 +185,41 @@ public class userInfo {
         return runningtotal;
     }
 
-    public double getValueByCategory(String category, String type){
+    public double getValueByCategory(String category, String type, String date) throws ParseException {
+
         double runningtotal = 0;
         for (Transactions t : transactions){
-            if (t.getMainCategory().contains(category) && t.getType().equals(type)){
-                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+
+            if(!(date.equals("----"))){
+
+                SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+                DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+                String tDate = format2.format(format1.parse(t.getDate()));
+
+                if (t.getMainCategory().equals(category) && t.getType().equals(type) && tDate.equals(date)){
+                    runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+                }
             }
+
+            else{
+                if (t.getMainCategory().equals(category) && t.getType().equals(type)){
+                    runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+                }
+            }
+
         }
         return runningtotal;
     }
 
-    public ArrayList<Transactions> getSpendings(){
+    public ArrayList<Transactions> getSpendings(String date) throws ParseException {
         ArrayList<Transactions> spendings = new ArrayList<>();
 
         for (Transactions t : transactions){
-            if (Double.parseDouble(t.getValue()) < 0){
+            SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+            DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+            String tDate = format2.format(format1.parse(t.getDate()));
+
+            if (Double.parseDouble(t.getValue()) < 0 && tDate.equals(date)){
                 spendings.add(t);
             }
         }
@@ -178,13 +227,30 @@ public class userInfo {
         return spendings;
     }
 
-    public ArrayList<Transactions> getTransactionsByCategory(String category, String type){
+    public ArrayList<Transactions> getTransactionsByCategory(String category, String type, String month) throws ParseException {
         ArrayList<Transactions> filteredlist = new ArrayList<>();
 
         for (Transactions t : transactions){
-            if (t.getMainCategory().equals(category) && t.getType().equals(type)){
-                filteredlist.add(t);
+
+            if(!(month.equals("----"))){
+                SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+                DateFormat format2 = new SimpleDateFormat("MMMM");
+                String monthName = format2.format(format1.parse(t.getDate()));
+
+                if (t.getMainCategory().equals(category) && t.getType().equals(type) && monthName.equals(month)){
+                    filteredlist.add(t);
+                }
+
             }
+
+            else{
+                if (t.getMainCategory().equals(category) && t.getType().equals(type)){
+                    filteredlist.add(t);
+                }
+            }
+
+
+
         }
 
         return filteredlist;

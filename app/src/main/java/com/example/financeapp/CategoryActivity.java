@@ -56,7 +56,7 @@ public class CategoryActivity extends AppCompatActivity {
     private void ExpandableAdapter(){
         ListMultimap<String, String> MainSubCategories = ArrayListMultimap.create();
 
-        for(categoriesEnum.SubCategory sub : categoriesEnum.SubCategory.values()){
+        for(categoriesEnum.SubCategories sub : categoriesEnum.SubCategories.values()){
             for (categoriesEnum.MainCategories main : categoriesEnum.MainCategories.values()){
                 if (sub.getDisplayableType() == main.getDisplayableType()){
                     MainSubCategories.put(main.getDisplayableType(), sub.getLabel());
