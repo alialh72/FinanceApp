@@ -216,7 +216,7 @@ public class HomeFragment extends Fragment{
         helloUsername = getView().findViewById(R.id.helloUsername);
     }
 
-    private void initText() throws ParseException {
+    public void initText() throws ParseException {
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("CAD"));
@@ -383,7 +383,7 @@ public class HomeFragment extends Fragment{
 
         if (MainActivity.UserInfo.transactions.size() > 0){
             transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-            transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),getActivity());
+            transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),"HomeFragment",getActivity());
             transactionsRecyclerView.setAdapter(transactionsAdapter);
             transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         }

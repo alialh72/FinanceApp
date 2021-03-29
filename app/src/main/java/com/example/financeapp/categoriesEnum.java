@@ -40,7 +40,6 @@ public final class categoriesEnum {
             return type;
         }
 
-
     }
 
     public enum SubCategories implements CategoryInterface {

@@ -1,6 +1,8 @@
 package com.example.financeapp.RecyclerViews;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,8 +16,12 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.financeapp.AddTransactionActivity;
+import com.example.financeapp.Fragments.HomeFragment;
 import com.example.financeapp.MainActivity;
+import com.example.financeapp.MonthlySpendingActivity;
 import com.example.financeapp.R;
+import com.example.financeapp.SingleTransactionActivity;
 import com.example.financeapp.Transactions;
 import com.example.financeapp.gradientColors;
 
@@ -28,10 +34,11 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
     private ArrayList<Transactions> transactions = new ArrayList<>();
     private Context mContext;
+    private String className;
 
-
-    public transactionRecyclerAdapter(ArrayList<Transactions> transactions,Context context){
+    public transactionRecyclerAdapter(ArrayList<Transactions> transactions,String className,Context context){
         this.transactions = transactions;
+        this.className = className;
 
         Log.d(TAG, "transactionRecycler: Localtransactions: "+transactions);
 
@@ -103,7 +110,12 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Log.d(TAG, "onClick: clicked on: "+transactions.get(position).getSubCategoryLabel()+ ", "+transactions.get(position).getValue());
+
+                Intent intent = new Intent(mContext, SingleTransactionActivity.class);
+                intent.putExtra("TRANSACTION", transactions.get(position));
+                mContext.startActivity(intent);
 
             }
         });

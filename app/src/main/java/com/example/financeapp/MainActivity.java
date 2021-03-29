@@ -4,13 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -135,13 +136,16 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public void addTransaction(View view){
-        Toast.makeText(this, "was clicked", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(this, AddTransactionActivity.class);
         startActivity(intent);
     }
 
     public void tester(View view){
         MainActivity.UserInfo.addTransaction(categoriesEnum.SubCategories.PLANE, "Hawaii", -205.50);
+    }
+
+    public void tester2(View view){
+        UserInfo.removeTransaction("748382");
     }
 
     public void setupVars(){
@@ -194,7 +198,7 @@ public class MainActivity extends AppCompatActivity{
 
         if (UserInfo.transactions.size()>0){
             Intent intent = new Intent(this, MonthlySpendingActivity.class);
-            startActivity(intent);
+            this.startActivity(intent);
         }
         else{
             Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
@@ -257,5 +261,6 @@ public class MainActivity extends AppCompatActivity{
             Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
         }
     }
+
 
 }

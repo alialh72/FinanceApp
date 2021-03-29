@@ -18,16 +18,13 @@ import java.util.Locale;
 
 import org.apache.commons.lang3.StringUtils;
 
-public class AddTransactionActivity extends AppCompatActivity implements MerchantDialog.MerchantDialogListener {
+public class ValueActivity extends AppCompatActivity{
 
     private static final String TAG = "";
     private View decorView;
     private TextView numberText;
     private TextView plusMinus;
 
-    private TextView merchantText, categoryText;
-
-    private Button incomeButton, expenseButton;
     private ConstraintLayout incomeLayout, expenseLayout;
 
     private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonDecimal;
@@ -36,21 +33,15 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
     private categoriesEnum.MainCategories type = categoriesEnum.MainCategories.EXPENSE;
     private String numberString = "";
 
-    private String merchantName = "Cash";
-    public  String category = "Other";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_transaction);
+        setContentView(R.layout.activity_value);
 
         hideStatusBars();
         getSupportActionBar().hide();
         findViews();
-
-        setCategoryText();
-
-
 
         //income and expense buttons
         Log.d(TAG, "onClick: type: "+type.getDisplayableType());
@@ -113,11 +104,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if(numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (!numberString.equals("0")){
@@ -140,11 +131,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -166,11 +157,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -192,11 +183,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -220,11 +211,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -246,11 +237,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -272,11 +263,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -297,11 +288,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -322,11 +313,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -347,11 +338,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             public void onClick(View v) {
 
                 if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
                 }
                 else{
                     if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         if (numberString.equals("0")){
@@ -379,10 +370,6 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         plusMinus = findViewById(R.id.plusminus);
         incomeLayout = findViewById(R.id.incomeConstraint);
         expenseLayout = findViewById(R.id.expenseConstraint);
-
-        merchantText = findViewById(R.id.merchant);
-        categoryText = findViewById(R.id.category);
-
 
         button0 = findViewById(R.id.button0);
         button1 = findViewById(R.id.button1);
@@ -419,50 +406,6 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         finish();
     }
 
-    public void selectMerchant(View view){
-        openDialog();
-    }
-
-    public void selectCategory(View view){
-        Intent intent = new Intent(this, CategoryActivity.class);
-        startActivityForResult(intent, 1);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (1) : {
-                if (resultCode == Activity.RESULT_OK) {
-                    category = data.getStringExtra("Category");
-                    setCategoryText();
-                }
-                break;
-            }
-        }
-    }
-
-    private void openDialog(){
-        MerchantDialog merchantDialog = new MerchantDialog();
-        merchantDialog.show(getSupportFragmentManager(), "Merchant");
-    }
-
-    public void setCategoryText(){
-        categoryText.setText(category);
-    }
-
-    @Override
-    public void applyTexts(String merchantName) {
-        if(!merchantName.equals("")){
-            this.merchantName = merchantName;
-            merchantText.setText(StringUtils.abbreviate(this.merchantName, 15));
-        }
-        else{
-            this.merchantName = "Cash";
-        }
-        Log.d(TAG, "applyTexts: merchantName: "+this.merchantName);
-    }
-
 
     public void AddTransaction(View view){
         double value;
@@ -474,12 +417,10 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         }
 
         if (!(value == 0)){
-            categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
-            MainActivity.UserInfo.addTransaction(subCategory, merchantName, value);
-            Log.d(TAG, "AddTransaction: Transactions: "+ MainActivity.UserInfo.transactions);
-
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("Value", String.valueOf(value));
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
         else{
             Toast.makeText(this, "Transaction cannot be $0", Toast.LENGTH_SHORT).show();

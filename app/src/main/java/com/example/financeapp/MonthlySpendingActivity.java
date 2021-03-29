@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -310,7 +312,7 @@ public class MonthlySpendingActivity extends AppCompatActivity {
 
         ArrayList<Transactions> reversed = new ArrayList<>(MainActivity.UserInfo.getTransactionsByCategory(category, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.month));
         Collections.reverse(reversed);
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(reversed, this);
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(reversed, "MonthlySpendingActivity",this);
         transactionsRecyclerView.setAdapter(transactionsAdapter);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
     }
@@ -351,8 +353,6 @@ public class MonthlySpendingActivity extends AppCompatActivity {
                 helpfulTipsTextView.setText("We've noticed that you've spent a lot on "+c+" this month, consider cutting back on your spending.");
             }
         }
-
-
 
     }
 
