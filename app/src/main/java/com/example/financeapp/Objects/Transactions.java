@@ -1,8 +1,10 @@
-package com.example.financeapp;
+package com.example.financeapp.Objects;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import com.example.financeapp.categoriesEnum;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -19,7 +21,7 @@ public class Transactions implements Parcelable {
     private String value;
     private String transactionId;
 
-    Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategories sc, String m, String v, String id){
+    public Transactions(String d, categoriesEnum.MainCategories t, categoriesEnum.SubCategories sc, String m, String v, String id){
         date = d;
         typeLabel = t.getDisplayableType();
         SubCategory = sc;

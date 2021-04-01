@@ -1,26 +1,25 @@
 package com.example.financeapp;
 
-import android.icu.text.MessagePattern;
+import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.financeapp.Fragments.HomeFragment;
+import com.example.financeapp.Objects.Transactions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
@@ -66,16 +65,18 @@ public class userInfo {
         Log.d(TAG, "addTransaction: Transactions: "+transactions);
     }
 
-    public void setUser(int userid){
-        transactions = new ArrayList<>();
-
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("Users");
-        Log.d(TAG, "setUser: in here");
-        // Read from the database
-
+    public void setUser(int userid, Context mContext){
         accountID = userid;
+        resetTransactions(); //deletes any stored transactions
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance(); //database connection
+        DatabaseReference reference = database.getReference("Users");
+
+        ((MainActivity)mContext).loadScreen();  //start load screen
+
+        Log.d(TAG, "setUser: in here");
+
+        //reads from a specific node in the database
         reference.child(String.valueOf(userid)).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
@@ -83,118 +84,83 @@ public class userInfo {
                     Log.e("firebase", "Error getting data", task.getException());
                 }
                 else {
-                    ArrayList<Object> node = (ArrayList<Object>) task.getResult().child("Transactions").getValue();
-                    username = (String) task.getResult().child("name").getValue();
-                    for (int i = 0; i < node.size(); i++){
-                        HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i);
-                        String date = transactionhashmap.get("date");
-                        String merchant = transactionhashmap.get("merchant");
-                        categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(transactionhashmap.get("subCategoryLabel"));
-                        categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
-                        String value = transactionhashmap.get("value");
-                        String id = transactionhashmap.get("id");
 
-                        transactions.add(new Transactions(date, type, subCategory, merchant, value, id));
+                    if (task.getResult().child("Transactions").getValue() != null){
+                        ArrayList<Object> node = (ArrayList<Object>) task.getResult().child("Transactions").getValue(); //stores all the transactions into an arraylist
+                        username = (String) task.getResult().child("name").getValue();
+
+                        //loops through all the transactions
+                        for (int i = 0; i < node.size(); i++){
+                            HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i); //breaks down each transaction into a hashmap
+
+                            //gets all the values from the hashmap and assigns them to variables
+                            String date = transactionhashmap.get("date");
+                            String merchant = transactionhashmap.get("merchant");
+                            categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(transactionhashmap.get("subCategoryLabel")); //converts the string into an enum using a hashmap defined in categoriesEnum
+                            categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
+                            String value = transactionhashmap.get("value");
+                            String id = transactionhashmap.get("id");
+
+                            transactions.add(new Transactions(date, type, subCategory, merchant, value, id)); //adds the transaction to the public ArrayList
+                        }
+
+                        accountBalance = Double.parseDouble((String) task.getResult().child("balance").getValue()); //updates the accountbalance to the stored balance in the database
                     }
-                    double b = Double.parseDouble((String) task.getResult().child("balance").getValue());
-                    Log.d(TAG, "onComplete: num: "+ b);
-                    setBalance(b);
-                    Log.d(TAG, "onComplete: transactions: "+transactions);
+                    signedin = true; //sets the public boolean signedin to true
 
-                    signedin = true;
+                    Log.d(TAG, "Username: "  + MainActivity.UserInfo.username);
+
+                    ((MainActivity)mContext).refreshActivity(); //refresh mainactivity with the updated info
+                    ((MainActivity)mContext).endLoadScreen();  //end loading screen
                 }
             }
         });
 
     }
 
+    public void resetTransactions(){
+        transactions = new ArrayList<>();
+    }
 
     public void removeTransaction(String id){
-        double value = 0;
+        //loops through the transactions ArrayList and compares each transactions id to the argument
+        Integer position = null;
         for (int i = 0; i < transactions.size(); i++){
-            if (transactions.get(i).getId().equals(id)){
-                value = Double.parseDouble(transactions.get(i).getValue());
-                transactions.remove(i);
+            if (transactions.get(i).getId().equals(id)){     //if the id matches
+                reverseBalance(Double.parseDouble(transactions.get(i).getValue()));   //reverses the balance
+                transactions.remove(i);  //deletes the transaction from the arraylist
+                position = i;
             }
         }
 
 
-        if(signedin = true){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
+        //if the user is signed in, we also have to delete it from firebase
+        if(signedin = true && position != null){
+            FirebaseDatabase database = FirebaseDatabase.getInstance(); //database connection
             DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
-            reference.child("Transactions").orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d(TAG, "onDataChange: "+snapshot.getKey());
-                    Log.d(TAG, "onDataChange: "+snapshot.getValue());
 
-                    ArrayList<Object> arrayList= (ArrayList<Object>) snapshot.getValue();
-                    for (int i = 0; i < arrayList.size(); i++){
-
-                        HashMap<String, String> transactionhashmap = (HashMap<String, String>) arrayList.get(i);
-
-                        if (transactionhashmap.get("id").equals(id)){
-                            reference.child("Transactions").child(String.valueOf(i)).removeValue();
-                        }
-                    }
-                    reference.child("Transactions").setValue(transactions);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
+            reference.child("Transactions").child(String.valueOf((int) position)).removeValue(); //removes the transaction from the database
+            reference.child("Transactions").setValue(transactions);  //reorders all the transactions in the database
 
         }
-
-
-        reverseBalance(value);
-
 
     }
 
     public void updateTransaction(Transactions newTransaction){
-        double value = 0;
+        Integer position = null;
         for (int i = 0; i < transactions.size(); i++){
             if (transactions.get(i).getId().equals(newTransaction.getId())){
                 transactions.set(i, newTransaction);
+                position = i;
             }
         }
-
 
        if(signedin = true){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
-            reference.child("Transactions").orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    Log.d(TAG, "onDataChange: "+snapshot.getKey());
-                    Log.d(TAG, "onDataChange: "+snapshot.getValue());
 
-                    ArrayList<Object> arrayList= (ArrayList<Object>) snapshot.getValue();
-                    for (int i = 0; i < arrayList.size(); i++){
-
-                        HashMap<String, String> transactionhashmap = (HashMap<String, String>) arrayList.get(i);
-
-                        if (transactionhashmap.get("id").equals(newTransaction.getId())){
-                            reference.child("Transactions").child(String.valueOf(i)).setValue(newTransaction);
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
+            reference.child("Transactions").child(String.valueOf((int) position)).setValue(newTransaction); //updates the transaction in the database
         }
-
-
-        reverseBalance(value);
-
-
     }
 
     public void updateBalance(double value){
@@ -215,7 +181,12 @@ public class userInfo {
 
     public void setBalance(double balance){
         accountBalance = balance;
-        //Log.d(TAG, "setBalance: " + String.valueOf(balance));
+
+        if(signedin == true){
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
+            reference.child("balance").setValue(String.valueOf(balance));
+        }
     }
 
 
@@ -287,6 +258,31 @@ public class userInfo {
 
             else{
                 if (t.getMainCategory().equals(category) && t.getType().equals(type)){
+                    runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+                }
+            }
+
+        }
+        return runningtotal;
+    }
+
+    public double getValueBySubCategory(String category, String type, String date) throws ParseException {
+        double runningtotal = 0;
+        for (Transactions t : transactions){
+
+            if(!(date.equals("----"))){
+
+                SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
+                DateFormat format2 = new SimpleDateFormat("MMM ''yy");
+                String tDate = format2.format(format1.parse(t.getDate()));
+
+                if (t.getSubCategoryLabel().equals(category) && t.getType().equals(type) && tDate.equals(date)){
+                    runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+                }
+            }
+
+            else{
+                if (t.getSubCategoryLabel().equals(category) && t.getType().equals(type)){
                     runningtotal += Math.abs(Double.parseDouble(t.getValue()));
                 }
             }

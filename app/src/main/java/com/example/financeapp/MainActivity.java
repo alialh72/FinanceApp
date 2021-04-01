@@ -4,40 +4,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.financeapp.Fragments.HomeFragment;
+import com.example.financeapp.Objects.gradientColors;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "";
     private ViewPager2 viewPager2;
@@ -48,6 +40,7 @@ public class MainActivity extends AppCompatActivity{
     private View decorView;
     private ConstraintLayout overlay;
     private DrawerLayout drawerLayout;
+    private TextView drawerUsername;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
@@ -63,9 +56,6 @@ public class MainActivity extends AppCompatActivity{
 
     public Context context = this;
 
-    public categoriesEnum.MainCategories MainCategories;
-    public categoriesEnum.SubCategories SubCategories; //categories enum
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,28 +65,14 @@ public class MainActivity extends AppCompatActivity{
 
         findViews();
 
-
-
         setupVars();
-
-
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference reference = database.getReference("Users");
-
-
 
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);
         NavigationUI.setupActionBarWithNavController(this, navController);
-
-
-
-        //createSampleTransactions();
     }
 
     private void hideStatusBar(){
-
         if (getSupportActionBar() != null) {
             getSupportActionBar().hide();
         }
@@ -118,35 +94,18 @@ public class MainActivity extends AppCompatActivity{
 
     private void findViews(){
         drawerLayout = findViewById(R.id.drawerLayout);
+        drawerUsername = findViewById(R.id.drawerUsername);
         bottomNav = findViewById(R.id.bottomNavigationView);
         overlay = findViewById(R.id.overlay);
     }
 
 
-    private void createSampleTransactions(){
-        UserInfo.updateBalance(32124.42); //Set starting balance
-
-        UserInfo.addTransaction(categoriesEnum.SubCategories.FOOD, "McDonald's", -35.50);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.MOVIES, "Movies", -14.95);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.INCOME, "Salary", 4200.00);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.UTILITIES, "BC Hydro", -250.75);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.PETFOOD, "PetSmart", -55.50);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.GYM, "Planet Fitness", -40.52);
-        UserInfo.addTransaction(categoriesEnum.SubCategories.INCOME, "Stimmy Check", 1400);
-    }
-
+    //Floating action button, when clicked it opens up the addtransactions activity
     public void addTransaction(View view){
         Intent intent = new Intent(this, AddTransactionActivity.class);
         startActivity(intent);
     }
 
-    public void tester(View view){
-        MainActivity.UserInfo.addTransaction(categoriesEnum.SubCategories.PLANE, "Hawaii", -205.50);
-    }
-
-    public void tester2(View view){
-        UserInfo.removeTransaction("748382");
-    }
 
     public void setupVars(){
         //setup colors list
@@ -158,6 +117,11 @@ public class MainActivity extends AppCompatActivity{
             colors.add(Color.parseColor("#D195FD"));
             colors.add(Color.parseColor("#4777FF"));
             colors.add(Color.parseColor("#FFB575"));
+            colors.add(Color.parseColor("#FE89E2"));
+            colors.add(Color.parseColor("#3594E8"));
+            colors.add(Color.parseColor("#47FFC2"));
+            colors.add(Color.parseColor("#FFDA83"));
+            colors.add(Color.parseColor("#8005c8"));
         }
 
 
@@ -171,72 +135,84 @@ public class MainActivity extends AppCompatActivity{
         DateFormat dateFormat2 = new SimpleDateFormat("MMM ''yy");
         monthYear = dateFormat2.format(date);
 
-        gradients.add(new gradientColors("#FEC180", "#FF8993"));
-        gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
-        gradients.add(new gradientColors("#A254F2", "#8005c8"));
-        gradients.add(new gradientColors("#FFF175", "#FFDA83"));
-        gradients.add(new gradientColors("#4777FF", "#3594E8"));
-        gradients.add(new gradientColors("#D195FD", "#FE89E2"));
-        gradients.add(new gradientColors("#55D8FE", "#47FFC2"));
+        //gradients
+        if(gradients.size() == 0){
+            //put all the hexes into a list
+            gradients.add(new gradientColors("#FEC180", "#FF8993"));
+            gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
+            gradients.add(new gradientColors("#A254F2", "#8005c8"));
+            gradients.add(new gradientColors("#FFF175", "#FFDA83"));
+            gradients.add(new gradientColors("#4777FF", "#3594E8"));
+            gradients.add(new gradientColors("#D195FD", "#FE89E2"));
+            gradients.add(new gradientColors("#55D8FE", "#47FFC2"));
 
-        gradients.add(new gradientColors("#FEC180", "#FF8993"));
-        gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
-        gradients.add(new gradientColors("#A254F2", "#8005c8"));
-        gradients.add(new gradientColors("#FFF175", "#FFDA83"));
-        gradients.add(new gradientColors("#4777FF", "#3594E8"));
-        gradients.add(new gradientColors("#D195FD", "#FE89E2"));
+            gradients.add(new gradientColors("#FEC180", "#FF8993"));
+            gradients.add(new gradientColors("#D0FFAE", "#34EBE9"));
+            gradients.add(new gradientColors("#A254F2", "#8005c8"));
+            gradients.add(new gradientColors("#FFF175", "#FFDA83"));
+            gradients.add(new gradientColors("#4777FF", "#3594E8"));
+            gradients.add(new gradientColors("#D195FD", "#FE89E2"));
 
-        int i = 0;
-        for(categoriesEnum.MainCategories mainCategories : categoriesEnum.MainCategories.values()){
-            gradientsCategories.put(mainCategories.getDisplayableType(), gradients.get(i));
-            i++;
+            //assign a gradient to a MainCategory
+            int i = 0;
+            for(categoriesEnum.MainCategories mainCategories : categoriesEnum.MainCategories.values()){
+                gradientsCategories.put(mainCategories.getDisplayableType(), gradients.get(i));
+                i++;
+            }
         }
 
+
+        setDrawerUsername();
     }
 
-    public void marchSpendingClicked(View view){
-
+    //Monthly Spending Page Clicked
+    public void monthlySpendingClicked(View view){
         if (UserInfo.transactions.size()>0){
-            Intent intent = new Intent(this, MonthlySpendingActivity.class);
+            Intent intent = new Intent(this, SpendingOverviewActivity.class);
             this.startActivity(intent);
         }
         else{
             Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
         }
-
-
     }
 
+    //Starts the loading animation
     public void loadScreen(){
         overlay.setVisibility(View.VISIBLE);
-        new CountDownTimer(2000, 1000) {
-            @Override
-            public void onTick(long millisUntilFinished) {
-                // do something after 1s
-            }
-
-            @Override
-            public void onFinish() {
-                overlay.setVisibility(View.GONE);
-            }
-
-        }.start();
     }
 
+    //ends the loading animation
+    public void endLoadScreen(){
+        overlay.setVisibility(View.GONE);
+    }
+
+    //calls a
+    public void setUserInfo(int selectedUserId){
+        MainActivity.UserInfo.setUser(selectedUserId, this);
+    }
+
+    public void refreshActivity(){
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(getIntent());
+        overridePendingTransition(0, 0);
+    }
+
+
+    //HomeFragment --> When transactions container is clicked
     public void clickedTransactionsContainer(View view){
-        //transactions
         bottomNav.setSelectedItemId(R.id.transactionFragment);
-
     }
 
-    public void ClickMenu(View view){
-        drawerLayout.openDrawer(GravityCompat.START);
-    }
+    //Hamburger menu icon
+    public void ClickMenu(View view){ drawerLayout.openDrawer(GravityCompat.START); }
     
     public void OverlayClick(View view){
         Log.d(TAG, "OverlayClick: nothing");
     }
 
+    //DrawerLayout
+    //Whenever a textview is clicked, it starts the respective fragment/activity
     public void NavEducation(View view){
         bottomNav.setSelectedItemId(R.id.educationFragment);
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -254,12 +230,18 @@ public class MainActivity extends AppCompatActivity{
 
     public void NavSpendings(View view){
         if (UserInfo.transactions.size()>0){
-            Intent intent = new Intent(this, MonthlySpendingActivity.class);
+            Intent intent = new Intent(this, SpendingOverviewActivity.class);
             startActivity(intent);
         }
         else{
             Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    //Update the username in the drawer
+    public void setDrawerUsername(){
+        Log.d(TAG, "setDrawerUsername: Drawer Username: "  + MainActivity.UserInfo.username);
+        drawerUsername.setText(MainActivity.UserInfo.username);
     }
 
 

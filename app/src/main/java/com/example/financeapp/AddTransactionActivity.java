@@ -13,6 +13,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.financeapp.Dialog.MerchantDialog;
+
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -27,13 +29,15 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
     private TextView merchantText, categoryText;
 
-    private Button incomeButton, expenseButton;
-    private ConstraintLayout incomeLayout, expenseLayout;
+    private ConstraintLayout incomeLayout, expenseLayout, savingsLayout;
 
     private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button0, buttonDecimal;
     private ImageButton buttonBackspace;
 
-    private categoriesEnum.MainCategories type = categoriesEnum.MainCategories.EXPENSE;
+    private categoriesEnum.SubCategories type = categoriesEnum.SubCategories.EXPENSE;
+
+    private boolean lockedcategory = false;
+
     private String numberString = "";
 
     private String merchantName = "Cash";
@@ -52,17 +56,21 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
 
 
-        //income and expense buttons
+        //income, savings and expense buttons
         Log.d(TAG, "onClick: type: "+type.getDisplayableType());
         incomeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == categoriesEnum.MainCategories.EXPENSE){
-                    type = categoriesEnum.MainCategories.INCOME;
+                if (type != categoriesEnum.SubCategories.INCOME){
+                    type = categoriesEnum.SubCategories.INCOME;
                     incomeLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
                     expenseLayout.setBackgroundResource(R.drawable.button_outlines);
+                    savingsLayout.setBackgroundResource(R.drawable.button_outlines);
                     plusMinus.setText("+");
                     Log.d(TAG, "onClick: type: "+type.getDisplayableType());
+                    if(lockedcategory == true){
+                        unlockCategory();
+                    }
                 }
             }
         });
@@ -70,12 +78,31 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         expenseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type == categoriesEnum.MainCategories.INCOME){
-                    type = categoriesEnum.MainCategories.EXPENSE;
+                if (type != categoriesEnum.SubCategories.EXPENSE){
+                    type = categoriesEnum.SubCategories.EXPENSE;
                     expenseLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
                     incomeLayout.setBackgroundResource(R.drawable.button_outlines);
+                    savingsLayout.setBackgroundResource(R.drawable.button_outlines);
                     plusMinus.setText("-");
                     Log.d(TAG, "onClick: type: "+type.getDisplayableType());
+                    if(lockedcategory == true){
+                        unlockCategory();
+                    }
+                }
+            }
+        });
+
+        savingsLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (type != categoriesEnum.SubCategories.SAVINGS){
+                    type = categoriesEnum.SubCategories.SAVINGS;
+                    savingsLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
+                    incomeLayout.setBackgroundResource(R.drawable.button_outlines);
+                    expenseLayout.setBackgroundResource(R.drawable.button_outlines);
+                    plusMinus.setText("~");
+                    Log.d(TAG, "onClick: type: "+type.getDisplayableType());
+                    lockCategory();
                 }
             }
         });
@@ -379,6 +406,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         plusMinus = findViewById(R.id.plusminus);
         incomeLayout = findViewById(R.id.incomeConstraint);
         expenseLayout = findViewById(R.id.expenseConstraint);
+        savingsLayout = findViewById(R.id.savingsConstraint);
 
         merchantText = findViewById(R.id.merchant);
         categoryText = findViewById(R.id.category);
@@ -424,8 +452,25 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
     }
 
     public void selectCategory(View view){
-        Intent intent = new Intent(this, CategoryActivity.class);
-        startActivityForResult(intent, 1);
+        if(lockedcategory == false){
+            Intent intent = new Intent(this, CategoryActivity.class);
+            startActivityForResult(intent, 1);
+        }
+        else{
+            Toast.makeText(this, "Type 'Savings' must be category 'Savings'", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void lockCategory(){
+        category = "Savings";
+        setCategoryText();
+        lockedcategory = true;
+    }
+
+    private void unlockCategory(){
+        category = "Other";
+        setCategoryText();
+        lockedcategory = false;
     }
 
     @Override
@@ -466,7 +511,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
     public void AddTransaction(View view){
         double value;
-        if(type.getDisplayableType() == "Income"){
+        if(type.getLabel() == "Income"){
             value = Double.parseDouble(numberString);
         }
         else{

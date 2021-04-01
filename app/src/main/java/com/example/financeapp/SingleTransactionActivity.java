@@ -14,17 +14,16 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.financeapp.Fragments.HomeFragment;
+import com.example.financeapp.Dialog.MerchantDialog;
+import com.example.financeapp.Objects.Transactions;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Currency;
 import java.util.Date;
-import java.util.Locale;
 
 public class SingleTransactionActivity extends AppCompatActivity implements MerchantDialog.MerchantDialogListener{
 

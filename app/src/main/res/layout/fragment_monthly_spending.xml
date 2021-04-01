@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F4F7"
-    tools:context=".MonthlySpendingActivity">
+    tools:context=".SpendingOverviewActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -15,27 +15,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearconstraint"
-                android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:background="@null"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <include
-                    layout="@layout/secondarytopbar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <ImageView
                 android:id="@+id/arrowback"
                 android:layout_width="40dp"
@@ -44,11 +23,12 @@
                 android:gravity="center"
                 android:onClick="ArrowBack"
                 android:rotation="180"
+                android:layout_marginTop="30dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 app:layout_constraintBottom_toTopOf="@+id/barchartLayout"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearconstraint"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="#6d6e6f" />
 
             <ImageView
@@ -57,12 +37,13 @@
                 android:layout_height="20dp"
                 android:adjustViewBounds="true"
                 android:gravity="center"
+                android:layout_marginTop="30dp"
                 android:onClick="ArrowForward"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 app:layout_constraintBottom_toTopOf="@+id/barchartLayout"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearconstraint"
+                app:layout_constraintTop_toTopOf="parent"
                 app:tint="#6d6e6f" />
 
 
@@ -70,15 +51,15 @@
                 android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="30dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearconstraint">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.github.mikephil.charting.charts.PieChart
                     android:id="@+id/monthlyspendingpiechart"
-                    android:layout_width="350dp"
-                    android:layout_height="300dp"
+                    android:layout_width="320dp"
+                    android:layout_height="270dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +68,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="160dp"
                     android:layout_height="100dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -99,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:text="Category"
                         android:textAlignment="center"
-                        android:textSize="20dp"
+                        android:textSize="18dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/money"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +94,7 @@
                         android:layout_marginTop="5dp"
                         android:text="CA$421.52"
                         android:textColor="@color/black"
-                        android:textSize="25dp"
+                        android:textSize="23dp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toTopOf="@id/percentage"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +107,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5dp"
                         android:text="32% of March Spending"
-                        android:textSize="15dp"
+                        android:textSize="13dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -145,21 +126,7 @@
 
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
-
-
-                <com.github.mikephil.charting.charts.BarChart
-                    android:id="@+id/barchart"
-                    android:layout_width="350dp"
-                    android:layout_height="180dp"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout"/>
 
 
             <androidx.constraintlayout.widget.ConstraintLayout

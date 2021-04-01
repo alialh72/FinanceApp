@@ -244,11 +244,14 @@
 
 
         <Button
-            android:layout_width="250dp"
-            android:layout_height="50dp"
+            android:layout_width="265dp"
+            android:layout_height="55dp"
             android:layout_marginTop="40dp"
             android:layout_marginBottom="10dp"
             android:text="Delete Transaction"
+            android:padding="10dp"
+            android:textStyle="bold"
+            android:textSize="14dp"
             android:onClick="deleteTransaction"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

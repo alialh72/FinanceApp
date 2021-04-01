@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -13,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
-public class MerchantDialog extends AppCompatDialogFragment {
-    private EditText editTextMerchant;
-    private MerchantDialogListener listener;
+import com.example.financeapp.R;
+
+public class BalanceDialog extends AppCompatDialogFragment {
+    private EditText editTextBalance;
+    private BalanceDialogListener listener;
 
     @NonNull
     @Override
@@ -23,10 +25,10 @@ public class MerchantDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.merchant_dialog, null);
+        View view = inflater.inflate(R.layout.dialog_layout, null);
 
         builder.setView(view)
-                .setTitle("Merchant")
+                .setTitle("Set Balance")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -36,12 +38,13 @@ public class MerchantDialog extends AppCompatDialogFragment {
                 .setPositiveButton("Done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String merchantName = editTextMerchant.getText().toString();
-                        listener.applyTexts(merchantName);
+                        double balance = Double.parseDouble(editTextBalance.getText().toString());
+                        listener.applyBalance(balance);
                     }
                 });
 
-        editTextMerchant = view.findViewById(R.id.merchantEditText);
+        editTextBalance = view.findViewById(R.id.EditText);
+        editTextBalance.setHint("CA$...");
 
         return builder.create();
     }
@@ -51,14 +54,14 @@ public class MerchantDialog extends AppCompatDialogFragment {
         super.onAttach(context);
 
         try {
-            listener = (MerchantDialogListener) context;
+            listener = (BalanceDialogListener) context;
         } catch (ClassCastException e) {
             throw  new ClassCastException(context.toString() +
-                    "must implement MerchantDialogListener");
+                    "must implement BalanceDialogListener");
         }
     }
 
-    public interface MerchantDialogListener{
-        void applyTexts(String merchantName);
+    public interface BalanceDialogListener{
+        void applyBalance(double balance);
     }
 }

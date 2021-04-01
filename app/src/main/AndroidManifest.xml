@@ -13,7 +13,7 @@
         <activity android:name=".SingleTransactionActivity" />
         <activity android:name=".CategoryActivity" />
         <activity android:name=".AddTransactionActivity" />
-        <activity android:name=".MonthlySpendingActivity" />
+        <activity android:name=".SpendingOverviewActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

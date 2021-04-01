@@ -64,6 +64,8 @@ public final class categoriesEnum {
         CLOTHING("Clothing", MainCategories.SHOPPING),
         TOYS("Toys", MainCategories.SHOPPING),
 
+        SAVINGS("Savings", MainCategories.EXPENSE),
+
 
         UTILITIES("Utilities", MainCategories.BILLS),
         PHONE("Home Phone", MainCategories.BILLS),

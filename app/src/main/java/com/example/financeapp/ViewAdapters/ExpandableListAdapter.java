@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.ViewAdapters;
 
 import android.content.Context;
 import android.graphics.Typeface;
@@ -14,7 +14,11 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import java.util.ArrayList;
+import com.example.financeapp.CategoryActivity;
+import com.example.financeapp.MainActivity;
+import com.example.financeapp.Objects.gradientColors;
+import com.example.financeapp.R;
+
 import java.util.HashMap;
 import java.util.List;
 

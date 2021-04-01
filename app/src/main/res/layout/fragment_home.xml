@@ -44,150 +44,18 @@
                 android:layout_height="115dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/nooutline"
-                android:onClick="tester2"
                 android:paddingHorizontal="18dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearconstraint">
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="Account Balance:"
-                    android:textColor="@color/black"
-                    app:layout_constraintBottom_toTopOf="@+id/overconstraint"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
-                <TextView
-                    android:id="@+id/accountBalanceText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:text="CA$ 32,421.42"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    app:layout_constraintBottom_toTopOf="@+id/overconstraint"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <include
+                        layout="@layout/account_balance_layout"
 
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/overconstraint"
-                    android:layout_width="320dp"
-                    android:layout_height="wrap_content"
-
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent">
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout2"
-                        android:layout_width="150dp"
-                        android:layout_height="70dp"
-
-                        android:elevation="12dp"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="parent">
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="30dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:adjustViewBounds="true"
-                            android:gravity="center"
-                            android:rotation="135"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_rotate_arrow"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/maingreen" />
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="14dp"
-                            android:text="Net Income"
-                            android:textSize="12dp"
-                            app:layout_constraintStart_toEndOf="@+id/imageView"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/monthlyIncomeText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="14dp"
-                            android:text="CA$1921.85"
-                            android:textColor="@color/black"
-                            android:textSize="17dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/constraintLayout2"
-                        android:layout_width="150dp"
-                        android:layout_height="70dp"
-
-                        android:elevation="12dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent">
-
-
-                        <ImageView
-                            android:id="@+id/imageView"
-                            android:layout_width="30dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:adjustViewBounds="true"
-                            android:gravity="center"
-                            android:rotation="315"
-                            android:scaleType="centerCrop"
-                            android:src="@drawable/ic_rotate_arrow"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:tint="@color/red" />
-
-                        <TextView
-                            android:id="@+id/textView2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginTop="14dp"
-                            android:text="Expenditure"
-                            android:textSize="12dp"
-                            app:layout_constraintStart_toEndOf="@+id/imageView"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/monthlySpendingText"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginBottom="14dp"
-                            android:text="CA$1921.85"
-                            android:textColor="@color/black"
-                            android:textSize="17dp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/imageView" />
-
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -207,11 +75,11 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/constraintLayout"
                 android:layout_width="356dp"
-                android:layout_height="450dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="40dp"
                 android:background="@drawable/nooutline"
-                android:onClick="marchSpendingClicked"
+                android:onClick="monthlySpendingClicked"
                 android:padding="20dp"
                 app:layout_constraintBottom_toTopOf="@id/accountbreakdown"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -226,15 +94,16 @@
                     android:text="Start adding transactions to track your spending"
                     android:visibility="gone"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginTop="30dp"
+                    app:layout_constraintTop_toBottomOf="@id/youvespent" />
 
                 <TextView
                     android:id="@+id/monthSpendingText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Your March Spending:"
+                    android:text="Your Monthly Spending:"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"

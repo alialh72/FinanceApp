@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Objects;
 
 import android.graphics.Color;
 
@@ -6,7 +6,7 @@ public class gradientColors {
 
     private int hex1, hex2;
 
-    gradientColors(String hex1, String hex2){
+    public gradientColors(String hex1, String hex2){
         this.hex1 = Color.parseColor(hex1);
         this.hex2 = Color.parseColor(hex2);
     }

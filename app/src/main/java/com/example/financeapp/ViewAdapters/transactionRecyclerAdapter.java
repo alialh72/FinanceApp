@@ -1,6 +1,5 @@
-package com.example.financeapp.RecyclerViews;
+package com.example.financeapp.ViewAdapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
@@ -16,14 +15,11 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.financeapp.AddTransactionActivity;
-import com.example.financeapp.Fragments.HomeFragment;
 import com.example.financeapp.MainActivity;
-import com.example.financeapp.MonthlySpendingActivity;
 import com.example.financeapp.R;
 import com.example.financeapp.SingleTransactionActivity;
-import com.example.financeapp.Transactions;
-import com.example.financeapp.gradientColors;
+import com.example.financeapp.Objects.Transactions;
+import com.example.financeapp.Objects.gradientColors;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;

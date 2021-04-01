@@ -1,7 +1,6 @@
 package com.example.financeapp.Fragments;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,7 +14,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -23,17 +21,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.financeapp.RecyclerViews.transactionRecyclerAdapter;
+import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
 import com.example.financeapp.Slider.Item;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.R;
 import com.example.financeapp.Slider.SliderAdapter;
 import com.example.financeapp.Slider.SliderItem1;
-import com.example.financeapp.Transactions;
+import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.categoriesEnum;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -44,23 +41,17 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import org.w3c.dom.Text;
-
-import java.lang.reflect.Array;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class HomeFragment extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
@@ -89,41 +80,13 @@ public class HomeFragment extends Fragment{
 
     private PieChart spendingPieChart;
 
-    public static Context context;
-
-
+    public Context context;
 
 
     public HomeFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,40 +123,17 @@ public class HomeFragment extends Fragment{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d(TAG, "onMenuItemClick: clicked: "+ item);
+                        int selectedUserId = Integer.parseInt((String) item.getTitle());
 
-                            MainActivity.UserInfo.setUser(Integer.parseInt((String) item.getTitle()));
-                            ((MainActivity)getActivity()).loadScreen();
-                            new CountDownTimer(2000, 1000) {
-                                @Override
-                                public void onTick(long millisUntilFinished) {
-                                    // do something after 1s
-                                }
-
-                                @Override
-                                public void onFinish() {
-                                    refreshFragment();
-                                }
-
-                            }.start();
+                        MainActivity.UserInfo.setUser(selectedUserId, getContext());
 
                         return false;
                     }
                 });
                 popupMenu.show();
-                /*
-                */
-
 
             }
         });
-
-        /*hamburger.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MainActivity.UserInfo.removeTransaction(MainActivity.UserInfo.transactions.size()-1);
-                refreshFragment();
-            }
-        });*/
 
 
     }
@@ -241,6 +181,7 @@ public class HomeFragment extends Fragment{
 
         if(MainActivity.UserInfo.transactions.size() == 0){
             startSpendingPie.setVisibility(View.VISIBLE);
+            spendingPieChart.setVisibility(View.GONE);
             transactionInfo.setText("Start adding transactions to track your spending");
         }
         else{
@@ -391,25 +332,25 @@ public class HomeFragment extends Fragment{
     }
 
     private ArrayList<Transactions> getRecentTransactions(){
-        ArrayList<Transactions> Localtransactions = new ArrayList<>();
+        ArrayList<Transactions> reversed = new ArrayList<>(MainActivity.UserInfo.transactions);
+        ArrayList<Transactions> recentTransactions = new ArrayList<>();
 
-        if(MainActivity.UserInfo.transactions.size() > 4){
-            Log.d(TAG, "getRecentTransactions: size is greater than 4");
-            for (int pos = MainActivity.UserInfo.transactions.size()-1; pos>MainActivity.UserInfo.transactions.size()-5;pos--){
+        Collections.reverse(reversed);
+
+        if(MainActivity.UserInfo.transactions.size() < 4){
+            Log.d(TAG, "getRecentTransactions: size is less than 4");
+            for (int pos = 0; pos<MainActivity.UserInfo.transactions.size()-1;pos++){
                 Log.d(TAG, "getRecentTransactions: pos: "+pos);
-                Localtransactions.add(MainActivity.UserInfo.transactions.get(pos));
+                recentTransactions.add(reversed.get(pos));
             }
         }
         else{
-            int rev = MainActivity.UserInfo.transactions.size()-1;
-            for (int pos = 0; pos < MainActivity.UserInfo.transactions.size(); pos++){
-                Log.d(TAG, "getRecentTransactions: pos: "+pos);
-                Localtransactions.add(MainActivity.UserInfo.transactions.get(rev));
-                rev--;
+            for(int pos = 0; pos < 4; pos++){
+                recentTransactions.add(reversed.get(pos));
             }
         }
 
-        return Localtransactions;
+        return recentTransactions;
     }
 
     public void refreshFragment(){
