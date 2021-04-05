@@ -19,6 +19,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
@@ -109,6 +110,7 @@ public class userInfo {
                     signedin = true; //sets the public boolean signedin to true
 
                     Log.d(TAG, "Username: "  + MainActivity.UserInfo.username);
+
 
                     ((MainActivity)mContext).refreshActivity(); //refresh mainactivity with the updated info
                     ((MainActivity)mContext).endLoadScreen();  //end loading screen
@@ -202,29 +204,23 @@ public class userInfo {
             if (t.getType().contains("Expense") && tDate.equals(date)){
                 runningtotal += Math.abs(Double.parseDouble(t.getValue()));
             }
-            else{ }
         }
 
         return runningtotal;
     }
 
-    public double getTotalSpending(String date) throws ParseException {
+    public double getTotalSpending() throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
-            SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
-            DateFormat format2 = new SimpleDateFormat("MMM ''yy");
-            String tDate = format2.format(format1.parse(t.getDate()));
-
-            if (t.getType().contains("Expense") && tDate.equals(date)){
+            if (t.getType().contains("Expense")){
                 runningtotal += Math.abs(Double.parseDouble(t.getValue()));
             }
-            else{ }
         }
 
         return runningtotal;
     }
 
-    public double getTotalIncome(String date) throws ParseException {
+    public double getMonthlyIncome(String date) throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
             SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
@@ -266,6 +262,7 @@ public class userInfo {
         return runningtotal;
     }
 
+
     public double getValueBySubCategory(String category, String type, String date) throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
@@ -297,7 +294,7 @@ public class userInfo {
         for (Transactions t : transactions){
             SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
             DateFormat format2 = new SimpleDateFormat("MMM ''yy");
-            String tDate = format2.format(format1.parse(t.getDate()));
+            String tDate = format2.format(format1.parse(t.getDate()));   //converts the transaction date to the required format
 
             if (Double.parseDouble(t.getValue()) < 0 && tDate.equals(date)){
                 spendings.add(t);
@@ -315,7 +312,7 @@ public class userInfo {
             if(!(month.equals("----"))){
                 SimpleDateFormat format1=new SimpleDateFormat("dd-MM-yyyy");
                 DateFormat format2 = new SimpleDateFormat("MMMM");
-                String monthName = format2.format(format1.parse(t.getDate()));
+                String monthName = format2.format(format1.parse(t.getDate()));   //converts the transaction date to the required format
 
                 if (t.getMainCategory().equals(category) && t.getType().equals(type) && monthName.equals(month)){
                     filteredlist.add(t);
@@ -334,6 +331,17 @@ public class userInfo {
         }
 
         return filteredlist;
+    }
+
+    public Double getCashFlowByDay(String date) throws ParseException {
+        double runningTotal = 0;
+        for (Transactions t : transactions){
+            if (t.getDate().equals(date)){     //checks if the date matches
+                runningTotal += Double.parseDouble(t.getValue());
+            }
+        }
+
+        return runningTotal;
     }
 
 

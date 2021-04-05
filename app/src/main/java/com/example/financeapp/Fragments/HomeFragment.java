@@ -44,6 +44,7 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
@@ -162,8 +163,8 @@ public class HomeFragment extends Fragment{
         format.setCurrency(Currency.getInstance("CAD"));
 
         accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
-        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear)));
-        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getTotalIncome(MainActivity.monthYear)));
+        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear)));
+        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear)));
 
 
 
@@ -177,7 +178,7 @@ public class HomeFragment extends Fragment{
 
 
         //you've spending
-        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear)) +" so far");
+        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear)) +" so far");
 
         if(MainActivity.UserInfo.transactions.size() == 0){
             startSpendingPie.setVisibility(View.VISIBLE);
@@ -332,31 +333,33 @@ public class HomeFragment extends Fragment{
     }
 
     private ArrayList<Transactions> getRecentTransactions(){
-        ArrayList<Transactions> reversed = new ArrayList<>(MainActivity.UserInfo.transactions);
+        ArrayList<Transactions> dupSorted = new ArrayList<>(MainActivity.UserInfo.transactions);
+        Collections.sort(dupSorted, (c1, c2) -> {
+            try {
+                return new SimpleDateFormat("dd-MM-yyyy").parse(c2.getDate()).compareTo(new SimpleDateFormat("dd-MM-yyyy").parse(c1.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+
+
         ArrayList<Transactions> recentTransactions = new ArrayList<>();
-
-        Collections.reverse(reversed);
-
-        if(MainActivity.UserInfo.transactions.size() < 4){
+        if(dupSorted.size() < 4){
             Log.d(TAG, "getRecentTransactions: size is less than 4");
-            for (int pos = 0; pos<MainActivity.UserInfo.transactions.size()-1;pos++){
+            for (int pos = 0; pos<dupSorted.size()-1;pos++){
                 Log.d(TAG, "getRecentTransactions: pos: "+pos);
-                recentTransactions.add(reversed.get(pos));
+                recentTransactions.add(dupSorted.get(pos));
             }
         }
         else{
             for(int pos = 0; pos < 4; pos++){
-                recentTransactions.add(reversed.get(pos));
+                recentTransactions.add(dupSorted.get(pos));
             }
         }
 
         return recentTransactions;
     }
-
-    public void refreshFragment(){
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
-    }
-
 
 
 }

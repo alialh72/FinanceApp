@@ -186,7 +186,7 @@ public class MainActivity extends AppCompatActivity {
         overlay.setVisibility(View.GONE);
     }
 
-    //calls a
+
     public void setUserInfo(int selectedUserId){
         MainActivity.UserInfo.setUser(selectedUserId, this);
     }

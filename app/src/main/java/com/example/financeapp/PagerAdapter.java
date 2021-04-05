@@ -1,12 +1,8 @@
 package com.example.financeapp;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 public class PagerAdapter extends FragmentStateAdapter {
@@ -30,7 +26,7 @@ public class PagerAdapter extends FragmentStateAdapter {
                 fragment = new monthlySpendingFragment();
                 break;
             case 1:
-                fragment =  new spendingOvertimeFragment();
+                fragment =  new spendingStatisticsFragment();
                 break;
 
         }

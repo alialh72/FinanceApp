@@ -80,10 +80,13 @@ public class SpendingOverviewActivity extends AppCompatActivity {
         //findviews
         findViews();
 
+
+
         PagerAdapter pagerAdapter = new PagerAdapter(this,
                 tabLayout.getTabCount());
 
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setUserInputEnabled(false);
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -102,7 +105,7 @@ public class SpendingOverviewActivity extends AppCompatActivity {
 
             }
         });
-
+        
 
 
         initText();
@@ -118,6 +121,7 @@ public class SpendingOverviewActivity extends AppCompatActivity {
 
     private void initText(){
         pageName.setText("Spending Overview");
+        tabLayout.getTabAt(0).setText(MainActivity.month + " Spending");
     }
 
     public void GoBack(View view){

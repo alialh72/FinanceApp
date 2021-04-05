@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="320dp"
     android:foreground="?attr/selectableItemBackgroundBorderless"
+    android:id="@+id/parentLayout"
     android:layout_height="75dp">
 
 

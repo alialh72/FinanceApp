@@ -228,6 +228,7 @@ public class SingleTransactionActivity extends AppCompatActivity implements Merc
                 mDateSetListener,
                 year,month,day);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dialog.show();
 
 

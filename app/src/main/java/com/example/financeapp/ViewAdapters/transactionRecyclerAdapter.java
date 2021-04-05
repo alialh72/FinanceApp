@@ -23,12 +23,13 @@ import com.example.financeapp.Objects.gradientColors;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 
 public class transactionRecyclerAdapter extends RecyclerView.Adapter<transactionRecyclerAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
-    private ArrayList<Transactions> transactions = new ArrayList<>();
+    private ArrayList<Transactions> transactions;
     private Context mContext;
     private String className;
 
@@ -36,9 +37,8 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         this.transactions = transactions;
         this.className = className;
 
-        Log.d(TAG, "transactionRecycler: Localtransactions: "+transactions);
-
         mContext = context;
+        Log.d(TAG, "transactionRecyclerAdapter: TransactionAdapter: "+transactions.size());
 
     }
 
@@ -67,13 +67,13 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.greenicon));
         }
 
-
+        //set value
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(2);
         format.setCurrency(Currency.getInstance("CAD"));
         holder.valueTextView.setText(format.format(Double.parseDouble(transactions.get(position).getValue())));
 
-
+        //set date
         if(transactions.get(position).getDate().equals(MainActivity.date)){
             holder.dateTextView.setText("Today");
         }
@@ -81,6 +81,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             holder.dateTextView.setText(transactions.get(position).getDate());
         }
 
+        //set background color
         gradientColors gradient = MainActivity.gradientsCategories.get(transactions.get(position).getSubCategory().getDisplayableType());
 
         GradientDrawable gd = new GradientDrawable(
@@ -88,8 +89,10 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
                 new int[] {gradient.getColor1(),gradient.getColor2()});
         gd.setCornerRadius(25f);
 
+        //set icon image
         holder.iconLayout.setBackgroundDrawable(gd);
 
+        //determines if there should be a line underneath the item or not
         if (position == transactions.size()-1){
             holder.backgroundLayout.setBackgroundResource(R.drawable.outlinetop);
         }
@@ -98,16 +101,24 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
         }
 
 
-        //set image
+        //set icon image
         int resID = mContext.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
         holder.iconImg.setImageResource(resID);
+
+
+        //make wider if transactionFragment
+        if(className.equals("transactionFragment")){
+            int width = (int) mContext.getResources().getDimension(R.dimen.transactionwidth);
+            holder.parentLayout.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
+        }
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClick: clicked on: "+transactions.get(position).getSubCategoryLabel()+ ", "+transactions.get(position).getValue());
+                Log.d(TAG, "onClick: clicked on: "+position+ ", "+transactions.get(position).getValue());
+                Log.d(TAG, "onClick: transactions.size: "+transactions.size());
 
                 Intent intent = new Intent(mContext, SingleTransactionActivity.class);
                 intent.putExtra("TRANSACTION", transactions.get(position));
@@ -129,7 +140,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
 
         TextView merchantTextView, categoryTextView, valueTextView, dateTextView;
         ImageView iconImg;
-        ConstraintLayout iconLayout, backgroundLayout;
+        ConstraintLayout iconLayout, backgroundLayout, parentLayout;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -141,6 +152,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             iconImg = itemView.findViewById(R.id.icon);
             iconLayout = itemView.findViewById(R.id.iconconstraint);
             backgroundLayout = itemView.findViewById(R.id.background);
+            parentLayout = itemView.findViewById(R.id.parentLayout);
         }
     }
 

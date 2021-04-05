@@ -33,9 +33,12 @@ import com.google.android.material.tabs.TabLayout;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Currency;
+import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
@@ -45,7 +48,7 @@ public class monthlySpendingFragment extends Fragment {
 
     private TextView pieChartCenterText, pieChartValue, pieChartPercentage;
     private TextView transactionCategoryText;
-    private TextView helpfulTipsTextView;
+    private TextView insightsTextView, insightsTextView2, insightsTextView3;
 
     private RecyclerView transactionsRecyclerView;
 
@@ -54,6 +57,8 @@ public class monthlySpendingFragment extends Fragment {
     private ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
 
     private int highlightedPosition = 0;
+
+    private ArrayList<String> insightsArray = new ArrayList<>();
 
 
 
@@ -75,7 +80,7 @@ public class monthlySpendingFragment extends Fragment {
         setupPieChart();
         try {
             loadPieChartData();
-            helpfulTips();
+            insights();
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -124,7 +129,7 @@ public class monthlySpendingFragment extends Fragment {
         pieChartPercentage = getView().findViewById(R.id.percentage);
         transactionCategoryText = getView().findViewById(R.id.transactionCategory);
         transactionsRecyclerView = getView().findViewById(R.id.transactionsRecyclerView);
-        helpfulTipsTextView = getView().findViewById(R.id.helpfultips);
+        insightsTextView = getView().findViewById(R.id.insights);
         arrowBackward = getView().findViewById(R.id.arrowback);
         arrowForward = getView().findViewById(R.id.arrowforward);
     }
@@ -225,7 +230,7 @@ public class monthlySpendingFragment extends Fragment {
 
         pieChartValue.setText(format.format(value));
 
-        double percentage = value/MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear);
+        double percentage = value/MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear);
 
         DecimalFormat df = new DecimalFormat("#%");
         pieChartPercentage.setText(df.format(percentage) + " of "+MainActivity.month+ " spending");
@@ -239,32 +244,54 @@ public class monthlySpendingFragment extends Fragment {
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
         transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
 
-        ArrayList<Transactions> reversed = new ArrayList<>(MainActivity.UserInfo.getTransactionsByCategory(category, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.month));
-        Collections.reverse(reversed);
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(reversed, "MonthlySpendingActivity",getContext());
+        ArrayList<Transactions> sortedList = new ArrayList<>(MainActivity.UserInfo.getTransactionsByCategory(category, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.month));
+
+        Collections.sort(sortedList, (c1, c2) -> {
+            try {
+                return new SimpleDateFormat("dd-MM-yyyy").parse(c2.getDate()).compareTo(new SimpleDateFormat("dd-MM-yyyy").parse(c1.getDate()));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return 0;
+        });
+
+        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(sortedList, "MonthlySpendingActivity",getContext());
         transactionsRecyclerView.setAdapter(transactionsAdapter);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }
 
 
-    public void helpfulTips() throws ParseException {
-
+    public void insights() throws ParseException {
         for (Transactions t : MainActivity.UserInfo.getSpendings(MainActivity.monthYear)){
             String c = t.getMainCategory();
 
-            if(MainActivity.UserInfo.getValueBySubCategory("Savings", "Expense", MainActivity.monthYear) < (MainActivity.UserInfo.getTotalIncome(MainActivity.monthYear) * 0.20)){
+            if(MainActivity.UserInfo.getValueBySubCategory("Savings", "Expense", MainActivity.monthYear) < (MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20)){
                 NumberFormat format = NumberFormat.getCurrencyInstance();
                 format.setMaximumFractionDigits(2);
                 format.setCurrency(Currency.getInstance("CAD"));
-                helpfulTipsTextView.setText("We've noticed that you haven't been saving enough this month. Aim to save around 20% of your total income each month, which is: "+ format.format(MainActivity.UserInfo.getTotalIncome(MainActivity.monthYear) * 0.20));
+                insightsArray.add("We've noticed that you haven't been saving enough this month. Aim to save around 20% of your total income each month, which is: "+ format.format(MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20));
             }
-            else if(MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear) > (0.6 * MainActivity.UserInfo.getTotalSpending(MainActivity.monthYear))){
+            if(MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear) > (0.6 * MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear))){
                 if (c != "Expense" && c != "Other" && c != "Income"){
-                    helpfulTipsTextView.setText("We've noticed that you've spent a lot on "+c+" this month, consider cutting back on your spending.");
+                    insightsArray.add("We've noticed that you've spent a lot on "+c+" this month, consider cutting back on your spending.");
                 }
 
             }
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+            Date date = calendar.getTime();
+            SimpleDateFormat format = new SimpleDateFormat("MM ''yy");
+            String dateOutput = format.format(date);
+            double percentageoflastmonth = ((MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear))  /  (MainActivity.UserInfo.getValueByCategory(c, "Expense", dateOutput)));
+            if(percentageoflastmonth > 1.2){
+                String percentage = String.format("%.0f%%",percentageoflastmonth);
+                insightsArray.add("We've noticed that you've spent "+percentage+" more this month than you did last month.");
+
+            }
         }
+
+
 
     }
 }

@@ -7,7 +7,7 @@
     android:background="#F2F4F7"
     tools:context=".SpendingOverviewActivity">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -23,6 +23,7 @@
                 android:gravity="center"
                 android:onClick="ArrowBack"
                 android:rotation="180"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="30dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
@@ -39,6 +40,7 @@
                 android:gravity="center"
                 android:layout_marginTop="30dp"
                 android:onClick="ArrowForward"
+                android:layout_marginRight="10dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 app:layout_constraintBottom_toTopOf="@+id/barchartLayout"
@@ -195,7 +197,7 @@
                     android:id="@+id/textView6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Helpful Tips:"
+                    android:text="Insights:"
                     android:textColor="@color/black"
                     android:textSize="20dp"
                     android:textStyle="bold"
@@ -204,7 +206,7 @@
 
 
                 <TextView
-                    android:id="@+id/helpfultips"
+                    android:id="@+id/insights"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
@@ -213,6 +215,25 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
+                <TextView
+                    android:id="@+id/insights2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Your spending is looking good!"
+                    android:textSize="17dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/insights" />
+
+                <TextView
+                    android:id="@+id/insights3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Your spending is looking good!"
+                    android:textSize="17dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/insights2" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -220,7 +241,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
 
 

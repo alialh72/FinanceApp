@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.CountDownTimer;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -19,16 +22,30 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.financeapp.MainActivity;
+import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
+import com.example.financeapp.ViewAdapters.RecyclerGroupAdapter;
+import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.ListMultimap;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Currency;
+import java.util.Date;
+import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 
@@ -36,9 +53,13 @@ public class transactionFragment extends Fragment{
 
     private Button modifyButton;
 
-    private ImageView userButton, hamburger;
+    private ImageView userButton;
+    private ConstraintLayout filterButton;
 
     private TextView accountBalanceText, helloUsername;
+    private RecyclerView transactionsGroupRecycler;
+
+    private LinearLayoutManager layoutManager;
 
 
     public transactionFragment() {
@@ -56,6 +77,7 @@ public class transactionFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findViews();
         initText();
+        loadRecyclerViews(MainActivity.UserInfo.transactions);
 
 
         //demo user button
@@ -116,6 +138,14 @@ public class transactionFragment extends Fragment{
                 alert.show();
             }
         });
+
+
+        filterButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 
     public void applyBalanceFragment(double balance){
@@ -138,6 +168,8 @@ public class transactionFragment extends Fragment{
         modifyButton = getView().findViewById(R.id.modifyBalance);
         accountBalanceText = getView().findViewById(R.id.accountBalanceText);
         userButton = getView().findViewById(R.id.userButton);
+        transactionsGroupRecycler = getView().findViewById(R.id.transactionsGroupRecycler);
+        filterButton = getView().findViewById(R.id.filterButton);
     }
 
     public void initText(){
@@ -151,9 +183,52 @@ public class transactionFragment extends Fragment{
         accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
     }
 
-    public void refreshFragment(){
-        getFragmentManager().beginTransaction().detach(this).attach(this).commit();
+    private void loadRecyclerViews(ArrayList<Transactions> transactions){
+        Log.d(TAG, "initRecyclerView: init recyclerview locals");
+
+        if (transactions.size() > 0){
+            ArrayList<String> transactionsGroupList = new ArrayList<>();
+
+            ListMultimap<String, Transactions> childHashMap = ArrayListMultimap.create();
+
+            transactionsGroupList.add("Today");
+            transactionsGroupList.add("Past Week");
+            transactionsGroupList.add("Past Month");
+            transactionsGroupList.add("Past Year");
+            transactionsGroupList.add("All Time");
+
+            for(Transactions t : transactions){
+                LocalDate currentDate = LocalDate.now();
+
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                LocalDate date = LocalDate.parse(t.getDate(), formatter);
+
+                //checks what category the transaction would fit depending on its date
+                if(date.isEqual(currentDate)){ childHashMap.put("Today", t); }
+                else if(date.isAfter(currentDate.minusWeeks(1)) && date.isBefore(currentDate)){ childHashMap.put("Past Week", t); }
+                else if(date.isAfter(currentDate.minusMonths(1)) && date.isBefore(currentDate)){ childHashMap.put("Past Month", t); }
+                else if(date.isAfter(currentDate.minusYears(1)) && date.isBefore(currentDate)){ childHashMap.put("Past Year", t); }
+                else{ childHashMap.put("All Time", t); }
+
+            }
+
+
+            transactionsGroupRecycler.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+            RecyclerGroupAdapter groupAdapter = new RecyclerGroupAdapter(getActivity(), transactionsGroupList, childHashMap, "transactionFragment", getContext());
+            transactionsGroupRecycler.setAdapter(groupAdapter);
+            transactionsGroupRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
+        }
+
+
+
+
+
+
     }
+
+
+
+
 
 
 }
