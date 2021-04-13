@@ -1,7 +1,16 @@
-package com.example.financeapp.Fragments;
+package com.example.financeapp.Fragments.MainActivity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.PopupMenu;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,26 +21,16 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.os.CountDownTimer;
-import android.os.Handler;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
-import com.example.financeapp.Slider.Item;
 import com.example.financeapp.MainActivity;
-import com.example.financeapp.R;
-import com.example.financeapp.Slider.SliderAdapter;
-import com.example.financeapp.Slider.SliderItem1;
+import com.example.financeapp.Objects.Article;
+import com.example.financeapp.Objects.Definition;
+import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.Objects.Transactions;
-import com.example.financeapp.categoriesEnum;
+import com.example.financeapp.R;
+import com.example.financeapp.Slider.Item;
+import com.example.financeapp.Slider.SliderAdapter;
+import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
+import com.example.financeapp.Enums.categoriesEnum;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -40,6 +39,7 @@ import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -49,20 +49,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Currency;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
+import static com.example.financeapp.MainActivity.EducationInfo;
+import static com.example.financeapp.MainActivity.UserInfo;
 
 
 public class HomeFragment extends Fragment{
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
@@ -73,7 +67,7 @@ public class HomeFragment extends Fragment{
     private TextView monthName;
     private TextView youveSpent;
     private TextView helloUsername;
-    private ImageView userButton, hamburger;
+    private ImageView userButton;
 
     private TextView startSpendingPie, transactionInfo;
 
@@ -126,7 +120,7 @@ public class HomeFragment extends Fragment{
                         Log.d(TAG, "onMenuItemClick: clicked: "+ item);
                         int selectedUserId = Integer.parseInt((String) item.getTitle());
 
-                        MainActivity.UserInfo.setUser(selectedUserId, getContext());
+                        UserInfo.setUser(selectedUserId, getContext());
 
                         return false;
                     }
@@ -153,7 +147,6 @@ public class HomeFragment extends Fragment{
         userButton = getView().findViewById(R.id.userButton);
         startSpendingPie = getView().findViewById(R.id.pieChartStartSpending);
         transactionInfo = getView().findViewById(R.id.transactionInfo);
-        hamburger = getView().findViewById(R.id.hamburger);
         helloUsername = getView().findViewById(R.id.helloUsername);
     }
 
@@ -162,9 +155,9 @@ public class HomeFragment extends Fragment{
         format.setMaximumFractionDigits(0);
         format.setCurrency(Currency.getInstance("CAD"));
 
-        accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
-        monthlySpendingText.setText(format.format(MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear)));
-        monthlyIncomeText.setText(format.format(MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear)));
+        accountBalanceText.setText(format.format(UserInfo.returnBalance()));
+        monthlySpendingText.setText(format.format(UserInfo.getMonthlySpending(MainActivity.monthYear)));
+        monthlyIncomeText.setText(format.format(UserInfo.getMonthlyIncome(MainActivity.monthYear)));
 
 
 
@@ -178,9 +171,9 @@ public class HomeFragment extends Fragment{
 
 
         //you've spending
-        youveSpent.setText("You've spent "+format.format(MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear)) +" so far");
+        youveSpent.setText("You've spent "+format.format(UserInfo.getMonthlySpending(MainActivity.monthYear)) +" so far");
 
-        if(MainActivity.UserInfo.transactions.size() == 0){
+        if(UserInfo.returnTransactions().size() == 0){
             startSpendingPie.setVisibility(View.VISIBLE);
             spendingPieChart.setVisibility(View.GONE);
             transactionInfo.setText("Start adding transactions to track your spending");
@@ -190,16 +183,26 @@ public class HomeFragment extends Fragment{
             transactionInfo.setText("Recent Transactions");
         }
 
-        helloUsername.setText(MainActivity.UserInfo.username);
+        helloUsername.setText(UserInfo.returnUsername());
     }
 
 
     private void setSlider(){
         List<Item> items = new ArrayList<>();
 
-        items.add(new Item(0, new SliderItem1("Page 1", "Radical")));
-        items.add(new Item(1, new SliderItem1("30", "itworked")));
-        items.add(new Item(0, new SliderItem1("Amazing", "It means amazing")));
+        Random rand = new Random();
+        Log.d(TAG, "setSlider: "+ EducationInfo.returnDefinitions().size());
+
+
+        int randomPosDefinition = rand.nextInt(EducationInfo.returnDefinitions().size());
+        int randomPosArticle = rand.nextInt(EducationInfo.returnArticles().size());
+
+        Definition selectedDefinition = EducationInfo.returnDefinitions().get(randomPosDefinition);
+        Article selectedArticle = EducationInfo.returnArticles().get(randomPosArticle);
+
+        items.add(new Item(0, selectedDefinition));
+        items.add(new Item(1, selectedArticle));
+        items.add(new Item(2, new Insight("This do be your insight doe")));
 
         viewPager2.setAdapter(new SliderAdapter(items, viewPager2));
 
@@ -263,7 +266,7 @@ public class HomeFragment extends Fragment{
         ArrayList<PieEntry> entries = new ArrayList<PieEntry>();
         ArrayList<String> second = new ArrayList<>();
 
-        for (Transactions t : MainActivity.UserInfo.getSpendings(MainActivity.monthYear)){
+        for (Transactions t : UserInfo.getSpendings(MainActivity.monthYear)){
             String c = t.getMainCategory();
 
             boolean isthere = false;
@@ -275,7 +278,7 @@ public class HomeFragment extends Fragment{
 
 
             if(isthere == false){
-                double percentage = MainActivity.UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.monthYear);
+                double percentage = UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.monthYear);
                 DecimalFormat df = new DecimalFormat("#.##");
                 df.format(percentage);
                 second.add(c);
@@ -307,7 +310,9 @@ public class HomeFragment extends Fragment{
                 //display msg when value
                 int x = spendingPieChart.getData().getDataSet().getEntryIndex((PieEntry) e);
                 String label = second.get(x);
-                Toast.makeText(getActivity(), label + ": "+format.format(e.getY()), Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView().findViewById(R.id.view), label + ": "+format.format(e.getY()), Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(getResources().getColor(R.color.mainGreen))
+                        .show();
             }
 
             @Override
@@ -320,10 +325,10 @@ public class HomeFragment extends Fragment{
     }
 
     private void loadRecyclerViews(){
-        //get 5 most recent transactions
+        //get 4 most recent transactions
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
 
-        if (MainActivity.UserInfo.transactions.size() > 0){
+        if (UserInfo.returnTransactions().size() > 0){
             transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
             transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),"HomeFragment",getActivity());
             transactionsRecyclerView.setAdapter(transactionsAdapter);
@@ -333,7 +338,7 @@ public class HomeFragment extends Fragment{
     }
 
     private ArrayList<Transactions> getRecentTransactions(){
-        ArrayList<Transactions> dupSorted = new ArrayList<>(MainActivity.UserInfo.transactions);
+        ArrayList<Transactions> dupSorted = new ArrayList<>(UserInfo.returnTransactions());
         Collections.sort(dupSorted, (c1, c2) -> {
             try {
                 return new SimpleDateFormat("dd-MM-yyyy").parse(c2.getDate()).compareTo(new SimpleDateFormat("dd-MM-yyyy").parse(c1.getDate()));
@@ -343,22 +348,9 @@ public class HomeFragment extends Fragment{
             return 0;
         });
 
-
-        ArrayList<Transactions> recentTransactions = new ArrayList<>();
-        if(dupSorted.size() < 4){
-            Log.d(TAG, "getRecentTransactions: size is less than 4");
-            for (int pos = 0; pos<dupSorted.size()-1;pos++){
-                Log.d(TAG, "getRecentTransactions: pos: "+pos);
-                recentTransactions.add(dupSorted.get(pos));
-            }
-        }
-        else{
-            for(int pos = 0; pos < 4; pos++){
-                recentTransactions.add(dupSorted.get(pos));
-            }
-        }
-
-        return recentTransactions;
+        ArrayList<Transactions> recent = new ArrayList<>();
+        recent.addAll(dupSorted.subList(0,4));
+        return recent;
     }
 
 

@@ -9,6 +9,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.financeapp.Objects.Article;
+import com.example.financeapp.Objects.Definition;
+import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.R;
 
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.List;
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static final String TAG = "";
-    private List<SliderItem1> sliderItem1s;
+    private List<Definition> sliderDefinition;
     private List<Item> items;
     private ViewPager2 viewPager2;
 
@@ -32,12 +35,25 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        //viewtpyes are 0 & 1
+        //viewtpyes are 0, 1 & 2
+        //0 = word definition
+        //1 = article
+        //2 = insight
 
         if(viewType == 0){
-            return new SliderViewHolder(
+            return new DefinitionViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(
-                            R.layout.slider_item_container,
+                            R.layout.slider_item_definition,
+                            parent,
+                            false
+                    )
+            );
+        }
+
+        else if(viewType == 1){
+            return new ArticleViewHolder(
+                    LayoutInflater.from(parent.getContext()).inflate(
+                            R.layout.slider_item_article,
                             parent,
                             false
                     )
@@ -45,9 +61,9 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         else{
-            return new SecondViewHolder(
+            return new InsightsViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(
-                            R.layout.slider_item_container2,
+                            R.layout.slider_item_insight,
                             parent,
                             false
                     )
@@ -60,10 +76,24 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == 0){
-            ((SliderViewHolder) holder).setSliderText((SliderItem1) items.get(position).getObject());
+            Definition definition = (Definition) items.get(position).getObject();
+
+            ((DefinitionViewHolder) holder).setTitle(definition);
+            ((DefinitionViewHolder) holder).setDescription(definition);
         }
-        else{
-            ((SecondViewHolder) holder).setSliderText((SliderItem1) items.get(position).getObject());
+        else if(getItemViewType(position) == 1){
+            Article article = (Article) items.get(position).getObject();
+
+            ((ArticleViewHolder) holder).setTitle(article);
+            ((ArticleViewHolder) holder).setAuthor(article);
+            ((ArticleViewHolder) holder).setDescription(article);
+
+        }
+
+        else if(getItemViewType(position) == 2){
+            Insight insight = (Insight) items.get(position).getObject();
+
+            ((InsightsViewHolder) holder).setInsight(insight);
         }
     }
 
@@ -77,45 +107,63 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         return items.get(position).getType();
     }
 
-    class SliderViewHolder extends RecyclerView.ViewHolder{
+    class DefinitionViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView texx;
-        private TextView description;
+        private TextView title, description;
 
-        SliderViewHolder(@NonNull View itemView){
+        DefinitionViewHolder(@NonNull View itemView){
             super(itemView);
-            texx = itemView.findViewById(R.id.wordoftheday);
+            title = itemView.findViewById(R.id.wordoftheday);
             description = itemView.findViewById(R.id.definition);
         }
 
-        void setSliderText(SliderItem1 sliderItem1){
-            texx.setText(sliderItem1.getText());
+        void setTitle(Definition definition){
+            title.setText(definition.getWord());
         }
 
-        void setDesc(SliderItem1 sliderItem1){
-            description.setText(sliderItem1.getDesc());
+        void setDescription(Definition definition){
+            description.setText(definition.getDescription());
         }
 
 
     }
 
-    class SecondViewHolder extends RecyclerView.ViewHolder{
+    class ArticleViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView texx;
-        private TextView description;
+        private TextView title, description, author;
 
-        SecondViewHolder(@NonNull View itemView){
+        ArticleViewHolder(@NonNull View itemView){
             super(itemView);
-            texx = itemView.findViewById(R.id.textbox);
-            description = itemView.findViewById(R.id.wordoftheday);
+            title = itemView.findViewById(R.id.title);
+            author = itemView.findViewById(R.id.author);
+            description = itemView.findViewById(R.id.description);
         }
 
-        void setSliderText(SliderItem1 sliderItem1){
-            texx.setText(sliderItem1.getText());
+        void setTitle(Article article){
+            title.setText(article.getTitle());
         }
 
-        void setDesc(SliderItem1 sliderItem1){
-            description.setText(sliderItem1.getDesc());
+        void setAuthor(Article article){author.setText("By "+article.getAuthor());}
+
+        void setDescription(Article article){
+            description.setText(article.getDescription());
+        }
+
+
+    }
+
+
+    class InsightsViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView insightsTextView;
+
+        InsightsViewHolder(@NonNull View itemView){
+            super(itemView);
+            insightsTextView = itemView.findViewById(R.id.insights);
+        }
+
+        void setInsight(Insight insight){
+            insightsTextView.setText(insight.getInsight1());
         }
 
 

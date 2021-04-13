@@ -21,12 +21,12 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/textbox5"
+            android:id="@+id/textbox"
 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="55dp"
-            android:text="Article of the Day:"
+            android:text="Word of the Day:"
             android:textSize="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,19 +34,22 @@
 
         <TextView
             android:id="@+id/wordoftheday"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
+            android:textAlignment="center"
+            app:autoSizeTextType="uniform"
+            android:layout_marginHorizontal="20dp"
             android:text="Blas"
             android:textColor="@color/black"
             android:textSize="35dp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textbox5" />
+            app:layout_constraintTop_toBottomOf="@+id/textbox" />
 
         <TextView
-            android:id="@+id/textbox"
+            android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -59,7 +62,7 @@
             app:layout_constraintTop_toBottomOf="@+id/wordoftheday" />
 
         <TextView
-            android:id="@+id/textbox2"
+            android:id="@+id/definition"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
@@ -73,18 +76,7 @@ ut labore et dolore magna aliqua.e magna aliqua"
             android:textSize="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textbox" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:text="Click to read more"
-
-            android:textSize="12dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -95,15 +87,15 @@ ut labore et dolore magna aliqua.e magna aliqua"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@drawable/nooutlinewithgradient2">
+        android:background="@drawable/nooutlinewithgradient">
 
         <ImageView
-            android:layout_width="40dp"
+            android:layout_width="25dp"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
             android:gravity="center"
             android:scaleType="centerCrop"
-            android:src="@drawable/newspaper_solid"
+            android:src="@drawable/question_solid"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

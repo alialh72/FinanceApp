@@ -1,4 +1,4 @@
-package com.example.financeapp.Fragments;
+package com.example.financeapp.Fragments.MainActivity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -77,7 +77,7 @@ public class transactionFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findViews();
         initText();
-        loadRecyclerViews(MainActivity.UserInfo.transactions);
+        loadRecyclerViews(MainActivity.UserInfo.returnTransactions());
 
 
         //demo user button
@@ -173,14 +173,14 @@ public class transactionFragment extends Fragment{
     }
 
     public void initText(){
-        helloUsername.setText(MainActivity.UserInfo.username);
+        helloUsername.setText(MainActivity.UserInfo.returnUsername());
 
 
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(2);
         format.setCurrency(Currency.getInstance("CAD"));
 
-        accountBalanceText.setText(format.format(MainActivity.UserInfo.accountBalance));
+        accountBalanceText.setText(format.format(MainActivity.UserInfo.returnBalance()));
     }
 
     private void loadRecyclerViews(ArrayList<Transactions> transactions){

@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Fragments.SpendingOverviewActivity;
 
 import android.os.Bundle;
 
@@ -9,15 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.anychart.core.annotations.Line;
-import com.example.financeapp.Objects.Transactions;
+import com.example.financeapp.MainActivity;
+import com.example.financeapp.R;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
@@ -27,8 +24,8 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
-import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -150,7 +147,10 @@ public class spendingStatisticsFragment extends Fragment {
 
                 String label = xAxisMonths.get((int) e.getX());
 
-                Toast.makeText(getActivity(), label+": "+format.format( e.getY()), Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView().findViewById(R.id.view), label+": "+format.format( e.getY()), Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(getResources().getColor(R.color.mainGreen))
+                        .show();
+
             }
 
             @Override
@@ -228,7 +228,10 @@ public class spendingStatisticsFragment extends Fragment {
 
                 String label = xAxisDays.get((int) e.getX());
 
-                Toast.makeText(getActivity(), label+": "+format.format( e.getY()), Toast.LENGTH_SHORT).show();
+                Snackbar.make(getView().findViewById(R.id.view), label+": "+format.format( e.getY()), Snackbar.LENGTH_SHORT)
+                        .setBackgroundTint(getResources().getColor(R.color.mainGreen))
+                        .show();
+
             }
 
             @Override

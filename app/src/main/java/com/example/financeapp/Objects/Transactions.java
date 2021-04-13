@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
-import com.example.financeapp.categoriesEnum;
+import com.example.financeapp.Enums.categoriesEnum;
 
 import java.util.concurrent.ThreadLocalRandom;
 

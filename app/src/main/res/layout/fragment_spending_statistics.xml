@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F2F4F7"
+    android:id="@+id/view"
     tools:context=".SpendingOverviewActivity">
 
     <androidx.core.widget.NestedScrollView
@@ -80,19 +81,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-
-
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cashflow"
                 android:layout_width="356dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
-                android:layout_marginBottom="40dp"
                 android:background="@drawable/nooutline"
                 android:padding="20dp"
-
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/spendingOverTime">

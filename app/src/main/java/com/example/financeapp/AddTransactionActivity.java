@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.financeapp.Dialog.MerchantDialog;
+import com.example.financeapp.Enums.categoriesEnum;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -521,7 +522,6 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         if (!(value == 0)){
             categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
             MainActivity.UserInfo.addTransaction(subCategory, merchantName, value);
-            Log.d(TAG, "AddTransaction: Transactions: "+ MainActivity.UserInfo.transactions);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);

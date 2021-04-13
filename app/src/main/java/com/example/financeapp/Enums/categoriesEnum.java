@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Enums;
 
 import com.google.common.collect.Maps;
 

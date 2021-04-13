@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.example.financeapp.Fragments.SpendingOverviewActivity.monthlySpendingFragment;
+import com.example.financeapp.Fragments.SpendingOverviewActivity.spendingStatisticsFragment;
+
 public class PagerAdapter extends FragmentStateAdapter {
 
     private static final String TAG ="" ;

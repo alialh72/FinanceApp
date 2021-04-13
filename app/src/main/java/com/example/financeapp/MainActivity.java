@@ -19,6 +19,9 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.financeapp.InfoManager.educationInfo;
+import com.example.financeapp.Enums.categoriesEnum;
+import com.example.financeapp.InfoManager.userInfo;
 import com.example.financeapp.Objects.gradientColors;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -28,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+
+import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -43,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView drawerUsername;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
+    public static educationInfo EducationInfo;
+
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
     public static HashMap<String, gradientColors> gradientsCategories = new HashMap<String, gradientColors>();
 
@@ -62,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         hideStatusBar();
-
         findViews();
-
         setupVars();
+
+        if(EducationInfo == null){ EducationInfo = new educationInfo(this); }
 
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);
@@ -167,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
     //Monthly Spending Page Clicked
     public void monthlySpendingClicked(View view){
-        if (UserInfo.transactions.size()>0){
+        if (UserInfo.returnTransactions().size()>0){
             Intent intent = new Intent(this, SpendingOverviewActivity.class);
             this.startActivity(intent);
         }
@@ -229,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void NavSpendings(View view){
-        if (UserInfo.transactions.size()>0){
+        if (UserInfo.returnTransactions().size()>0){
             Intent intent = new Intent(this, SpendingOverviewActivity.class);
             startActivity(intent);
         }
@@ -240,8 +247,12 @@ public class MainActivity extends AppCompatActivity {
 
     //Update the username in the drawer
     public void setDrawerUsername(){
-        Log.d(TAG, "setDrawerUsername: Drawer Username: "  + MainActivity.UserInfo.username);
-        drawerUsername.setText(MainActivity.UserInfo.username);
+        Log.d(TAG, "setDrawerUsername: Drawer Username: "  + MainActivity.UserInfo.returnUsername());
+        drawerUsername.setText(MainActivity.UserInfo.returnUsername());
+    }
+
+    public void openSearch(View view){
+        Log.d(TAG, "SearchBox");
     }
 
 

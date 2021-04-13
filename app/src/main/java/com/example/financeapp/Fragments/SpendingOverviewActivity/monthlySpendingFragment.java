@@ -1,4 +1,4 @@
-package com.example.financeapp;
+package com.example.financeapp.Fragments.SpendingOverviewActivity;
 
 import android.os.Bundle;
 
@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,20 +14,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.financeapp.Enums.categoriesEnum;
+import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Transactions;
+import com.example.financeapp.R;
 import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
-import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.google.android.material.tabs.TabItem;
-import com.google.android.material.tabs.TabLayout;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -38,7 +36,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Currency;
-import java.util.Date;
 
 import static android.content.ContentValues.TAG;
 
@@ -132,6 +129,10 @@ public class monthlySpendingFragment extends Fragment {
         insightsTextView = getView().findViewById(R.id.insights);
         arrowBackward = getView().findViewById(R.id.arrowback);
         arrowForward = getView().findViewById(R.id.arrowforward);
+
+        insightsTextView = getView().findViewById(R.id.insights);
+        insightsTextView2 = getView().findViewById(R.id.insights2);
+        insightsTextView3 = getView().findViewById(R.id.insights3);
     }
 
     public void setupPieChart(){
@@ -139,6 +140,7 @@ public class monthlySpendingFragment extends Fragment {
         pieChart.setHoleRadius(75.f);
         pieChart.setTransparentCircleRadius(75.f);
         pieChart.setUsePercentValues(false);
+        pieChart.setRotationEnabled(false);
         pieChart.setDrawEntryLabels(false);
         pieChart.getDescription().setEnabled(false);
 
@@ -264,34 +266,62 @@ public class monthlySpendingFragment extends Fragment {
     public void insights() throws ParseException {
         for (Transactions t : MainActivity.UserInfo.getSpendings(MainActivity.monthYear)){
             String c = t.getMainCategory();
-
-            if(MainActivity.UserInfo.getValueBySubCategory("Savings", "Expense", MainActivity.monthYear) < (MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20)){
-                NumberFormat format = NumberFormat.getCurrencyInstance();
-                format.setMaximumFractionDigits(2);
-                format.setCurrency(Currency.getInstance("CAD"));
-                insightsArray.add("We've noticed that you haven't been saving enough this month. Aim to save around 20% of your total income each month, which is: "+ format.format(MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20));
-            }
             if(MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear) > (0.6 * MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear))){
                 if (c != "Expense" && c != "Other" && c != "Income"){
                     insightsArray.add("We've noticed that you've spent a lot on "+c+" this month, consider cutting back on your spending.");
                 }
 
             }
+        }
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MONTH, -1);
-            Date date = calendar.getTime();
-            SimpleDateFormat format = new SimpleDateFormat("MM ''yy");
-            String dateOutput = format.format(date);
-            double percentageoflastmonth = ((MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear))  /  (MainActivity.UserInfo.getValueByCategory(c, "Expense", dateOutput)));
+        if(MainActivity.UserInfo.getValueBySubCategory("Savings", "Expense", MainActivity.monthYear) < (MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20)){
+            NumberFormat format = NumberFormat.getCurrencyInstance();
+            format.setMaximumFractionDigits(2);
+            format.setCurrency(Currency.getInstance("CAD"));
+            insightsArray.add("You haven't been saving enough this month. Aim to save around 20% of your total income each month, which is: "+ format.format(MainActivity.UserInfo.getMonthlyIncome(MainActivity.monthYear) * 0.20));
+        }
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -1);
+        String dateOutput = new SimpleDateFormat("MMM ''yy").format(calendar.getTime());
+
+        if(MainActivity.UserInfo.getMonthlySpending(dateOutput) > 0){
+            double percentageoflastmonth = ((MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear))  /  (MainActivity.UserInfo.getMonthlySpending(dateOutput)));
             if(percentageoflastmonth > 1.2){
                 String percentage = String.format("%.0f%%",percentageoflastmonth);
-                insightsArray.add("We've noticed that you've spent "+percentage+" more this month than you did last month.");
+                insightsArray.add("You've spent "+percentage+" more this month than you did last month.");
 
             }
         }
 
 
+        if(insightsArray.size() > 0){
+            for (int i = 0; i<insightsArray.size();i++){
+                String line = insightsArray.get(i);
+                setInsightsText(i,line);
+            }
+        }
+        else{
+            setInsightsText(0, "Your spending is looking good!");
+        }
 
     }
+
+    private void setInsightsText(int position, String line){
+        switch (position){
+            case 0:
+                insightsTextView.setVisibility(View.VISIBLE);
+                insightsTextView.setText(line);
+                break;
+            case 1:
+                insightsTextView2.setVisibility(View.VISIBLE);
+                insightsTextView2.setText(line);
+                break;
+            case 2:
+                insightsTextView3.setVisibility(View.VISIBLE);
+                insightsTextView3.setText(line);
+                break;
+        }
+    }
+
 }

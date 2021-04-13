@@ -64,7 +64,7 @@ public class transactionRecyclerAdapter extends RecyclerView.Adapter<transaction
             holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         }
         else{
-            holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.greenicon));
+            holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.greenIcon));
         }
 
         //set value

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.financeapp.Dialog.MerchantDialog;
+import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.Objects.Transactions;
 
 import org.apache.commons.lang3.StringUtils;

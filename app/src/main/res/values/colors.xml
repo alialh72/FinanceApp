@@ -8,8 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="red">#E61E1A</color>
-    <color name="greenicon">#00B13C</color>
-    <color name="maingreen">#31CB5F</color>
-    <color name="darkgreen">#27A24C</color>
-    <color name="graybackground">#F2F4F7</color>
+    <color name="greenIcon">#00B13C</color>
+    <color name="mainGreen">#31CB5F</color>
+    <color name="darkGreen">#27A24C</color>
+    <color name="grayBackground">#F2F4F7</color>
+
+    <color name="lightPurple">#A3A0FB</color>
+    <color name="cyan">#55d8fe</color>
+    <color name="orangeYellow">#ffda83</color>
+    <color name="redPink">#FF8993</color>
+    <color name="orange">#FFB575</color>
+    <color name="pink">#FE89E2</color>
 </resources>

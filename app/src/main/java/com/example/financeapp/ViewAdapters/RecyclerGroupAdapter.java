@@ -61,7 +61,13 @@ public class RecyclerGroupAdapter extends RecyclerView.Adapter<RecyclerGroupAdap
             childArrayList = new ArrayList<>();
         }
 
-        sortBy("date", childArrayList);
+        if(arrayListGroup.get(position).equals("Today")){
+            Collections.reverse(childArrayList);   //this is because sorting doesnt account for same day transactions, so the best way to order them is just by reversing the list
+        }
+        else{
+            sortBy("date", childArrayList);
+        }
+
 
         Log.d(TAG, "onBindViewHolder: GroupHeader: "+arrayListGroup.get(position));
         Log.d(TAG, "onBindViewHolder: ChildArrayList: "+childArrayList);

@@ -1,38 +1,44 @@
-package com.example.financeapp;
+package com.example.financeapp.InfoManager;
 
 import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.example.financeapp.Fragments.HomeFragment;
+import com.example.financeapp.Enums.categoriesEnum;
+import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Transactions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 
 public class userInfo {
 
-    public static ArrayList<Transactions> transactions = new ArrayList<>();
-    public static String username = "Guest User";
+    private ArrayList<Transactions> transactions = new ArrayList<>();
+    private String username = "Guest User";
     public static int accountID;
     public static boolean signedin = false;
-    public static double accountBalance = 0;
+    private static double accountBalance = 0;
     public categoriesEnum.MainCategories Categories;
-    public categoriesEnum.SubCategories SubCategories;
+
+
+    public ArrayList<Transactions> returnTransactions(){
+        return transactions;
+    }
+
+    public String returnUsername(){
+        return username;
+    }
 
 
     public void addTransaction(categoriesEnum.SubCategories subCategory, String merchant, double value){
@@ -66,6 +72,8 @@ public class userInfo {
         Log.d(TAG, "addTransaction: Transactions: "+transactions);
     }
 
+
+
     public void setUser(int userid, Context mContext){
         accountID = userid;
         resetTransactions(); //deletes any stored transactions
@@ -92,15 +100,15 @@ public class userInfo {
 
                         //loops through all the transactions
                         for (int i = 0; i < node.size(); i++){
-                            HashMap<String, String> transactionhashmap = (HashMap<String, String>) node.get(i); //breaks down each transaction into a hashmap
+                            HashMap<String, String> transactionHashmap = (HashMap<String, String>) node.get(i); //breaks down each transaction into a hashmap
 
                             //gets all the values from the hashmap and assigns them to variables
-                            String date = transactionhashmap.get("date");
-                            String merchant = transactionhashmap.get("merchant");
-                            categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(transactionhashmap.get("subCategoryLabel")); //converts the string into an enum using a hashmap defined in categoriesEnum
-                            categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionhashmap.get("type").toUpperCase());
-                            String value = transactionhashmap.get("value");
-                            String id = transactionhashmap.get("id");
+                            String date = transactionHashmap.get("date");
+                            String merchant = transactionHashmap.get("merchant");
+                            categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(transactionHashmap.get("subCategoryLabel")); //converts the string into an enum using a hashmap defined in categoriesEnum
+                            categoriesEnum.MainCategories type = categoriesEnum.MainCategories.valueOf(transactionHashmap.get("type").toUpperCase());
+                            String value = transactionHashmap.get("value");
+                            String id = transactionHashmap.get("id");
 
                             transactions.add(new Transactions(date, type, subCategory, merchant, value, id)); //adds the transaction to the public ArrayList
                         }
@@ -149,20 +157,24 @@ public class userInfo {
     }
 
     public void updateTransaction(Transactions newTransaction){
-        Integer position = null;
         for (int i = 0; i < transactions.size(); i++){
             if (transactions.get(i).getId().equals(newTransaction.getId())){
                 transactions.set(i, newTransaction);
-                position = i;
+
+                if(signedin = true){
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
+
+                    reference.child("Transactions").child(String.valueOf(i)).setValue(newTransaction); //updates the transaction in the database
+                }
             }
         }
 
-       if(signedin = true){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
-            reference.child("Transactions").child(String.valueOf((int) position)).setValue(newTransaction); //updates the transaction in the database
-        }
+    }
+
+    public double returnBalance(){
+        return accountBalance;
     }
 
     public void updateBalance(double value){

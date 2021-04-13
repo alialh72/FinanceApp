@@ -80,7 +80,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/darkgreen" />
+                app:tint="@color/darkGreen" />
 
             <TextView
                 android:id="@+id/textView7"
@@ -120,7 +120,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/darkgreen" />
+                app:tint="@color/darkGreen" />
 
             <TextView
                 android:id="@+id/transactions"
@@ -161,7 +161,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/darkgreen" />
+                app:tint="@color/darkGreen" />
 
             <TextView
                 android:id="@+id/education"
@@ -200,7 +200,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/darkgreen" />
+                app:tint="@color/darkGreen" />
 
             <TextView
                 android:id="@+id/spendings"

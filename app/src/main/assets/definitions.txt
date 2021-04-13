@@ -1,0 +1,9 @@
+Asset*A resource that has economic value with an expectation that it will provide future benefit.
+Amalgamation*A combination or a joining of two or more companies into a new entity.
+Acquisition*A purchase of property or shares of a company for the purpose of retaining control over the property or company.
+Bond*Represents a loan between the issuer and the creditors. Bonds are usually issued by governments or companies in order to finance a specific project.
+Bankruptcy*A legal process that takes place if a person/business is unable to pay their debts. All the debtor's assets will be used to pay off as much debt as possible, with the rest of it being written off.
+Blockchain*A special type of database that is commonly used with cryptocurrencies. It differs from a standard database in that information is stored in 'blocks' which are in chronological order and cannot be modified.
+Demand*In economics, it is the quantity of a good/service that consumers are willing to buy at a given price.
+Escrow*It is having a third party hold an asset or funds before they are transferred from one party to another. This ensures that both parties have fulfilled their side of the contract before payment is released.
+Dividend Yield*It is a financial ratio (dividend/stock price) that shows how much a company pays out in dividends each year relative to its stock price.

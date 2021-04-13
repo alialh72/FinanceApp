@@ -18,12 +18,12 @@
             <ImageView
                 android:id="@+id/arrowback"
                 android:layout_width="40dp"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:gravity="center"
-                android:onClick="ArrowBack"
                 android:rotation="180"
-                android:layout_marginLeft="10dp"
+                android:layout_marginLeft="20dp"
+                android:elevation="10dp"
                 android:layout_marginTop="30dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
@@ -35,12 +35,12 @@
             <ImageView
                 android:id="@+id/arrowforward"
                 android:layout_width="40dp"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:gravity="center"
+                android:elevation="10dp"
                 android:layout_marginTop="30dp"
-                android:onClick="ArrowForward"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
                 app:layout_constraintBottom_toTopOf="@+id/barchartLayout"
@@ -212,6 +212,7 @@
                     android:layout_marginTop="15dp"
                     android:text="Your spending is looking good!"
                     android:textSize="17dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -219,9 +220,10 @@
                     android:id="@+id/insights2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="28dp"
                     android:text="Your spending is looking good!"
                     android:textSize="17dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/insights" />
 
@@ -229,9 +231,10 @@
                     android:id="@+id/insights3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="28dp"
                     android:text="Your spending is looking good!"
                     android:textSize="17dp"
+                    android:visibility="gone"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/insights2" />
 

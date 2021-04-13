@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
 
+import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.ViewAdapters.ExpandableListAdapter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/graybackground">
+    android:background="@color/grayBackground">
 
 
     <androidx.core.widget.NestedScrollView
@@ -180,7 +180,7 @@
         android:id="@+id/floatingActionButton"
         android:layout_width="60dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/maingreen"
+        android:backgroundTint="@color/mainGreen"
         android:onClick="addTransaction"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="65dp"

@@ -13,10 +13,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.financeapp.Enums.categoriesEnum;
+
 import java.text.NumberFormat;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class ValueActivity extends AppCompatActivity{
 
