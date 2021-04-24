@@ -172,7 +172,7 @@ public class SingleTransactionActivity extends AppCompatActivity implements Merc
     }
 
     public void CategoryOnClick(View view){
-        Intent intent = new Intent(this, CategoryActivity.class);
+        Intent intent = new Intent(this, TransactionCategoryActivity.class);
         startActivityForResult(intent, 1);
         Log.d(TAG, "CategoryOnClick: testttt");
     }

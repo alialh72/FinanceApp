@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.financeapp.ArticleActivity;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.R;
@@ -33,18 +34,29 @@ public class miniArticleRecyclerAdapter extends RecyclerView.Adapter<miniArticle
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<Article> articles;
+    private boolean extended;
     private Context mContext;
 
-    public miniArticleRecyclerAdapter(ArrayList<Article> articles, Context context){
+    public miniArticleRecyclerAdapter(ArrayList<Article> articles, Context context, boolean extended){
         this.articles = articles;
-
+        this.extended = extended;
         mContext = context;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_mini_layout, parent, false);
+        View view = null;
+
+        if (extended == true){
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_extended_layout, parent, false);
+        }
+        else{
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.article_mini_layout, parent, false);
+        }
+
+
+        Log.d(TAG, "onCreateViewHolder: view: "+view);
         ViewHolder holder = new ViewHolder(view);
 
         return holder;
@@ -63,6 +75,10 @@ public class miniArticleRecyclerAdapter extends RecyclerView.Adapter<miniArticle
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "onClick: Mini Article: "+articles.get(position).getTitle());
+                Intent intent = new Intent(mContext, ArticleActivity.class);
+                intent.putExtra("ARTICLE", articles.get(position));
+                mContext.startActivity(intent);
+
             }
         });
 

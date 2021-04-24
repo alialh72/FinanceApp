@@ -49,12 +49,12 @@
                 android:layout_height="35dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/ripple_background"
-                android:onClick="openSearch"
                 android:hint="Search"
                 android:inputType="text"
+                android:onClick="openSearch"
 
                 android:textSize="15dp"
-                app:layout_constraintEnd_toEndOf="@+id/levelConstraint"
+                app:layout_constraintEnd_toEndOf="@+id/category1"
                 app:layout_constraintTop_toBottomOf="@+id/linearconstraint">
 
 
@@ -76,87 +76,14 @@
                     android:adjustViewBounds="true"
                     android:gravity="center"
                     android:scaleType="centerCrop"
-                    android:tint="@color/black"
                     android:src="@drawable/ic_search"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/levelConstraint"
-                android:layout_width="340dp"
-                android:layout_height="125dp"
-                android:layout_marginTop="20dp"
-                android:background="@drawable/nooutline"
-                android:paddingHorizontal="20dp"
-                android:paddingVertical="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/SearchBox">
-
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Your Current Level:"
-                    android:textColor="@color/black"
-                    android:textSize="17dp"
-                    android:textStyle="normal"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:text="Bank Intern"
-                    android:textColor="@color/black"
-                    android:textSize="25dp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toTopOf="@+id/contentLoadingProgressBar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
-
-
-                <androidx.core.widget.ContentLoadingProgressBar
-                    android:id="@+id/contentLoadingProgressBar"
-                    style="@android:style/Widget.ProgressBar.Horizontal"
-                    android:layout_width="150dp"
-                    android:layout_height="10dp"
-                    android:progress="30"
-                    android:progressTint="#00FF85"
-                    android:progressBackgroundTint="@color/grayBackground"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <ImageView
-                    android:id="@+id/levelImage"
-                    android:layout_width="87dp"
-                    android:padding="5dp"
-                    android:layout_height="100dp"
-                    android:adjustViewBounds="true"
-                    android:gravity="center"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/intern"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    />
+                     />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
 
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,10 +93,23 @@
                 android:background="@drawable/nooutline"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="75dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/levelConstraint"
-                >
+                app:layout_constraintTop_toBottomOf="@+id/SearchBox">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
 
                 <HorizontalScrollView
                     android:layout_width="wrap_content"
@@ -193,6 +133,7 @@
                             android:textColor="@color/white"
                             android:textSize="23dp"
                             android:textStyle="bold"
+
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -203,6 +144,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -224,6 +166,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/category1"
                 >
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_baseline_keyboard_arrow_right_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
 
 
                 <HorizontalScrollView
@@ -258,6 +213,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="5dp"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent" />
 
 
@@ -270,10 +226,9 @@
                 android:id="@+id/glossaryButton"
                 android:layout_width="match_parent"
                 android:background="@drawable/nooutline"
-                android:layout_height="50dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="10dp"
                 android:paddingHorizontal="15dp"
                 android:paddingVertical="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -292,8 +247,8 @@
                 
                 <ImageView
                     android:id="@+id/arrow"
-                    android:layout_width="30dp"
-                    android:layout_height="20dp"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:adjustViewBounds="true"
                     android:gravity="center"
@@ -310,9 +265,9 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="450dp"
-                android:layout_marginHorizontal="25dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="70dp"
                 android:paddingVertical="20dp"
                 android:paddingHorizontal="25dp"
@@ -335,7 +290,11 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <include
-                    layout="@layout/categories_list"/>
+                    layout="@layout/categories_list"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView13" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

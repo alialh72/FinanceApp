@@ -1,8 +1,12 @@
 package com.example.financeapp.Objects;
 
-import com.example.financeapp.Enums.articlesCategoryEnum;
+import android.os.Parcel;
+import android.os.Parcelable;
 
-public class Article {
+import com.example.financeapp.Enums.articlesCategoryEnum;
+import com.example.financeapp.Enums.categoriesEnum;
+
+public class Article implements Parcelable {
 
     private String title, author,description,para1, para2, para3, category, image;
 
@@ -17,6 +21,29 @@ public class Article {
         this.image = image;
 
     }
+
+    protected Article(Parcel in){
+        title = in.readString();
+        author = in.readString();
+        description = in.readString();
+        para1 = in.readString();
+        para2 = in.readString();
+        para3 = in.readString();
+        category = in.readString();
+        image = in.readString();
+    }
+
+    public static final Creator<Article> CREATOR = new Creator<Article>() {
+        @Override
+        public Article createFromParcel(Parcel in) {
+            return new Article(in);
+        }
+
+        @Override
+        public Article[] newArray(int size) {
+            return new Article[size];
+        }
+    };
 
     public String getTitle(){
         return title;
@@ -51,5 +78,20 @@ public class Article {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(title);
+        dest.writeString(author);
+        dest.writeString(description);
+        dest.writeString(para1);
+        dest.writeString(para2);
+        dest.writeString(para3);
+        dest.writeString(category);
+        dest.writeString(image);
+    }
 }

@@ -454,7 +454,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
     public void selectCategory(View view){
         if(lockedcategory == false){
-            Intent intent = new Intent(this, CategoryActivity.class);
+            Intent intent = new Intent(this, TransactionCategoryActivity.class);
             startActivityForResult(intent, 1);
         }
         else{

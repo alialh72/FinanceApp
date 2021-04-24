@@ -17,14 +17,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class CategoryActivity extends AppCompatActivity {
+public class TransactionCategoryActivity extends AppCompatActivity {
     private View decorView;
     private ExpandableListView categoryExpandableList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_category);
+        setContentView(R.layout.activity_transaction_category);
 
         hideStatusBars();
         getSupportActionBar().hide();

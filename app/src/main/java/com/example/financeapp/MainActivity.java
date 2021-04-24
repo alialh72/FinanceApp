@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager2 viewPager2;
     private Handler sliderHandler = new Handler();
 
+
     private BottomNavigationView bottomNav;
     private NavController navController;
     private View decorView;
@@ -48,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView drawerUsername;
 
     public static userInfo UserInfo = new userInfo(); //THE OG USERINFO OBJECT
-    public static educationInfo EducationInfo;
+    public static educationInfo EducationInfo = new educationInfo();
 
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
     public static HashMap<String, gradientColors> gradientsCategories = new HashMap<String, gradientColors>();
@@ -65,14 +66,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        EducationInfo.readArticlesText(this);
+        EducationInfo.readDefinitionsText(this);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
 
         hideStatusBar();
         findViews();
         setupVars();
-
-        if(EducationInfo == null){ EducationInfo = new educationInfo(this); }
 
         navController = Navigation.findNavController(this, R.id.fragment);
         NavigationUI.setupWithNavController(bottomNav, navController);

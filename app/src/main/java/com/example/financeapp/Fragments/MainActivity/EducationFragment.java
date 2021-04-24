@@ -1,5 +1,6 @@
 package com.example.financeapp.Fragments.MainActivity;
 
+import android.content.Intent;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
@@ -18,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import com.example.financeapp.AddTransactionActivity;
+import com.example.financeapp.ArticleCategoryActivity;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.R;
@@ -39,6 +42,10 @@ public class EducationFragment extends Fragment {
 
     private TextView categoryTitle1, categoryTitle2;
     private ConstraintLayout categoryLayout1, categoryLayout2;
+
+    private ConstraintLayout constraintTaxes, constraintSavings, constraintFinance, constraintInvesting, constraintAccounts, constraintCrypto;
+
+    private ArticleCategory category1,category2;
 
 
 
@@ -84,6 +91,64 @@ public class EducationFragment extends Fragment {
 
             }
         });
+
+
+        categoryLayout1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(category1);
+            }
+        });
+
+
+        categoryLayout2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(category2);
+            }
+        });
+
+        constraintSavings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.SAVINGS));
+            }
+        });
+
+        constraintFinance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.FINANCE));
+            }
+        });
+
+        constraintTaxes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.TAXES));
+            }
+        });
+
+        constraintInvesting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.INVESTING));
+            }
+        });
+
+        constraintCrypto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.CRYPTO));
+            }
+        });
+
+        constraintAccounts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.ACCOUNTS));
+            }
+        });
     }
 
     private void findViews(){
@@ -98,6 +163,13 @@ public class EducationFragment extends Fragment {
 
         categoryLayout1 = getView().findViewById(R.id.category1);
         categoryLayout2 = getView().findViewById(R.id.category2);
+
+        constraintAccounts = getView().findViewById(R.id.constraintAccounts);
+        constraintCrypto = getView().findViewById(R.id.constraintCrypto);
+        constraintFinance = getView().findViewById(R.id.constraintFinance);
+        constraintTaxes = getView().findViewById(R.id.constraintTaxes);
+        constraintInvesting = getView().findViewById(R.id.constraintInvesting);
+        constraintSavings = getView().findViewById(R.id.constraintSavings);
     }
 
     private void initText(){
@@ -105,25 +177,30 @@ public class EducationFragment extends Fragment {
     }
 
     private void loadArticleRecyclerViews(articlesCategoryEnum cat1, articlesCategoryEnum cat2){
+
+        Log.d(TAG, "loadArticleRecyclerViews: "+EducationInfo.getArticlesByCategory(cat1));
         categoryRecycler1.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        categoryRecycler1.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat1),getActivity()));
+        categoryRecycler1.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat1),getActivity(), false));
         categoryRecycler1.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
         categoryRecycler2.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        categoryRecycler2.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat2),getActivity()));
+        categoryRecycler2.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat2),getActivity(), false));
         categoryRecycler2.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
     }
 
     private void setTopCategories(){
         ArrayList<ArticleCategory> articleCategories = EducationInfo.returnArticleCategories();
+        Log.d(TAG, "setTopCategories: articleCategories.size()"+articleCategories.size());
 
         Random rand = new Random();
-        int pos1 = rand.nextInt(articleCategories.size());
-        int pos2 = rand.nextInt(articleCategories.size());
-        while (pos1 == pos2){ pos2 = rand.nextInt(articleCategories.size()); } //makes sure the 2 category positions selected are not the same
+        int pos1 = rand.nextInt(articleCategories.size()-1);
+        int pos2 = rand.nextInt(articleCategories.size()-1);
+        while (pos1 == pos2){ pos2 = rand.nextInt(articleCategories.size()-1); }//makes sure the 2 category positions selected are not the same
+        Log.d(TAG, "setTopCategories: pos1:"+pos1);
+        Log.d(TAG, "setTopCategories: pos2:"+pos2);
 
-        ArticleCategory category1 = articleCategories.get(pos1);  //gets the string category and reverses it into an enum
-        ArticleCategory category2 = articleCategories.get(pos2);   //gets the string category and reverses it into an enum
+        category1 = articleCategories.get(pos1);  //gets the string category and reverses it into an enum
+        category2 = articleCategories.get(pos2);   //gets the string category and reverses it into an enum
 
         //set background and text of the category layouts
         GradientDrawable gd1 = new GradientDrawable(
@@ -146,6 +223,13 @@ public class EducationFragment extends Fragment {
 
 
         loadArticleRecyclerViews(category1.getCategory(), category2.getCategory());
+    }
+
+    private void startNewArticleCategory(ArticleCategory articleCategory){
+        Intent intent = new Intent(getActivity(), ArticleCategoryActivity.class);
+        intent.putExtra("ARTICLECATEGORY",articleCategory);
+        Log.d(TAG, "startNewArticleCategory: startarticlecat");
+        startActivity(intent);
     }
 
 

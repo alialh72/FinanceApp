@@ -1,9 +1,13 @@
 package com.example.financeapp.InfoManager;
 
+import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
@@ -22,17 +26,14 @@ public class educationInfo {
     private static ArrayList<Article> articles = new ArrayList<>();
     private static ArrayList<ArticleCategory> articleCategories = new ArrayList<>();
 
-    private static Context context;
-
-    public educationInfo(Context context){
-        this.context = context;
+    public educationInfo(){
 
         //definitions
-        readDefinitionsText();
+
 
         //articles
-        readArticlesText();
-        setArticleCategories();
+
+
     }
 
     public ArrayList<Definition> returnDefinitions(){
@@ -48,7 +49,7 @@ public class educationInfo {
     }
 
 
-    private void readDefinitionsText(){
+    public void readDefinitionsText(Context context){
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
@@ -73,8 +74,7 @@ public class educationInfo {
         }
     }
 
-
-    private void readArticlesText(){
+    public void readArticlesText(Context context){
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(
@@ -98,17 +98,24 @@ public class educationInfo {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Log.d(TAG, "readArticlesText: articles: "+articles);
+        setArticleCategories();
     }
 
     public ArrayList<Article> getArticlesByCategory(articlesCategoryEnum category){
         ArrayList<Article> filtered = new ArrayList<>();
-        for(Article a : articles){
-            if(a.getCategory().equals(category.getType())){
-                filtered.add(a);
+        ArticleCategory aCat = getArticleCategoryByEnum(category);
+
+        return aCat.getArticles();
+    }
+
+    public ArticleCategory getArticleCategoryByEnum(articlesCategoryEnum category){
+        for(ArticleCategory a : articleCategories){
+            if(a.getCategory().getType().equals(category.getType())){
+                return a;
             }
         }
-
-        return filtered;
+        return null;
     }
 
     private void setArticleCategories() {

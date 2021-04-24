@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.example.financeapp.CategoryActivity;
+import com.example.financeapp.TransactionCategoryActivity;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.gradientColors;
 import com.example.financeapp.R;
@@ -159,7 +159,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                ((CategoryActivity)mContext).setCategoryText(schild);
+                ((TransactionCategoryActivity)mContext).setCategoryText(schild);
 
 
                 /*selectedposition.put(listGroup.get(groupPosition), childPosition);
