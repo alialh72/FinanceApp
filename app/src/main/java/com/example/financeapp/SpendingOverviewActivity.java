@@ -21,7 +21,6 @@ public class SpendingOverviewActivity extends AppCompatActivity {
 
     private ViewPager2 viewPager;
     private TabLayout tabLayout;
-    private TabItem monthlySpending, spendingOvertime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +64,6 @@ public class SpendingOverviewActivity extends AppCompatActivity {
     private void findViews(){
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
-        monthlySpending = findViewById(R.id.monthSpendingTabItem);
-        spendingOvertime = findViewById(R.id.spendingTabItem);
         pageName = findViewById(R.id.pagename);
     }
 

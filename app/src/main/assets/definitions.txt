@@ -1,4 +1,4 @@
-Asset*A resource that has economic value with an expectation that it will provide future benefit.
+Asset*A resource that has economic value. Usually with the expectation that it will provide future benefit.
 Amalgamation*A combination or a joining of two or more companies into a new entity.
 Acquisition*A purchase of property or shares of a company for the purpose of retaining control over the property or company.
 Bond*Represents a loan between the issuer and the creditors. Bonds are usually issued by governments or companies in order to finance a specific project.

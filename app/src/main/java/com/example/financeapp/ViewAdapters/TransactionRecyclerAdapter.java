@@ -29,14 +29,14 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<Transactions> transactions;
-    private Context mContext;
+    private Context context;
     private String className;
 
     public TransactionRecyclerAdapter(ArrayList<Transactions> transactions, String className, Context context){
         this.transactions = transactions;
         this.className = className;
 
-        mContext = context;
+        this.context = context;
         Log.d(TAG, "transactionRecyclerAdapter: TransactionAdapter: "+transactions.size());
 
     }
@@ -60,10 +60,10 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
         double value = Double.parseDouble(transactions.get(position).getValue());
         if (value < 0){
-            holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.red));
+            holder.valueTextView.setTextColor(ContextCompat.getColor(context, R.color.red));
         }
         else{
-            holder.valueTextView.setTextColor(ContextCompat.getColor(mContext, R.color.greenIcon));
+            holder.valueTextView.setTextColor(ContextCompat.getColor(context, R.color.greenIcon));
         }
 
         //set value
@@ -101,13 +101,14 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
 
         //set icon image
-        int resID = mContext.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
+        //converts the text into the name of the icons drawable file
+        int resID = context.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  context.getPackageName());
         holder.iconImg.setImageResource(resID);
 
 
         //make wider if transactionFragment
         if(className.equals("transactionFragment")){
-            int width = (int) mContext.getResources().getDimension(R.dimen.transactionwidth);
+            int width = (int) context.getResources().getDimension(R.dimen.transactionwidth);
             holder.parentLayout.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
         }
 
@@ -119,9 +120,9 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
                 Log.d(TAG, "onClick: clicked on: "+position+ ", "+transactions.get(position).getValue());
                 Log.d(TAG, "onClick: transactions.size: "+transactions.size());
 
-                Intent intent = new Intent(mContext, SingleTransactionActivity.class);
+                Intent intent = new Intent(context, SingleTransactionActivity.class);
                 intent.putExtra("TRANSACTION", transactions.get(position));
-                mContext.startActivity(intent);
+                context.startActivity(intent);
 
             }
         });

@@ -21,8 +21,6 @@ public class ArticleActivity extends AppCompatActivity {
     private TextView topBarText, titleTextView, descriptionTextView, paragraphTextView1, paragraphTextView2, paragraphTextView3;
     private ImageView articleImageView;
 
-    private ImageView arrow;
-
     private Article article;
 
 

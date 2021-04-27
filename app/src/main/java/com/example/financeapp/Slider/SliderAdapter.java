@@ -27,7 +27,6 @@ import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private static final String TAG = "SliderAdapter";
-    private List<Definition> sliderDefinition;
     private List<Item> items;
     private ViewPager2 viewPager2;
     private Context context;
