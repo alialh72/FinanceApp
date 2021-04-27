@@ -18,7 +18,7 @@ import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
-import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
+import com.example.financeapp.ViewAdapters.TransactionRecyclerAdapter;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -257,7 +257,7 @@ public class monthlySpendingFragment extends Fragment {
             return 0;
         });
 
-        transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(sortedList, "MonthlySpendingActivity",getContext());
+        TransactionRecyclerAdapter transactionsAdapter = new TransactionRecyclerAdapter(sortedList, "MonthlySpendingActivity",getContext());
         transactionsRecyclerView.setAdapter(transactionsAdapter);
         transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
     }

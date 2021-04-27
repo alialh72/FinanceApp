@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.text.InputFilter;
 import android.text.InputType;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -30,22 +29,14 @@ import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
 import com.example.financeapp.ViewAdapters.RecyclerGroupAdapter;
-import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Currency;
-import java.util.Date;
-import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 

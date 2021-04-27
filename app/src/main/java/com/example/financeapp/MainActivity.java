@@ -256,7 +256,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void openSearch(View view){
-        Log.d(TAG, "SearchBox");
+        Intent intent = new Intent(this, EducationSearchActivity.class);
+        this.startActivity(intent);
     }
 
 

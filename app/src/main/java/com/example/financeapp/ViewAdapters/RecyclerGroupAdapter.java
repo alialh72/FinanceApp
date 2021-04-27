@@ -73,7 +73,7 @@ public class RecyclerGroupAdapter extends RecyclerView.Adapter<RecyclerGroupAdap
         Log.d(TAG, "onBindViewHolder: ChildArrayList: "+childArrayList);
 
         holder.childRecycler.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        transactionRecyclerAdapter childRecyclerAdapter = new transactionRecyclerAdapter(childArrayList,className,mContext);
+        TransactionRecyclerAdapter childRecyclerAdapter = new TransactionRecyclerAdapter(childArrayList,className,mContext);
         holder.childRecycler.setAdapter(childRecyclerAdapter);
         holder.childRecycler.setLayoutManager(new LinearLayoutManager(mContext, RecyclerView.VERTICAL, false));
     }

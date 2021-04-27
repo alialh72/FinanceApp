@@ -77,7 +77,7 @@ public class ArticleCategoryActivity extends AppCompatActivity {
         GradientDrawable gd1 = new GradientDrawable(
                 GradientDrawable.Orientation.BR_TL,
                 new int[] {articleCategory.getColor(), articleCategory.getColor()});
-        gd1.setCornerRadius(35f);
+        gd1.setCornerRadius(0f);
 
         backgroundConstraint.setBackgroundDrawable(gd1);
     }

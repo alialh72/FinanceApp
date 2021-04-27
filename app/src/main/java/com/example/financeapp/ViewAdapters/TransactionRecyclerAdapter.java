@@ -23,17 +23,16 @@ import com.example.financeapp.Objects.gradientColors;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Currency;
 
-public class transactionRecyclerAdapter extends RecyclerView.Adapter<transactionRecyclerAdapter.ViewHolder>{
+public class TransactionRecyclerAdapter extends RecyclerView.Adapter<TransactionRecyclerAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<Transactions> transactions;
     private Context mContext;
     private String className;
 
-    public transactionRecyclerAdapter(ArrayList<Transactions> transactions,String className,Context context){
+    public TransactionRecyclerAdapter(ArrayList<Transactions> transactions, String className, Context context){
         this.transactions = transactions;
         this.className = className;
 

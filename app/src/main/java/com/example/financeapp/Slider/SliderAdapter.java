@@ -1,5 +1,8 @@
 package com.example.financeapp.Slider;
 
+import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.financeapp.ArticleActivity;
+import com.example.financeapp.ArticleCategoryActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.Objects.Insight;
@@ -16,16 +21,21 @@ import com.example.financeapp.R;
 
 import java.util.List;
 
+import static android.content.ContentValues.TAG;
+import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private static final String TAG = "";
+    private static final String TAG = "SliderAdapter";
     private List<Definition> sliderDefinition;
     private List<Item> items;
     private ViewPager2 viewPager2;
+    private Context context;
 
-    public SliderAdapter(List<Item> items, ViewPager2 viewPager2) {
+    public SliderAdapter(List<Item> items, ViewPager2 viewPager2, Context context) {
         this.items = items;
         this.viewPager2 = viewPager2;
+        this.context = context;
     }
 
 
@@ -87,6 +97,18 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ((ArticleViewHolder) holder).setTitle(article);
             ((ArticleViewHolder) holder).setAuthor(article);
             ((ArticleViewHolder) holder).setDescription(article);
+            
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ArticleActivity.class);
+                    intent.putExtra("ARTICLE",article);
+                    Log.d(TAG, "startNewArticle");
+                    context.startActivity(intent);
+                }
+            });
+            
+            
 
         }
 

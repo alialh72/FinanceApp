@@ -29,7 +29,7 @@ import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
 import com.example.financeapp.Slider.Item;
 import com.example.financeapp.Slider.SliderAdapter;
-import com.example.financeapp.ViewAdapters.transactionRecyclerAdapter;
+import com.example.financeapp.ViewAdapters.TransactionRecyclerAdapter;
 import com.example.financeapp.Enums.categoriesEnum;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -204,7 +204,7 @@ public class HomeFragment extends Fragment{
         items.add(new Item(1, selectedArticle));
         items.add(new Item(2, new Insight("This do be your insight doe")));
 
-        viewPager2.setAdapter(new SliderAdapter(items, viewPager2));
+        viewPager2.setAdapter(new SliderAdapter(items, viewPager2, getActivity()));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
@@ -330,7 +330,7 @@ public class HomeFragment extends Fragment{
 
         if (UserInfo.returnTransactions().size() > 0){
             transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-            transactionRecyclerAdapter transactionsAdapter = new transactionRecyclerAdapter(getRecentTransactions(),"HomeFragment",getActivity());
+            TransactionRecyclerAdapter transactionsAdapter = new TransactionRecyclerAdapter(getRecentTransactions(),"HomeFragment",getActivity());
             transactionsRecyclerView.setAdapter(transactionsAdapter);
             transactionsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
         }
