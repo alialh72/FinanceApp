@@ -55,6 +55,18 @@ public class SpendingOverviewActivity extends AppCompatActivity {
 
             }
         });
+
+        viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+
+                Log.d(TAG, "onPageSelected: position: "+position);
+                TabLayout.Tab tab = tabLayout.getTabAt(position);
+                tab.select();
+
+            }
+        });
         
 
 

@@ -96,6 +96,14 @@ public class RecyclerGroupAdapter extends RecyclerView.Adapter<RecyclerGroupAdap
         return arrayListGroup.size();
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        if (childHashmap.get(arrayListGroup.get(position)) == null){   //checks if the childlist is empty
+            return 0;
+        }
+        return 1;
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView groupHeader;
         RecyclerView childRecycler;

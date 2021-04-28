@@ -44,11 +44,13 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/accountbalanceconstraint"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
+                android:layout_width="340dp"
+                android:layout_height="120dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/nooutline"
-                android:padding="18dp"
+                android:paddingVertical="15dp"
+                android:paddingLeft="18dp"
+                android:paddingRight="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearconstraint">
@@ -60,8 +62,8 @@
                     android:layout_height="wrap_content"
                     android:text="Account Balance:"
                     android:textColor="@color/black"
-                    android:textSize="15dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="19dp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -71,23 +73,22 @@
                     android:layout_height="wrap_content"
                     android:text="CA$ 32,421.42"
                     android:textColor="@color/black"
-                    android:textSize="27dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="33dp"
+
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-                <Button
-                    android:id="@+id/modifyBalance"
-                    android:layout_width="143dp"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="13dp"
-                    android:text="Modify Balance"
-                    android:textSize="11dp"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
+
+                <ImageView
+                    android:id="@+id/modify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:foreground="?attr/selectableItemBackgroundBorderless"
+                    android:padding="2dp"
+                    android:src="@drawable/threedots"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/accountBalanceText" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>

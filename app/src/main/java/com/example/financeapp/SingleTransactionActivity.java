@@ -168,13 +168,11 @@ public class SingleTransactionActivity extends AppCompatActivity implements Merc
     public void ValueOnClick(View view){
         Intent intent = new Intent(this, ValueActivity.class);
         startActivityForResult(intent, 2);
-        Log.d(TAG, "CategoryOnClick: testttt");
     }
 
     public void CategoryOnClick(View view){
         Intent intent = new Intent(this, TransactionCategoryActivity.class);
         startActivityForResult(intent, 1);
-        Log.d(TAG, "CategoryOnClick: testttt");
     }
 
     @Override

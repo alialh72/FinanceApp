@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.example.financeapp.FilterActivity;
 import com.example.financeapp.TransactionCategoryActivity;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.gradientColors;
@@ -29,11 +30,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     List<String> listGroup;
     HashMap<String,List<String>> listChild;
     Context mContext;
+    String activity;
 
     //constructor
-    public ExpandableListAdapter(List<String> listGroup, HashMap<String, List<String>> listChild, Context context){
+    public ExpandableListAdapter(List<String> listGroup, HashMap<String, List<String>> listChild, String activity,Context context){
         this.listGroup = listGroup;
         this.listChild = listChild;
+        this.activity = activity;
         mContext = context;
         Log.d(TAG, "MainAdapter: listgroup: " + listGroup);
         Log.d(TAG, "MainAdapter: listchild: " + listChild);
@@ -159,7 +162,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
 
-                ((TransactionCategoryActivity)mContext).setCategoryText(schild);
+                if(activity.equals("filter")){
+                    ((FilterActivity)mContext).selectedCategory(schild);
+                }
+                else if(activity.equals("transactionCat")){
+                    ((TransactionCategoryActivity)mContext).setCategoryText(schild);
+                }
+
 
 
                 /*selectedposition.put(listGroup.get(groupPosition), childPosition);

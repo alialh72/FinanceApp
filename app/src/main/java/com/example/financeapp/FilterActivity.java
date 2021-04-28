@@ -7,6 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.ViewAdapters.ExpandableListAdapter;
@@ -17,19 +23,33 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class TransactionCategoryActivity extends AppCompatActivity {
+public class FilterActivity extends AppCompatActivity {
+
     private View decorView;
     private ExpandableListView categoryExpandableList;
+
+    private TextView topBarText;
+
+    private ScrollView scrollView;
+
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+
+    private Boolean categorySelected = false;
+    private String selectedFilter = "";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_category);
+        setContentView(R.layout.activity_filter);
 
         hideStatusBars();
         getSupportActionBar().hide();
         findViews();
         ExpandableAdapter();
+
+        topBarText.setText("Filters");
     }
 
     private void hideStatusBars(){
@@ -45,7 +65,10 @@ public class TransactionCategoryActivity extends AppCompatActivity {
     }
 
     private void findViews(){
+        radioGroup = findViewById(R.id.radioGroup);
+        scrollView = findViewById(R.id.scrollView);
         categoryExpandableList = findViewById(R.id.expandable_list);
+        topBarText = findViewById(R.id.pagename);
     }
 
     private int hideSystemBars(){
@@ -70,18 +93,39 @@ public class TransactionCategoryActivity extends AppCompatActivity {
             enumChild.put(main.getDisplayableType(), subs);
             enumParent.add(main.getDisplayableType());
         }
-        ExpandableListAdapter adapter = new ExpandableListAdapter(enumParent, enumChild, "transactionCat",this);
+        ExpandableListAdapter adapter = new ExpandableListAdapter(enumParent, enumChild,"filter", this);
         categoryExpandableList.setAdapter(adapter);
     }
 
-    public void GoBack(View view){
-        finish();
-    }
 
-    public void setCategoryText(String category){
+    public void selectedCategory(String category){
         Intent resultIntent = new Intent();
         resultIntent.putExtra("Category", category);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }
+
+    public void checkButton(View v){
+        int radioId = radioGroup.getCheckedRadioButtonId();
+
+        radioButton = findViewById(radioId);
+
+        categorySelected = true;
+        selectedFilter = (String) radioButton.getText();
+        Toast.makeText(this, "Selected Filter: " + radioButton.getText(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void GoBack(View view){
+        if(categorySelected == true){
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("Filter", selectedFilter);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
+        }
+        else{
+            finish();
+        }
+
+    }
+
 }

@@ -25,7 +25,7 @@ public class MerchantDialog extends AppCompatDialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View view = inflater.inflate(R.layout.dialog_layout, null);
+        View view = inflater.inflate(R.layout.merchant_dialog_layout, null);
 
         builder.setView(view)
                 .setTitle("Merchant")
