@@ -24,7 +24,7 @@ public class ArticleCategoryActivity extends AppCompatActivity {
     private static final String TAG = "ArticleCategoryActivity";
     private View decorView;
 
-    private TextView topBarText, categoryTitle;
+    private TextView categoryTitle;
     private RecyclerView articleRecycler;
 
     private ConstraintLayout backgroundConstraint;
@@ -51,7 +51,6 @@ public class ArticleCategoryActivity extends AppCompatActivity {
     }
 
     private void findViews(){
-        topBarText = findViewById(R.id.pagename);
         categoryTitle = findViewById(R.id.categoryTitle);
         articleRecycler = findViewById(R.id.articlesRecycler);
         backgroundConstraint = findViewById(R.id.background);
@@ -83,7 +82,6 @@ public class ArticleCategoryActivity extends AppCompatActivity {
     }
 
     private void setText(){
-        topBarText.setText("");
         categoryTitle.setText(articleCategory.getCategory().getType());
     }
 

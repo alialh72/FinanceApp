@@ -33,7 +33,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     String activity;
 
     //constructor
-    public ExpandableListAdapter(List<String> listGroup, HashMap<String, List<String>> listChild, String activity,Context context){
+    public ExpandableListAdapter(List<String> listGroup, HashMap<String, List<String>> listChild,Context context){
         this.listGroup = listGroup;
         this.listChild = listChild;
         this.activity = activity;
@@ -92,14 +92,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         ,viewGroup, false);
 
         //initialise and assign variables
-        //ConstraintLayout iconLayout = view.findViewById(R.id.iconconstraint);
-        //ImageView icon = view.findViewById(R.id.icon);
+        ConstraintLayout iconLayout = view.findViewById(R.id.iconconstraint);
+        ImageView icon = view.findViewById(R.id.icon);
+
         TextView headerCategory = view.findViewById(R.id.category);
         String sgroup = String.valueOf(getGroup(groupPosition));
 
         headerCategory.setText(sgroup);
 
-        /*gradientColors gradient = MainActivity.gradientsCategories.get(listGroup.get(groupPosition));
+        //set background color
+        gradientColors gradient = MainActivity.gradientsCategories.get(listGroup.get(groupPosition));
 
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BR_TL,
@@ -108,9 +110,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         iconLayout.setBackgroundDrawable(gd);
 
-
+        //set icon
         int resID = mContext.getResources().getIdentifier(listGroup.get(groupPosition).toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
-        icon.setImageResource(resID);*/
+        icon.setImageResource(resID);
 
 
         //return view
@@ -124,8 +126,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .inflate(R.layout.category_item_expandable
                         ,viewGroup, false);
 
-        ConstraintLayout iconLayout = view.findViewById(R.id.iconconstraint);
-        ImageView icon = view.findViewById(R.id.icon);
+
 
         //initialise and assign variables
         TextView subCategoryView = view.findViewById(R.id.category);
@@ -143,44 +144,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             subCategoryView.setTypeface(null, Typeface.ITALIC);
         }
 
-        //set background color
-        gradientColors gradient = MainActivity.gradientsCategories.get(listGroup.get(groupPosition));
 
-        GradientDrawable gd = new GradientDrawable(
-                GradientDrawable.Orientation.BR_TL,
-                new int[] {gradient.getColor1(),gradient.getColor2()});
-        gd.setCornerRadius(25f);
-
-        iconLayout.setBackgroundDrawable(gd);
-
-        //set icon
-        int resID = mContext.getResources().getIdentifier(listGroup.get(groupPosition).toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
-        icon.setImageResource(resID);
 
         //setonclicklistener
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(activity.equals("filter")){
-                    ((FilterActivity)mContext).selectedCategory(schild);
-                }
-                else if(activity.equals("transactionCat")){
-                    ((TransactionCategoryActivity)mContext).setCategoryText(schild);
-                }
-
-
-
-                /*selectedposition.put(listGroup.get(groupPosition), childPosition);
-                TextView textView = finalView.findViewById(R.id.textView);
-                Toast.makeText(viewGroup.getContext()
-                        ,schild,Toast.LENGTH_SHORT).show();
-
-                Log.d(TAG, "onClick: "+schild+" " + sgroup);
-
-                ((food_page)viewGroup.getContext()).addtoArray(sgroup, schild);
-                //Log.d(TAG, "onClick: image draw " + imageView.getDrawable());
-                notifyDataSetChanged();*/
+                ((TransactionCategoryActivity) mContext).setCategoryText(schild);
             }
         });
 

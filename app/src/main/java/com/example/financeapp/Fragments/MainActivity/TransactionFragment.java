@@ -27,9 +27,11 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.financeapp.ArticleActivity;
 import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.FilterActivity;
 import com.example.financeapp.MainActivity;
+import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
 import com.example.financeapp.TransactionCategoryActivity;
@@ -38,28 +40,27 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.text.NumberFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Currency;
 
 import static com.example.financeapp.MainActivity.UserInfo;
 import static android.content.ContentValues.TAG;
 
-public class transactionFragment extends Fragment{
-
-    private Button modifyButton;
-
+public class TransactionFragment extends Fragment{
     private ImageView userButton, modifyDropdown;
     private ConstraintLayout filterButton;
 
     private TextView accountBalanceText, helloUsername;
     private RecyclerView transactionsGroupRecycler;
 
-    private LinearLayoutManager layoutManager;
 
 
-    public transactionFragment() {
+    public TransactionFragment() {
         // Required empty public constructor
     }
 
@@ -74,7 +75,7 @@ public class transactionFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         findViews();
         initText();
-        recyclerViewInit();
+        recyclerViewInit(UserInfo.returnTransactions(), false);
 
 
         //demo user button
@@ -151,8 +152,13 @@ public class transactionFragment extends Fragment{
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), FilterActivity.class);
-                startActivityForResult(intent, 1);
+                if (UserInfo.returnTransactions().size() == 0){
+                    Toast.makeText(getActivity(), "No transactions to filter", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Intent intent = new Intent(getActivity(), FilterActivity.class);
+                    startActivityForResult(intent, 1);
+                }
             }
         });
     }
@@ -163,13 +169,20 @@ public class transactionFragment extends Fragment{
         switch(requestCode) {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
-                    if(data.getStringExtra("Category") != null){
+                    if((data.getStringExtra("Category") != null) && (data.getStringExtra("Filter") != null)){
+                        String category = data.getStringExtra("Category");
+                        String filter = data.getStringExtra("Filter");
 
-
-
+                        sortBy(filterByCategory(category), filter);;
                     }
                     else if(data.getStringExtra("Filter") != null){
-
+                        String filter = data.getStringExtra("Filter");
+                        sortBy(UserInfo.returnTransactions(), filter);
+                    }
+                    else if(data.getStringExtra("Category") != null){
+                        String category = data.getStringExtra("Category");
+                        Log.d(TAG, "onActivityResult: category: "+ category);
+                        recyclerViewInit(filterByCategory(category), false);
                     }
                 }
                 break;
@@ -177,6 +190,42 @@ public class transactionFragment extends Fragment{
 
         }
     }
+
+    private ArrayList<Transactions> filterByCategory(String category){
+        ArrayList<Transactions> filteredTransactions = new ArrayList<>();
+        for (Transactions t : UserInfo.returnTransactions()){
+            if(t.getMainCategory().equals(category)){
+                filteredTransactions.add(t);
+            }
+        }
+        Log.d(TAG, "filterByCategory: filtered: "+filteredTransactions);
+        if (filteredTransactions.size() == 0){
+            Toast.makeText(getActivity(), "No transactions match that category", Toast.LENGTH_SHORT).show();
+        }
+        return filteredTransactions;
+    }
+
+    private void sortBy(ArrayList<Transactions> transactions, String sort){
+        ArrayList<Transactions> dupe = new ArrayList<>(transactions);
+        if (sort.equals("Date: New to Old")){
+            recyclerViewInit(dupe, false);
+        }
+        else if(sort.equals("Date: Old to New")){
+            recyclerViewInit(dupe, true);
+        }
+        else{
+            ArrayList<String> groupList = new ArrayList<>();
+            ListMultimap<String, Transactions> childHashMap = ArrayListMultimap.create();
+
+            groupList.add(sort);
+            for (Transactions t : transactions){
+                childHashMap.put(sort, t);
+            }
+
+            loadRecyclerViews(groupList, childHashMap, sort);
+        }
+    }
+
 
     public void applyBalanceFragment(double balance){
         NumberFormat format = NumberFormat.getCurrencyInstance();
@@ -213,28 +262,39 @@ public class transactionFragment extends Fragment{
         accountBalanceText.setText(format.format(MainActivity.UserInfo.returnBalance()));
     }
 
-    private void loadRecyclerViews(ArrayList<String> transactionsGroupList, ListMultimap<String, Transactions> childHashMap){
+    private void loadRecyclerViews(ArrayList<String> transactionsGroupList, ListMultimap<String, Transactions> childHashMap, String sortBy){
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
 
         transactionsGroupRecycler.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        RecyclerGroupAdapter groupAdapter = new RecyclerGroupAdapter(getActivity(), transactionsGroupList, childHashMap, "transactionFragment", getContext());
+        RecyclerGroupAdapter groupAdapter = new RecyclerGroupAdapter(transactionsGroupList, childHashMap, "transactionFragment", sortBy,getContext());
         transactionsGroupRecycler.setAdapter(groupAdapter);
         transactionsGroupRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
     }
 
-    private void recyclerViewInit() {
-        if (UserInfo.returnTransactions().size() > 0) {
+    private void recyclerViewInit(ArrayList<Transactions> transactions, boolean reversed) {
+        ArrayList<Transactions> mainArray = new ArrayList<>(transactions);
+        if (mainArray.size() > 0) {
             ArrayList<String> transactionsGroupList = new ArrayList<>();
 
             ListMultimap<String, Transactions> childHashMap = ArrayListMultimap.create();
 
-            transactionsGroupList.add("Today");
-            transactionsGroupList.add("Past Week");
-            transactionsGroupList.add("Past Month");
-            transactionsGroupList.add("Past Year");
-            transactionsGroupList.add("All Time");
+            if (reversed == true){
+                transactionsGroupList.add("All Time");
+                transactionsGroupList.add("Past Year");
+                transactionsGroupList.add("Past Month");
+                transactionsGroupList.add("Past Week");
+                transactionsGroupList.add("Today");
+            }
+            else{
+                transactionsGroupList.add("Today");
+                transactionsGroupList.add("Past Week");
+                transactionsGroupList.add("Past Month");
+                transactionsGroupList.add("Past Year");
+                transactionsGroupList.add("All Time");
+            }
 
-            for (Transactions t : UserInfo.returnTransactions()) {
+
+            for (Transactions t : mainArray) {
                 LocalDate currentDate = LocalDate.now();
 
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -255,13 +315,9 @@ public class transactionFragment extends Fragment{
 
             }
 
-            loadRecyclerViews(transactionsGroupList, childHashMap);
+            loadRecyclerViews(transactionsGroupList, childHashMap, "date");
         }
+
     }
-
-
-
-
-
 
 }

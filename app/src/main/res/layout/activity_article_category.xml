@@ -21,36 +21,32 @@
             android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/linearconstraint"
-                android:layout_width="match_parent"
-                android:layout_height="68dp"
-                android:background="@null"
-                android:elevation="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-
-                <include
-                    layout="@layout/secondarytopbar"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="700dp"
                 android:paddingTop="10dp"
-                android:paddingHorizontal="20dp"
+
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="60dp"
                 app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/arrow"
+                    android:layout_width="30dp"
+                    android:layout_height="20dp"
+                    android:layout_marginLeft="10dp"
+                    android:adjustViewBounds="true"
+                    android:gravity="center"
+                    android:onClick="GoBack"
+                    android:rotation="180"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_rotate_arrow"
+
+                    app:layout_constraintBottom_toBottomOf="@+id/categoryTitle"
+                    app:layout_constraintStart_toStartOf="parent"
+
+                    app:layout_constraintTop_toTopOf="@+id/categoryTitle"
+                    app:tint="@color/white" />
 
                 <TextView
                     android:id="@+id/categoryTitle"
@@ -60,8 +56,9 @@
                     android:layout_marginTop="15dp"
                     android:textColor="@color/white"
                     android:textStyle="bold"
+                    android:layout_marginLeft="10dp"
                     android:textSize="35dp"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/arrow"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -70,6 +67,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:layout_marginTop="50dp"
+                    android:layout_marginHorizontal="20dp"
 
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

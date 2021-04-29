@@ -41,7 +41,7 @@ public class EducationFragment extends Fragment {
     private RecyclerView categoryRecycler1, categoryRecycler2;
 
     private TextView categoryTitle1, categoryTitle2;
-    private ConstraintLayout categoryLayout1, categoryLayout2;
+    private ConstraintLayout categoryLayout1, categoryLayout2, categoryClickable1, categoryClickable2;
 
     private ConstraintLayout constraintTaxes, constraintSavings, constraintFinance, constraintInvesting, constraintAccounts, constraintCrypto;
 
@@ -108,6 +108,22 @@ public class EducationFragment extends Fragment {
             }
         });
 
+
+        categoryClickable1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(category1);
+            }
+        });
+
+
+        categoryClickable2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startNewArticleCategory(category2);
+            }
+        });
+
         constraintSavings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -163,6 +179,9 @@ public class EducationFragment extends Fragment {
 
         categoryLayout1 = getView().findViewById(R.id.category1);
         categoryLayout2 = getView().findViewById(R.id.category2);
+
+        categoryClickable1 = getView().findViewById(R.id.categoryClickable1);
+        categoryClickable2 = getView().findViewById(R.id.categoryClickable2);
 
         constraintAccounts = getView().findViewById(R.id.constraintAccounts);
         constraintCrypto = getView().findViewById(R.id.constraintCrypto);

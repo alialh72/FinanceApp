@@ -1,30 +1,27 @@
 package com.example.financeapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ExpandableListView;
 
 import com.example.financeapp.Enums.categoriesEnum;
-import com.example.financeapp.ViewAdapters.ExpandableListAdapter;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
+import com.example.financeapp.ViewAdapters.MainCategoryRecyclerAdapter;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
-public class TransactionCategoryActivity extends AppCompatActivity {
+public class TransactionsMainCategoryActivity extends AppCompatActivity {
     private View decorView;
-    private ExpandableListView categoryExpandableList;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transaction_category);
+        setContentView(R.layout.activity_transactions_main_category);
 
         hideStatusBars();
         getSupportActionBar().hide();
@@ -45,7 +42,7 @@ public class TransactionCategoryActivity extends AppCompatActivity {
     }
 
     private void findViews(){
-        categoryExpandableList = findViewById(R.id.expandable_list);
+        recyclerView = findViewById(R.id.recyclerView);
     }
 
     private int hideSystemBars(){
@@ -53,25 +50,13 @@ public class TransactionCategoryActivity extends AppCompatActivity {
     }
 
     private void ExpandableAdapter(){
-        ListMultimap<String, String> MainSubCategories = ArrayListMultimap.create();
-
-        for(categoriesEnum.SubCategories sub : categoriesEnum.SubCategories.values()){
-            for (categoriesEnum.MainCategories main : categoriesEnum.MainCategories.values()){
-                if (sub.getDisplayableType() == main.getDisplayableType()){
-                    MainSubCategories.put(main.getDisplayableType(), sub.getLabel());
-                }
-            }
-        }
-
-        List<String> enumParent = new ArrayList<>();
-        HashMap<String, List<String>> enumChild = new HashMap<>();
+        ArrayList<String> enumParent = new ArrayList<>();
         for(categoriesEnum.MainCategories main : categoriesEnum.MainCategories.values()){
-            List<String> subs = MainSubCategories.get(main.getDisplayableType());
-            enumChild.put(main.getDisplayableType(), subs);
             enumParent.add(main.getDisplayableType());
         }
-        ExpandableListAdapter adapter = new ExpandableListAdapter(enumParent, enumChild,this);
-        categoryExpandableList.setAdapter(adapter);
+        MainCategoryRecyclerAdapter adapter = new MainCategoryRecyclerAdapter(enumParent,this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
     }
 
     public void GoBack(View view){

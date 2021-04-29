@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinanceApp">
-        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".TransactionsMainCategoryActivity"></activity>
+        <activity android:name=".FilterActivity" />
         <activity android:name=".EducationSearchActivity" />
         <activity android:name=".ArticleCategoryActivity" />
         <activity android:name=".ArticleActivity" />
