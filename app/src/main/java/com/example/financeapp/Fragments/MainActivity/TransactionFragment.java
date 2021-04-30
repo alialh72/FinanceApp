@@ -55,7 +55,7 @@ public class TransactionFragment extends Fragment{
     private ImageView userButton, modifyDropdown;
     private ConstraintLayout filterButton;
 
-    private TextView accountBalanceText, helloUsername;
+    private TextView accountBalanceText, helloUsername, resetFilters;
     private RecyclerView transactionsGroupRecycler;
 
 
@@ -161,6 +161,13 @@ public class TransactionFragment extends Fragment{
                 }
             }
         });
+
+        resetFilters.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                recyclerViewInit(UserInfo.returnTransactions(), false);
+            }
+        });
     }
 
     @Override
@@ -249,6 +256,7 @@ public class TransactionFragment extends Fragment{
         userButton = getView().findViewById(R.id.userButton);
         transactionsGroupRecycler = getView().findViewById(R.id.transactionsGroupRecycler);
         filterButton = getView().findViewById(R.id.filterButton);
+        resetFilters = getView().findViewById(R.id.resetFilters);
     }
 
     public void initText(){

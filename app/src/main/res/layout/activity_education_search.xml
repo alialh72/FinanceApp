@@ -40,7 +40,7 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/nooutline"
                 android:textColor="@color/black"
-                android:hint="Search"
+                android:hint="Search by Article, Definition or Category..."
                 android:textSize="15dp"
                 android:drawableEnd="@drawable/ic_search"
                 android:drawablePadding="5dp"

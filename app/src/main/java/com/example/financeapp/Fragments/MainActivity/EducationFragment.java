@@ -214,9 +214,9 @@ public class EducationFragment extends Fragment {
         Random rand = new Random();
         Random rand2 = new Random();
 
-        int pos1 = rand.nextInt(articleCategories.size()-1);
-        int pos2 = rand2.nextInt(articleCategories.size()-1);
-        while (pos1 == pos2){ pos2 = rand2.nextInt(articleCategories.size()-1); }//makes sure the 2 category positions selected are not the same
+        int pos1 = rand.nextInt(articleCategories.size());
+        int pos2 = rand2.nextInt(articleCategories.size());
+        while (pos1 == pos2){ pos2 = rand2.nextInt(articleCategories.size()); }//makes sure the 2 category positions selected are not the same
         Log.d(TAG, "setTopCategories: pos1:"+pos1);
         Log.d(TAG, "setTopCategories: pos2:"+pos2);
 

@@ -6,15 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".FilterActivity">
 
-    <ScrollView
-        android:id="@+id/scrollView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/linearconstraint"
                 android:layout_width="match_parent"
@@ -193,9 +184,19 @@
                     app:layout_constraintTop_toTopOf="parent" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
+            <Button
+                android:layout_width="200dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="30dp"
+                android:onClick="ResetFilters"
+                android:text="Reset Filters"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
+
 
 
 

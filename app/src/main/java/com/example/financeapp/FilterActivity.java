@@ -17,11 +17,9 @@ import android.widget.Toast;
 public class FilterActivity extends AppCompatActivity {
 
     private View decorView;
-    private ConstraintLayout selectCategory;
+    private ConstraintLayout selectCategoryView;
 
-    private TextView topBarText, categorySelected;
-
-    private ScrollView scrollView;
+    private TextView topBarText, categorySelectedTextView;
 
     private RadioGroup radioGroup;
     private RadioButton radioButton;
@@ -47,7 +45,7 @@ public class FilterActivity extends AppCompatActivity {
 
         topBarText.setText("Filters");
 
-        selectCategory.setOnClickListener(new View.OnClickListener() {
+        selectCategoryView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TransactionsMainCategoryActivity.class);
@@ -63,7 +61,7 @@ public class FilterActivity extends AppCompatActivity {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
                     selectedCategory = data.getStringExtra("Category");
-                    categorySelected.setText("Category Selected: "+selectedCategory);
+                    categorySelectedTextView.setText(selectedCategory);
                     isSelected = true;
                     isSelectedCategory = true;
                 }
@@ -87,10 +85,9 @@ public class FilterActivity extends AppCompatActivity {
 
     private void findViews(){
         radioGroup = findViewById(R.id.radioGroup);
-        scrollView = findViewById(R.id.scrollView);
         topBarText = findViewById(R.id.pagename);
-        selectCategory = findViewById(R.id.selectCategory);
-        categorySelected = findViewById(R.id.categorySelected);
+        selectCategoryView = findViewById(R.id.selectCategory);
+        categorySelectedTextView = findViewById(R.id.categorySelected);
     }
 
     private int hideSystemBars(){
@@ -127,6 +124,16 @@ public class FilterActivity extends AppCompatActivity {
             finish();
         }
 
+    }
+
+    public void ResetFilters(View view){
+        isSelected =false;
+        isSelectedFilter = false;
+        isSelectedCategory = false;
+        selectedFilter = "";
+        selectedCategory = "";
+        radioGroup.clearCheck();
+        categorySelectedTextView.setText("Select Category");
     }
 
 }
