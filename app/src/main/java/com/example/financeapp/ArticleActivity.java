@@ -3,23 +3,27 @@ package com.example.financeapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.financeapp.Objects.Article;
+import com.google.android.youtube.player.YouTubeBaseActivity;
+import com.google.android.youtube.player.YouTubeInitializationResult;
+import com.google.android.youtube.player.YouTubePlayer;
+import com.google.android.youtube.player.YouTubePlayerView;
 
-public class ArticleActivity extends AppCompatActivity {
+public class ArticleActivity extends YouTubeBaseActivity {
 
     private View decorView;
-    private WebView webView;
+    private YouTubePlayerView youTubePlayerView;
 
     private TextView topBarText, titleTextView, descriptionTextView, paragraphTextView1, paragraphTextView2, paragraphTextView3;
-    private ImageView articleImageView;
+    private ImageView articleImageView, arrow;
 
     private Article article;
 
@@ -33,11 +37,28 @@ public class ArticleActivity extends AppCompatActivity {
         article = intent.getParcelableExtra("ARTICLE");
 
         hideStatusBars();
-        getSupportActionBar().hide();
 
 
         findViews();
         setInfo();
+
+        arrow.setColorFilter(Color.WHITE);
+
+        //setup webview
+        YouTubePlayer.OnInitializedListener onInitializedListener = new YouTubePlayer.OnInitializedListener() {
+            @Override
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
+                youTubePlayer.loadVideo(article.getWebsitePath());
+            }
+
+            @Override
+            public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
+
+            }
+        };
+
+        youTubePlayerView.initialize(PlayerConfig.API_KEY, onInitializedListener);
+
 
     }
 
@@ -49,8 +70,9 @@ public class ArticleActivity extends AppCompatActivity {
         paragraphTextView1 = findViewById(R.id.paragraph1);
         paragraphTextView2 = findViewById(R.id.paragraph2);
         paragraphTextView3 = findViewById(R.id.paragraph3);
-
+        youTubePlayerView = findViewById(R.id.webView);
         articleImageView = findViewById(R.id.image);
+        arrow = findViewById(R.id.arrow);
 
     }
 
@@ -90,4 +112,8 @@ public class ArticleActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
 }

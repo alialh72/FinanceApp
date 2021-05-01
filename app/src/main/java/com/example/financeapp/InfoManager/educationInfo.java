@@ -27,13 +27,6 @@ public class educationInfo {
     private static ArrayList<ArticleCategory> articleCategories = new ArrayList<>();
 
     public educationInfo(){
-
-        //definitions
-
-
-        //articles
-
-
     }
 
     public ArrayList<Definition> returnDefinitions(){
@@ -86,8 +79,8 @@ public class educationInfo {
                     // Split the line into different tokens (using the comma as a separator).
                     String[] splitLine = line.split("\\*");
 
-                    if(splitLine.length == 8){
-                        articles.add(new Article(splitLine[0], splitLine[1],splitLine[2], splitLine[3], splitLine[4], splitLine[5], articlesCategoryEnum.LOOKUP.get(splitLine[6]), splitLine[7]));
+                    if(splitLine.length == 9){
+                        articles.add(new Article(splitLine[0], splitLine[1],splitLine[2], splitLine[3], splitLine[4], splitLine[5], articlesCategoryEnum.LOOKUP.get(splitLine[6]), splitLine[7], splitLine[8]));
                     }
 
                 }

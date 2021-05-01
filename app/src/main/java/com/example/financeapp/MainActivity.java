@@ -37,9 +37,6 @@ import static android.content.ContentValues.TAG;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "";
-    private ViewPager2 viewPager2;
-    private Handler sliderHandler = new Handler();
-
 
     private BottomNavigationView bottomNav;
     private NavController navController;
@@ -54,11 +51,9 @@ public class MainActivity extends AppCompatActivity {
     public static ArrayList<gradientColors> gradients = new ArrayList<>();
     public static HashMap<String, gradientColors> gradientsCategories = new HashMap<String, gradientColors>();
 
-    public static boolean loaded = false;
     public static String date = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
     public static String month;
     public static String monthYear;
-    public static String[] months = {"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"};
 
     public static ArrayList<Integer> colors = new ArrayList<>();
 
@@ -66,8 +61,12 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        EducationInfo.readArticlesText(this);
-        EducationInfo.readDefinitionsText(this);
+
+        if(EducationInfo.returnArticles().size() == 0){
+            EducationInfo.readArticlesText(this);
+            EducationInfo.readDefinitionsText(this);
+        }
+
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);

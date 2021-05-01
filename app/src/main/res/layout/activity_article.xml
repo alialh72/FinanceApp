@@ -37,7 +37,7 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <WebView
+            <com.google.android.youtube.player.YouTubePlayerView
                 android:id="@+id/webView"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"

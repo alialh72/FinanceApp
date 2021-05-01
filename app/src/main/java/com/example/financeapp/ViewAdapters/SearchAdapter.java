@@ -1,6 +1,7 @@
 package com.example.financeapp.ViewAdapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.financeapp.ArticleActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.R;
@@ -106,6 +108,16 @@ public class SearchAdapter extends RecyclerView.Adapter{
                     .asBitmap()
                     .load(article.getImage())
                     .into(articleViewHolder.imageView);
+
+            articleViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ArticleActivity.class);
+                    intent.putExtra("ARTICLE",article);
+                    Log.d(TAG, "startNewArticle");
+                    context.startActivity(intent);
+                }
+            });
 
         }
 

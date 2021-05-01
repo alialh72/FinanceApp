@@ -36,6 +36,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Currency;
+import java.util.HashSet;
+import java.util.Set;
 
 import static android.content.ContentValues.TAG;
 
@@ -269,6 +271,7 @@ public class monthlySpendingFragment extends Fragment {
             if(MainActivity.UserInfo.getValueByCategory(c, "Expense", MainActivity.monthYear) > (0.6 * MainActivity.UserInfo.getMonthlySpending(MainActivity.monthYear))){
                 if (c != "Expense" && c != "Other" && c != "Income"){
                     insightsArray.add("We've noticed that you've spent a lot on "+c+" this month, consider cutting back on your spending.");
+                    break;
                 }
 
             }
@@ -293,6 +296,7 @@ public class monthlySpendingFragment extends Fragment {
 
             }
         }
+
 
 
         if(insightsArray.size() > 0){

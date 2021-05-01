@@ -8,9 +8,9 @@ import com.example.financeapp.Enums.categoriesEnum;
 
 public class Article implements Parcelable {
 
-    private String title, author,description,para1, para2, para3, category, image;
+    private String title, author,description,para1, para2, para3, category, image, websitePath;
 
-    public Article(String title, String author, String description, String para1, String para2, String para3, articlesCategoryEnum category, String image){
+    public Article(String title, String author, String description, String para1, String para2, String para3, articlesCategoryEnum category, String image, String websitePath){
         this.title = title;
         this.author = author;
         this.description = description;
@@ -19,6 +19,7 @@ public class Article implements Parcelable {
         this.para3 = para3;
         this.category = category.getType();
         this.image = image;
+        this.websitePath = websitePath;
 
     }
 
@@ -31,6 +32,7 @@ public class Article implements Parcelable {
         para3 = in.readString();
         category = in.readString();
         image = in.readString();
+        websitePath = in.readString();
     }
 
     public static final Creator<Article> CREATOR = new Creator<Article>() {
@@ -77,6 +79,8 @@ public class Article implements Parcelable {
         return image;
     }
 
+    public String getWebsitePath(){ return websitePath; }
+
 
     @Override
     public int describeContents() {
@@ -93,5 +97,6 @@ public class Article implements Parcelable {
         dest.writeString(para3);
         dest.writeString(category);
         dest.writeString(image);
+        dest.writeString(websitePath);
     }
 }

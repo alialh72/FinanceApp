@@ -81,6 +81,8 @@ public class EducationSearchActivity extends AppCompatActivity {
         Log.d(TAG, "filter: text: " + text);
         ArrayList<Object> filteredList = new ArrayList<Object>();
 
+        Log.d(TAG, "filter: educationarticles: "+EducationInfo.returnArticles().size());
+
         //filters through articles
         for (Article a : EducationInfo.returnArticles()){
             if(a.getTitle().toLowerCase().contains(text.toLowerCase()) || a.getCategory().toLowerCase().contains(text.toLowerCase())){
@@ -96,14 +98,14 @@ public class EducationSearchActivity extends AppCompatActivity {
             }
         }
 
-        Log.d(TAG, "filter: FilteredList: " + filteredList);
+        Log.d(TAG, "filter: FilteredList: " + filteredList.size());
 
         Set<Object> set = new HashSet<>(filteredList);
         filteredList.clear();
         filteredList.addAll(set);
 
 
-        Log.d(TAG, "filter: duplicates removed: " + filteredList);
+        Log.d(TAG, "filter: duplicates removed: " + filteredList.size());
 
         LocalAdapter.filterList(filteredList);
     }
