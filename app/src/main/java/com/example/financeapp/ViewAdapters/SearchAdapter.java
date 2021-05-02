@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.financeapp.ArticleActivity;
+import com.example.financeapp.DefinitionActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.R;
@@ -89,6 +90,16 @@ public class SearchAdapter extends RecyclerView.Adapter{
             Definition definition = (Definition) list.get(position);
 
             definitionViewHolder.word.setText(definition.getWord());
+
+            definitionViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DefinitionActivity.class);
+                    intent.putExtra("DEFINITION",definition);
+                    Log.d(TAG, "startNewDefinition");
+                    context.startActivity(intent);
+                }
+            });
 
         }
 

@@ -19,12 +19,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.example.financeapp.AddTransactionActivity;
 import com.example.financeapp.ArticleCategoryActivity;
+import com.example.financeapp.GlossaryActivity;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.R;
-import com.example.financeapp.ViewAdapters.miniArticleRecyclerAdapter;
+import com.example.financeapp.ViewAdapters.MiniArticleRecyclerAdapter;
 import com.example.financeapp.Enums.articlesCategoryEnum;
 
 import java.util.ArrayList;
@@ -44,6 +44,7 @@ public class EducationFragment extends Fragment {
     private ConstraintLayout categoryLayout1, categoryLayout2, categoryClickable1, categoryClickable2;
 
     private ConstraintLayout constraintTaxes, constraintSavings, constraintFinance, constraintInvesting, constraintAccounts, constraintCrypto;
+    private ConstraintLayout glossaryButton;
 
     private ArticleCategory category1,category2;
 
@@ -165,6 +166,16 @@ public class EducationFragment extends Fragment {
                 startNewArticleCategory(EducationInfo.getArticleCategoryByEnum(articlesCategoryEnum.ACCOUNTS));
             }
         });
+
+
+
+        glossaryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), GlossaryActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void findViews(){
@@ -189,6 +200,8 @@ public class EducationFragment extends Fragment {
         constraintTaxes = getView().findViewById(R.id.constraintTaxes);
         constraintInvesting = getView().findViewById(R.id.constraintInvesting);
         constraintSavings = getView().findViewById(R.id.constraintSavings);
+
+        glossaryButton = getView().findViewById(R.id.glossaryButton);
     }
 
     private void initText(){
@@ -199,11 +212,11 @@ public class EducationFragment extends Fragment {
 
         Log.d(TAG, "loadArticleRecyclerViews: "+EducationInfo.getArticlesByCategory(cat1));
         categoryRecycler1.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        categoryRecycler1.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat1),getActivity(), false));
+        categoryRecycler1.setAdapter(new MiniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat1),getActivity(), false));
         categoryRecycler1.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
         categoryRecycler2.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        categoryRecycler2.setAdapter(new miniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat2),getActivity(), false));
+        categoryRecycler2.setAdapter(new MiniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat2),getActivity(), false));
         categoryRecycler2.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
     }
 

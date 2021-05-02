@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -27,25 +26,18 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.financeapp.ArticleActivity;
-import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.FilterActivity;
 import com.example.financeapp.MainActivity;
-import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
-import com.example.financeapp.TransactionCategoryActivity;
-import com.example.financeapp.ViewAdapters.RecyclerGroupAdapter;
+import com.example.financeapp.ViewAdapters.TransactionGroupAdapter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Currency;
 
 import static com.example.financeapp.MainActivity.UserInfo;
@@ -274,7 +266,7 @@ public class TransactionFragment extends Fragment{
         Log.d(TAG, "initRecyclerView: init recyclerview locals");
 
         transactionsGroupRecycler.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        RecyclerGroupAdapter groupAdapter = new RecyclerGroupAdapter(transactionsGroupList, childHashMap, "transactionFragment", sortBy,getContext());
+        TransactionGroupAdapter groupAdapter = new TransactionGroupAdapter(transactionsGroupList, childHashMap, "transactionFragment", sortBy,getContext());
         transactionsGroupRecycler.setAdapter(groupAdapter);
         transactionsGroupRecycler.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.VERTICAL, false));
     }

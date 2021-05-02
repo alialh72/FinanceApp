@@ -54,11 +54,11 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         Log.d(TAG, "onBindViewHolder: called.");
+        Transactions transaction = transactions.get(position);
+        holder.merchantTextView.setText(transaction.getMerchant());
+        holder.categoryTextView.setText(transaction.getSubCategoryLabel());
 
-        holder.merchantTextView.setText(transactions.get(position).getMerchant());
-        holder.categoryTextView.setText(transactions.get(position).getSubCategoryLabel());
-
-        double value = Double.parseDouble(transactions.get(position).getValue());
+        double value = Double.parseDouble(transaction.getValue());
         if (value < 0){
             holder.valueTextView.setTextColor(ContextCompat.getColor(context, R.color.red));
         }
@@ -70,18 +70,18 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(2);
         format.setCurrency(Currency.getInstance("CAD"));
-        holder.valueTextView.setText(format.format(Double.parseDouble(transactions.get(position).getValue())));
+        holder.valueTextView.setText(format.format(Double.parseDouble(transaction.getValue())));
 
         //set date
-        if(transactions.get(position).getDate().equals(MainActivity.date)){
+        if(transaction.getDate().equals(MainActivity.date)){
             holder.dateTextView.setText("Today");
         }
         else{
-            holder.dateTextView.setText(transactions.get(position).getDate());
+            holder.dateTextView.setText(transaction.getDate());
         }
 
         //set background color
-        gradientColors gradient = MainActivity.gradientsCategories.get(transactions.get(position).getSubCategory().getDisplayableType());
+        gradientColors gradient = MainActivity.gradientsCategories.get(transaction.getSubCategory().getDisplayableType());
 
         GradientDrawable gd = new GradientDrawable(
                 GradientDrawable.Orientation.BR_TL,
@@ -102,7 +102,7 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
         //set icon image
         //converts the text into the name of the icons drawable file
-        int resID = context.getResources().getIdentifier(transactions.get(position).getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  context.getPackageName());
+        int resID = context.getResources().getIdentifier(transaction.getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  context.getPackageName());
         holder.iconImg.setImageResource(resID);
 
 
@@ -117,11 +117,11 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "onClick: clicked on: "+position+ ", "+transactions.get(position).getValue());
+                Log.d(TAG, "onClick: clicked on: "+position+ ", "+transaction.getValue());
                 Log.d(TAG, "onClick: transactions.size: "+transactions.size());
 
                 Intent intent = new Intent(context, SingleTransactionActivity.class);
-                intent.putExtra("TRANSACTION", transactions.get(position));
+                intent.putExtra("TRANSACTION", transaction);
                 context.startActivity(intent);
 
             }

@@ -2,42 +2,31 @@ package com.example.financeapp.ViewAdapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.GradientDrawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.ArticleActivity;
-import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.R;
-import com.example.financeapp.SingleTransactionActivity;
-import com.example.financeapp.Objects.Transactions;
-import com.example.financeapp.Objects.gradientColors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Currency;
 
-public class miniArticleRecyclerAdapter extends RecyclerView.Adapter<miniArticleRecyclerAdapter.ViewHolder>{
+public class MiniArticleRecyclerAdapter extends RecyclerView.Adapter<MiniArticleRecyclerAdapter.ViewHolder>{
     private static final String TAG = "RecyclerViewAdapter";
 
     private ArrayList<Article> articles;
     private boolean extended;
     private Context mContext;
 
-    public miniArticleRecyclerAdapter(ArrayList<Article> articles, Context context, boolean extended){
+    public MiniArticleRecyclerAdapter(ArrayList<Article> articles, Context context, boolean extended){
         this.articles = articles;
         this.extended = extended;
         mContext = context;

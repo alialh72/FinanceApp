@@ -1,6 +1,5 @@
 package com.example.financeapp.ViewAdapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 import java.text.ParseException;
@@ -24,14 +22,14 @@ import java.util.Collections;
 
 import static android.content.ContentValues.TAG;
 
-public class RecyclerGroupAdapter extends RecyclerView.Adapter<RecyclerGroupAdapter.ViewHolder> {
+public class TransactionGroupAdapter extends RecyclerView.Adapter<TransactionGroupAdapter.ViewHolder> {
     private ArrayList<String> arrayListGroup;
     private ListMultimap<String, Transactions> childHashmap;
     private String sortBy;
     private String className;
     private Context mContext;
 
-    public RecyclerGroupAdapter(ArrayList<String> arrayListGroup, ListMultimap<String, Transactions> childHashmap, String className, String sortBy,Context mContext){
+    public TransactionGroupAdapter(ArrayList<String> arrayListGroup, ListMultimap<String, Transactions> childHashmap, String className, String sortBy, Context mContext){
         this.sortBy = sortBy;
         this.arrayListGroup = arrayListGroup;
         this.childHashmap = childHashmap;
@@ -55,7 +53,7 @@ public class RecyclerGroupAdapter extends RecyclerView.Adapter<RecyclerGroupAdap
         }
 
 
-        return new RecyclerGroupAdapter.ViewHolder(view);
+        return new TransactionGroupAdapter.ViewHolder(view);
     }
 
     @Override

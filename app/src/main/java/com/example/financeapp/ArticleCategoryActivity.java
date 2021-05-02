@@ -13,11 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.example.financeapp.Objects.ArticleCategory;
-import com.example.financeapp.ViewAdapters.miniArticleRecyclerAdapter;
-
-import org.w3c.dom.Text;
-
-import static com.example.financeapp.MainActivity.EducationInfo;
+import com.example.financeapp.ViewAdapters.MiniArticleRecyclerAdapter;
 
 public class ArticleCategoryActivity extends AppCompatActivity {
 
@@ -87,7 +83,7 @@ public class ArticleCategoryActivity extends AppCompatActivity {
 
     private void setupRecyclerView(){
         articleRecycler.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
-        articleRecycler.setAdapter(new miniArticleRecyclerAdapter(articleCategory.getArticles(),this, true));
+        articleRecycler.setAdapter(new MiniArticleRecyclerAdapter(articleCategory.getArticles(),this, true));
         articleRecycler.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
     }
 

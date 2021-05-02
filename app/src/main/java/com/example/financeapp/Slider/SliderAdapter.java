@@ -14,6 +14,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.financeapp.ArticleActivity;
 import com.example.financeapp.ArticleCategoryActivity;
+import com.example.financeapp.DefinitionActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.Objects.Insight;
@@ -89,6 +90,16 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             ((DefinitionViewHolder) holder).setTitle(definition);
             ((DefinitionViewHolder) holder).setDescription(definition);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, DefinitionActivity.class);
+                    intent.putExtra("DEFINITION",definition);
+                    Log.d(TAG, "startNewDefinition");
+                    context.startActivity(intent);
+                }
+            });
         }
         else if(getItemViewType(position) == 1){
             Article article = (Article) items.get(position).getObject();

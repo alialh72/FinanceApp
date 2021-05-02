@@ -9,10 +9,8 @@
 
     <queries>
         <intent>
-            <action android:name="com.google.android.youtube.api.service.START"/>
+            <action android:name="com.google.android.youtube.api.service.START" />
         </intent>
-
-
     </queries>
 
     <application
@@ -22,7 +20,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.FinanceApp">
-        <activity android:name=".TransactionsMainCategoryActivity"></activity>
+        <activity android:name=".GlossaryActivity"></activity>
+        <activity android:name=".DefinitionActivity" />
+        <activity android:name=".TransactionsMainCategoryActivity" />
         <activity android:name=".FilterActivity" />
         <activity android:name=".EducationSearchActivity" />
         <activity android:name=".ArticleCategoryActivity" />
