@@ -80,6 +80,7 @@ public class educationInfo {
                     String[] splitLine = line.split("\\*");
 
                     if(splitLine.length == 9){
+                        //creates a new Article object and adds it to the list
                         articles.add(new Article(splitLine[0], splitLine[1],splitLine[2], splitLine[3], splitLine[4], splitLine[5], articlesCategoryEnum.LOOKUP.get(splitLine[6]), splitLine[7], splitLine[8]));
                     }
 
@@ -96,10 +97,9 @@ public class educationInfo {
     }
 
     public ArrayList<Article> getArticlesByCategory(articlesCategoryEnum category){
-        ArrayList<Article> filtered = new ArrayList<>();
-        ArticleCategory aCat = getArticleCategoryByEnum(category);
-
-        return aCat.getArticles();
+        //ArticleCategory contains all articles matching its category
+        ArticleCategory aCat = getArticleCategoryByEnum(category); //gets the ArticleCategory object from the enum
+        return aCat.getArticles(); //returns the articles
     }
 
     public ArticleCategory getArticleCategoryByEnum(articlesCategoryEnum category){

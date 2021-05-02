@@ -512,20 +512,22 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
 
     public void AddTransaction(View view){
         double value;
-        if(type.getLabel() == "Income"){
-            value = Double.parseDouble(numberString);
-        }
-        else{
-            value = Double.parseDouble("-"+numberString);
-        }
+        if (!(numberString.equals(""))){
+            if(type.getLabel() == "Income"){
+                value = Double.parseDouble(numberString);
+            }
+            else{
+                value = Double.parseDouble("-"+numberString);
+            }
 
-        if (!(value == 0)){
             categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
             MainActivity.UserInfo.addTransaction(subCategory, merchantName, value);
 
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+
         }
+
         else{
             Toast.makeText(this, "Transaction cannot be $0", Toast.LENGTH_SHORT).show();
         }

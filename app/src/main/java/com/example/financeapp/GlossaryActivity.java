@@ -63,6 +63,7 @@ public class GlossaryActivity extends AppCompatActivity {
                 childHashMap.put(firstletter, d);
             }
 
+            //removes duplicates
             Set<String> set = new HashSet<>(definitionGroupList);
             definitionGroupList.clear();
             definitionGroupList.addAll(set);

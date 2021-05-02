@@ -22,7 +22,7 @@ public class ArticleActivity extends YouTubeBaseActivity {
     private View decorView;
     private YouTubePlayerView youTubePlayerView;
 
-    private TextView topBarText, titleTextView, descriptionTextView, paragraphTextView1, paragraphTextView2, paragraphTextView3;
+    private TextView topBarText, titleTextView, authorTextView, descriptionTextView, paragraphTextView1, paragraphTextView2, paragraphTextView3;
     private ImageView articleImageView, arrow;
 
     private Article article;
@@ -66,6 +66,7 @@ public class ArticleActivity extends YouTubeBaseActivity {
     private void findViews(){
         topBarText = findViewById(R.id.pagename);
         titleTextView = findViewById(R.id.title);
+        authorTextView = findViewById(R.id.author);
         descriptionTextView = findViewById(R.id.description);
         paragraphTextView1 = findViewById(R.id.paragraph1);
         paragraphTextView2 = findViewById(R.id.paragraph2);
@@ -96,6 +97,7 @@ public class ArticleActivity extends YouTubeBaseActivity {
         topBarText.setText("");
 
         titleTextView.setText(article.getTitle());
+        authorTextView.setText(article.getAuthor());
         descriptionTextView.setText(article.getDescription());
         paragraphTextView1.setText(article.getPara1());
         paragraphTextView2.setText(article.getPara2());

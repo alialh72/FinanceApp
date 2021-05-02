@@ -13,17 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.financeapp.ArticleActivity;
-import com.example.financeapp.ArticleCategoryActivity;
 import com.example.financeapp.DefinitionActivity;
 import com.example.financeapp.Objects.Article;
+import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.R;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static android.content.ContentValues.TAG;
-import static androidx.viewpager.widget.PagerAdapter.POSITION_NONE;
+import static com.example.financeapp.MainActivity.EducationInfo;
 
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -31,6 +33,9 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private List<Item> items;
     private ViewPager2 viewPager2;
     private Context context;
+
+    public Article selectedArticle;
+    public Article selectedArticleFromCategory;
 
     public SliderAdapter(List<Item> items, ViewPager2 viewPager2, Context context) {
         this.items = items;
@@ -71,9 +76,9 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         else{
-            return new InsightsViewHolder(
+            return new ArticleCategoryViewHolder(
                     LayoutInflater.from(parent.getContext()).inflate(
-                            R.layout.slider_item_insight,
+                            R.layout.slider_item_category_article,
                             parent,
                             false
                     )
@@ -102,17 +107,15 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
         }
         else if(getItemViewType(position) == 1){
-            Article article = (Article) items.get(position).getObject();
+            selectedArticle = (Article) items.get(position).getObject();
 
-            ((ArticleViewHolder) holder).setTitle(article);
-            ((ArticleViewHolder) holder).setAuthor(article);
-            ((ArticleViewHolder) holder).setDescription(article);
+            ((ArticleViewHolder) holder).setArticle(selectedArticle);
             
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, ArticleActivity.class);
-                    intent.putExtra("ARTICLE",article);
+                    intent.putExtra("ARTICLE",selectedArticle);
                     Log.d(TAG, "startNewArticle");
                     context.startActivity(intent);
                 }
@@ -123,9 +126,19 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         else if(getItemViewType(position) == 2){
-            Insight insight = (Insight) items.get(position).getObject();
+            ArticleCategory articleCategory = (ArticleCategory) items.get(position).getObject();
 
-            ((InsightsViewHolder) holder).setInsight(insight);
+            ((ArticleCategoryViewHolder) holder).setArticle(articleCategory);
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ArticleActivity.class);
+                    intent.putExtra("ARTICLE",selectedArticleFromCategory);
+                    Log.d(TAG, "startNewArticle");
+                    context.startActivity(intent);
+                }
+            });
         }
     }
 
@@ -171,31 +184,47 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             description = itemView.findViewById(R.id.description);
         }
 
-        void setTitle(Article article){
+        void setArticle(Article article){
             title.setText(article.getTitle());
-        }
-
-        void setAuthor(Article article){author.setText("By "+article.getAuthor());}
-
-        void setDescription(Article article){
+            author.setText("By "+article.getAuthor());
             description.setText(article.getDescription());
         }
-
 
     }
 
 
-    class InsightsViewHolder extends RecyclerView.ViewHolder{
+    class ArticleCategoryViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView insightsTextView;
+        private TextView title, category, description, author;
 
-        InsightsViewHolder(@NonNull View itemView){
+        ArticleCategoryViewHolder(@NonNull View itemView){
             super(itemView);
-            insightsTextView = itemView.findViewById(R.id.insights);
+            title = itemView.findViewById(R.id.title);
+            category = itemView.findViewById(R.id.category);
+            author = itemView.findViewById(R.id.author);
+            description = itemView.findViewById(R.id.description);
         }
 
-        void setInsight(Insight insight){
-            insightsTextView.setText(insight.getInsight1());
+        void setArticle(ArticleCategory articleCategory){
+            category.setText(articleCategory.getCategory().getType() + ":");
+
+            //select random article from category
+            Random rand = new Random();
+            ArrayList<Article> articles = new ArrayList<>(articleCategory.getArticles());
+            int randomArticle = rand.nextInt(articles.size());
+            selectedArticleFromCategory = articles.get(randomArticle);
+
+            if (articleCategory.getArticles().size() > 1){
+                while(selectedArticle.getTitle().equals(selectedArticleFromCategory.getTitle())){
+                    randomArticle = rand.nextInt(articles.size());
+                    selectedArticleFromCategory = articles.get(randomArticle);
+                }
+            }
+
+
+            title.setText(selectedArticleFromCategory.getTitle());
+            author.setText("By "+selectedArticleFromCategory.getAuthor());
+            description.setText(selectedArticleFromCategory.getDescription());
         }
 
 

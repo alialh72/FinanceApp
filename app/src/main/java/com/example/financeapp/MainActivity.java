@@ -26,6 +26,7 @@ import com.example.financeapp.Objects.gradientColors;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -176,14 +177,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //Monthly Spending Page Clicked
-    public void monthlySpendingClicked(View view){
-        if (UserInfo.returnTransactions().size()>0){
-            Intent intent = new Intent(this, SpendingOverviewActivity.class);
-            this.startActivity(intent);
-        }
-        else{
-            Toast.makeText(this, "Start adding transactions to see your spending", Toast.LENGTH_SHORT).show();
-        }
+    public void monthlySpendingClicked(View view) throws ParseException {
+        openSpendingOverview();
     }
 
     //Starts the loading animation
@@ -194,11 +189,6 @@ public class MainActivity extends AppCompatActivity {
     //ends the loading animation
     public void endLoadScreen(){
         overlay.setVisibility(View.GONE);
-    }
-
-
-    public void setUserInfo(int selectedUserId){
-        MainActivity.UserInfo.setUser(selectedUserId, this);
     }
 
     public void refreshActivity(){
@@ -238,8 +228,12 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.closeDrawer(GravityCompat.START);
     }
 
-    public void NavSpendings(View view){
-        if (UserInfo.returnTransactions().size()>0){
+    public void NavSpendings(View view) throws ParseException {
+        openSpendingOverview();
+    }
+
+    private void openSpendingOverview() throws ParseException {
+        if (UserInfo.getMonthlySpending(monthYear) > 0){
             Intent intent = new Intent(this, SpendingOverviewActivity.class);
             startActivity(intent);
         }

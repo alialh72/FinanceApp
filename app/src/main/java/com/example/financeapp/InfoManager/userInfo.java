@@ -44,6 +44,7 @@ public class userInfo {
     public void addTransaction(categoriesEnum.SubCategories subCategory, String merchant, double value){
         categoriesEnum.MainCategories type;
 
+        //sets the transaction type
         if (value < 0){
             type = Categories.EXPENSE;
         }
@@ -60,6 +61,7 @@ public class userInfo {
 
         updateBalance(value);
 
+        //if signed in, adds it to firebase
         if(signedin == true){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("Users");
@@ -183,7 +185,7 @@ public class userInfo {
     }
 
     public void reverseBalance(double value){
-        accountBalance-= value;
+        accountBalance -= value;
 
         if(signedin = true){
             FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -213,8 +215,9 @@ public class userInfo {
             String tDate = format2.format(format1.parse(t.getDate()));
 
             Log.d(TAG, "getMonthlySpending: tDate: "+ tDate);
+            //check if the transaction is an expense and matches the date
             if (t.getType().contains("Expense") && tDate.equals(date)){
-                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
+                runningtotal += Math.abs(Double.parseDouble(t.getValue()));  //adds the value of the expense to the running total
             }
         }
 
@@ -345,7 +348,7 @@ public class userInfo {
         return filteredlist;
     }
 
-    public Double getCashFlowByDay(String date) throws ParseException {
+    public Double getCashFlowByDay(String date) {
         double runningTotal = 0;
         for (Transactions t : transactions){
             if (t.getDate().equals(date)){     //checks if the date matches

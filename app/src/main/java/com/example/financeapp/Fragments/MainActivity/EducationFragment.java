@@ -81,7 +81,7 @@ public class EducationFragment extends Fragment {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d(TAG, "onMenuItemClick: clicked: "+ item);
-                        int selectedUserId = Integer.parseInt((String) item.getTitle());
+                        int selectedUserId = Integer.parseInt((String) item.getTitle()); //gets the userid
 
                         MainActivity.UserInfo.setUser(selectedUserId, getContext());
 
@@ -229,12 +229,12 @@ public class EducationFragment extends Fragment {
 
         int pos1 = rand.nextInt(articleCategories.size());
         int pos2 = rand2.nextInt(articleCategories.size());
-        while (pos1 == pos2){ pos2 = rand2.nextInt(articleCategories.size()); }//makes sure the 2 category positions selected are not the same
+        while (pos1 == pos2){ pos2 = rand2.nextInt(articleCategories.size()); } //makes sure the 2 category positions selected are not the same
         Log.d(TAG, "setTopCategories: pos1:"+pos1);
         Log.d(TAG, "setTopCategories: pos2:"+pos2);
 
-        category1 = articleCategories.get(pos1);  //gets the string category and reverses it into an enum
-        category2 = articleCategories.get(pos2);   //gets the string category and reverses it into an enum
+        category1 = articleCategories.get(pos1);  //gets the string category using the random position
+        category2 = articleCategories.get(pos2);   //gets the string category using the random position
 
         //set background and text of the category layouts
         GradientDrawable gd1 = new GradientDrawable(

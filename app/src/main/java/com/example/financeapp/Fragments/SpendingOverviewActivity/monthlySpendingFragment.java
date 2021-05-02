@@ -138,6 +138,7 @@ public class monthlySpendingFragment extends Fragment {
     }
 
     public void setupPieChart(){
+        //styles the piechart
         pieChart.setDrawHoleEnabled(true);
         pieChart.setHoleRadius(75.f);
         pieChart.setTransparentCircleRadius(75.f);

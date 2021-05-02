@@ -51,7 +51,7 @@ public class ArticleCategory implements Parcelable{
     private void setArticles(){
         for(Article a : EducationInfo.returnArticles()){
             if(a.getCategory().equals(cat.getType())){
-                articles.add(a);
+                articles.add(a); //adds all articles that match its category to its list
             }
         }
     }

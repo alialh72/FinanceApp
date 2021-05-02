@@ -92,6 +92,7 @@ public class TransactionFragment extends Fragment{
             }
         });
 
+        //modify balance dropdown
         modifyDropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,6 +101,7 @@ public class TransactionFragment extends Fragment{
                 popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
+                        //starts the alert dialog which allows the user to modify their balance
                         AlertDialog.Builder alert = new AlertDialog.Builder(getContext());
                         final EditText edittext = new EditText(getContext());
                         alert.setTitle("Set Balance");
@@ -120,7 +122,7 @@ public class TransactionFragment extends Fragment{
                         alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
                                 double balance = Double.parseDouble(edittext.getText().toString());
-                                applyBalanceFragment(balance);
+                                applyBalanceFragment(balance);  //calls the method which sets the balance
                             }
                         });
 
@@ -148,7 +150,7 @@ public class TransactionFragment extends Fragment{
                     Toast.makeText(getActivity(), "No transactions to filter", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    Intent intent = new Intent(getActivity(), FilterActivity.class);
+                    Intent intent = new Intent(getActivity(), FilterActivity.class); //calls the filterActivity
                     startActivityForResult(intent, 1);
                 }
             }
@@ -157,7 +159,7 @@ public class TransactionFragment extends Fragment{
         resetFilters.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                recyclerViewInit(UserInfo.returnTransactions(), false);
+                recyclerViewInit(UserInfo.returnTransactions(), false);  //resets the recyclerview
             }
         });
     }
@@ -168,6 +170,11 @@ public class TransactionFragment extends Fragment{
         switch(requestCode) {
             case (1) : {
                 if (resultCode == Activity.RESULT_OK) {
+                    //there are 3 options
+                    //1: a category and sortby has been chosen
+                    //2: a sortby has been chosen
+                    //3: a category has been chosen
+
                     if((data.getStringExtra("Category") != null) && (data.getStringExtra("Filter") != null)){
                         String category = data.getStringExtra("Category");
                         String filter = data.getStringExtra("Filter");

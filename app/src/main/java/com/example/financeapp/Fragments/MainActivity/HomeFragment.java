@@ -23,6 +23,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
+import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
 import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.Objects.Transactions;
@@ -118,7 +119,7 @@ public class HomeFragment extends Fragment{
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         Log.d(TAG, "onMenuItemClick: clicked: "+ item);
-                        int selectedUserId = Integer.parseInt((String) item.getTitle());
+                        int selectedUserId = Integer.parseInt((String) item.getTitle());  //gets the userid
 
                         UserInfo.setUser(selectedUserId, getContext());
 
@@ -178,6 +179,11 @@ public class HomeFragment extends Fragment{
             spendingPieChart.setVisibility(View.GONE);
             transactionInfo.setText("Start adding transactions to track your spending");
         }
+        else if (UserInfo.getMonthlySpending(MainActivity.monthYear) == 0){
+            startSpendingPie.setVisibility(View.VISIBLE);
+            spendingPieChart.setVisibility(View.GONE);
+            transactionInfo.setText("Recent Transactions");
+        }
         else{
             startSpendingPie.setVisibility(View.GONE);
             transactionInfo.setText("Recent Transactions");
@@ -196,13 +202,21 @@ public class HomeFragment extends Fragment{
 
         int randomPosDefinition = rand.nextInt(EducationInfo.returnDefinitions().size());
         int randomPosArticle = rand.nextInt(EducationInfo.returnArticles().size());
+        int randomArticleCategory = rand.nextInt(EducationInfo.returnArticleCategories().size());
 
-        Definition selectedDefinition = EducationInfo.returnDefinitions().get(randomPosDefinition);
-        Article selectedArticle = EducationInfo.returnArticles().get(randomPosArticle);
+        Definition selectedDefinition = EducationInfo.returnDefinitions().get(randomPosDefinition); //gets a random definition
+        Article selectedArticle = EducationInfo.returnArticles().get(randomPosArticle);  //gets a random article
+        ArticleCategory selectedArticleCategory = EducationInfo.returnArticleCategories().get(randomArticleCategory);
 
+        while (selectedArticleCategory.getArticles().size() == 0){
+            randomArticleCategory = rand.nextInt(EducationInfo.returnArticleCategories().size());
+            selectedArticleCategory = EducationInfo.returnArticleCategories().get(randomArticleCategory);
+        }
+
+        //type 0 = definition, type 1 = article, type 2 = insight
         items.add(new Item(0, selectedDefinition));
         items.add(new Item(1, selectedArticle));
-        items.add(new Item(2, new Insight("This do be your insight doe")));
+        items.add(new Item(2, selectedArticleCategory));
 
         viewPager2.setAdapter(new SliderAdapter(items, viewPager2, getActivity()));
 
@@ -224,6 +238,7 @@ public class HomeFragment extends Fragment{
 
         viewPager2.setPageTransformer(compositePageTransformer);
 
+        //goes to the next slide every 7 seconds
         viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -244,6 +259,7 @@ public class HomeFragment extends Fragment{
     };
 
     public void setupPieChart(){
+        //styles the piechart
         spendingPieChart.setDrawHoleEnabled(true);
         spendingPieChart.setUsePercentValues(false);
         spendingPieChart.setDrawEntryLabels(false);
@@ -270,24 +286,23 @@ public class HomeFragment extends Fragment{
             String c = t.getMainCategory();
 
             boolean isthere = false;
-            for(PieEntry p : entries){
+            for(PieEntry p : entries){   //checks if the entry already exist in the list
                 if (p.getLabel().contains(c)){
                     isthere = true;
+                    break;
                 }
             }
 
 
-            if(isthere == false){
+            if(isthere == false){    //if they dont, then it adds it
                 double percentage = UserInfo.getValueByCategory(c, categoriesEnum.MainCategories.EXPENSE.getDisplayableType(), MainActivity.monthYear);
                 DecimalFormat df = new DecimalFormat("#.##");
                 df.format(percentage);
                 second.add(c);
                 entries.add(new PieEntry((float) percentage,c));
             }
-            else{ }
         }
 
-        Log.d(TAG, "loadPieChartData: colors: "+ MainActivity.colors);
 
         NumberFormat format = NumberFormat.getCurrencyInstance();
         format.setMaximumFractionDigits(0);
@@ -325,9 +340,6 @@ public class HomeFragment extends Fragment{
     }
 
     private void loadRecyclerViews(){
-        //get 4 most recent transactions
-        Log.d(TAG, "initRecyclerView: init recyclerview locals");
-
         if (UserInfo.returnTransactions().size() > 0){
             transactionsRecyclerView.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
             TransactionRecyclerAdapter transactionsAdapter = new TransactionRecyclerAdapter(getRecentTransactions(),"HomeFragment",getActivity());
@@ -338,6 +350,7 @@ public class HomeFragment extends Fragment{
     }
 
     private ArrayList<Transactions> getRecentTransactions(){
+        //sorts the transactions by date
         ArrayList<Transactions> dupSorted = new ArrayList<>(UserInfo.returnTransactions());
         Collections.sort(dupSorted, (c1, c2) -> {
             try {
@@ -349,7 +362,7 @@ public class HomeFragment extends Fragment{
         });
 
         ArrayList<Transactions> recent = new ArrayList<>();
-        recent.addAll(dupSorted.subList(0,4));
+        recent.addAll(dupSorted.subList(0,4));   //gets the 4 most recent transactions
         return recent;
     }
 
