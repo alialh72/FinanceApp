@@ -97,7 +97,7 @@ public class ArticleActivity extends YouTubeBaseActivity {
         topBarText.setText("");
 
         titleTextView.setText(article.getTitle());
-        authorTextView.setText(article.getAuthor());
+        authorTextView.setText("By "+article.getAuthor());
         descriptionTextView.setText(article.getDescription());
         paragraphTextView1.setText(article.getPara1());
         paragraphTextView2.setText(article.getPara2());
