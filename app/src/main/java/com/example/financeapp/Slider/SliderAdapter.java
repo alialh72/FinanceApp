@@ -31,7 +31,6 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private static final String TAG = "SliderAdapter";
     private List<Item> items;
-    private ViewPager2 viewPager2;
     private Context context;
 
     public Article selectedArticle;
@@ -39,7 +38,6 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     public SliderAdapter(List<Item> items, ViewPager2 viewPager2, Context context) {
         this.items = items;
-        this.viewPager2 = viewPager2;
         this.context = context;
     }
 

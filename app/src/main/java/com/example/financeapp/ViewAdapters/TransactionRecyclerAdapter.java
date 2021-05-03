@@ -106,13 +106,6 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
         holder.iconImg.setImageResource(resID);
 
 
-        //make wider if transactionFragment
-        if(className.equals("transactionFragment")){
-            int width = (int) context.getResources().getDimension(R.dimen.transactionwidth);
-            holder.parentLayout.setLayoutParams(new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT));
-        }
-
-
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
