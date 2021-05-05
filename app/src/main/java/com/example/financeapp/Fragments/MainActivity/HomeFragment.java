@@ -25,7 +25,6 @@ import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
-import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.Objects.Transactions;
 import com.example.financeapp.R;
 import com.example.financeapp.Slider.Item;
@@ -161,10 +160,7 @@ public class HomeFragment extends Fragment{
         monthlyIncomeText.setText(format.format(UserInfo.getMonthlyIncome(MainActivity.monthYear)));
 
 
-
         //setting up month
-
-
         String month = MainActivity.month;
         Log.d(TAG, "initText: month: " + month);
 
@@ -206,19 +202,19 @@ public class HomeFragment extends Fragment{
 
         Definition selectedDefinition = EducationInfo.returnDefinitions().get(randomPosDefinition); //gets a random definition
         Article selectedArticle = EducationInfo.returnArticles().get(randomPosArticle);  //gets a random article
-        ArticleCategory selectedArticleCategory = EducationInfo.returnArticleCategories().get(randomArticleCategory);
+        ArticleCategory selectedArticleCategory = EducationInfo.returnArticleCategories().get(randomArticleCategory); //gets a random articlecategory
 
         while (selectedArticleCategory.getArticles().size() == 0){
             randomArticleCategory = rand.nextInt(EducationInfo.returnArticleCategories().size());
             selectedArticleCategory = EducationInfo.returnArticleCategories().get(randomArticleCategory);
         }
 
-        //type 0 = definition, type 1 = article, type 2 = insight
+        //type 0 = definition, type 1 = article, type 2 = articlecategory
         items.add(new Item(0, selectedDefinition));
         items.add(new Item(1, selectedArticle));
         items.add(new Item(2, selectedArticleCategory));
 
-        viewPager2.setAdapter(new SliderAdapter(items, viewPager2, getActivity()));
+        viewPager2.setAdapter(new SliderAdapter(items, getActivity()));
 
         viewPager2.setClipToPadding(false);
         viewPager2.setClipChildren(false);
@@ -322,7 +318,7 @@ public class HomeFragment extends Fragment{
         spendingPieChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
-                //display msg when value
+                //display snackbar when entry is clicked
                 int x = spendingPieChart.getData().getDataSet().getEntryIndex((PieEntry) e);
                 String label = second.get(x);
                 Snackbar.make(getView().findViewById(R.id.view), label + ": "+format.format(e.getY()), Snackbar.LENGTH_SHORT)
@@ -331,9 +327,7 @@ public class HomeFragment extends Fragment{
             }
 
             @Override
-            public void onNothingSelected() {
-
-            }
+            public void onNothingSelected() { }
         });
 
         spendingPieChart.setNoDataText("Start adding transactions to see your spending");
@@ -363,7 +357,22 @@ public class HomeFragment extends Fragment{
 
         ArrayList<Transactions> recent = new ArrayList<>();
         recent.addAll(dupSorted.subList(0,4));   //gets the 4 most recent transactions
-        return recent;
+
+        //reverses the transactions that are today
+        //so that they are in order
+        ArrayList<Transactions> today = new ArrayList<>();
+        for (int i = 0; i < recent.size(); i++){
+            Transactions t = recent.get(i);
+            if (t.getDate().equals(MainActivity.date)){
+                today.add(t);
+                recent.remove(i);
+            }
+        }
+        Collections.reverse(today);
+        today.addAll(recent);
+
+
+        return today;
     }
 
 

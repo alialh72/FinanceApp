@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginHorizontal="20dp"
     android:layout_marginTop="10dp"
-
+    android:layout_marginBottom="5dp"
     android:paddingHorizontal="20dp"
     android:paddingVertical="17dp"
     android:background="@drawable/nooutline"
-    android:layout_height="275dp">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/title"
@@ -39,7 +39,7 @@
         android:layout_height="110dp"
         android:layout_marginTop="13dp"
         android:background="@drawable/nooutline"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="5dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/description">
@@ -73,6 +73,7 @@
         android:layout_height="wrap_content"
         android:text="March 26 2021 / Ali Al Hamadani"
         android:textSize="14dp"
+        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/cardView3"
         app:layout_constraintTop_toBottomOf="@+id/cardView3" />

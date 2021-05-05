@@ -102,21 +102,20 @@ public class TransactionRecyclerAdapter extends RecyclerView.Adapter<Transaction
 
         //set icon image
         //converts the text into the name of the icons drawable file
-        int resID = context.getResources().getIdentifier(transaction.getSubCategory().getDisplayableType().toLowerCase().replace(" & ", ""), "drawable",  context.getPackageName());
+        String drawableName = transaction.getSubCategory().getDisplayableType().toLowerCase().replace(" & ", "");
+
+        int resID = context.getResources().getIdentifier(drawableName, "drawable",  context.getPackageName());
         holder.iconImg.setImageResource(resID);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Log.d(TAG, "onClick: clicked on: "+position+ ", "+transaction.getValue());
-                Log.d(TAG, "onClick: transactions.size: "+transactions.size());
 
                 Intent intent = new Intent(context, SingleTransactionActivity.class);
                 intent.putExtra("TRANSACTION", transaction);
                 context.startActivity(intent);
-
             }
         });
 

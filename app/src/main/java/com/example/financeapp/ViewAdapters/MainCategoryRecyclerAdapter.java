@@ -60,7 +60,9 @@ public class MainCategoryRecyclerAdapter extends RecyclerView.Adapter<MainCatego
         holder.iconLayout.setBackgroundDrawable(gd);
 
         //set icon
-        int resID = context.getResources().getIdentifier(category.toLowerCase().replace(" & ", ""), "drawable",  context.getPackageName());
+        String drawableName = category.toLowerCase().replace(" & ", "");
+
+        int resID = context.getResources().getIdentifier(drawableName, "drawable",  context.getPackageName());
         holder.icon.setImageResource(resID);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {

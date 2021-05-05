@@ -72,7 +72,7 @@ public class TransactionGroupAdapter extends RecyclerView.Adapter<TransactionGro
 
         if (sortBy.equals("date")){
             if(arrayListGroup.get(position).equals("Today")){
-                Collections.reverse(childArrayList);   //this is because sorting doesnt account for same day transactions, so the best way to order them is just by reversing the list
+                Collections.reverse(childArrayList);   //this is because sorting doesnt account for same day transactions, so the best way to order them is just by reverse the order they were added
             }
             else{
                 sortBy("date", childArrayList);

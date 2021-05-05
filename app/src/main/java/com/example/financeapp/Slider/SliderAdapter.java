@@ -10,22 +10,17 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.financeapp.ArticleActivity;
 import com.example.financeapp.DefinitionActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
-import com.example.financeapp.Objects.Insight;
 import com.example.financeapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import static android.content.ContentValues.TAG;
-import static com.example.financeapp.MainActivity.EducationInfo;
 
 public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
@@ -36,7 +31,7 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     public Article selectedArticle;
     public Article selectedArticleFromCategory;
 
-    public SliderAdapter(List<Item> items, ViewPager2 viewPager2, Context context) {
+    public SliderAdapter(List<Item> items, Context context) {
         this.items = items;
         this.context = context;
     }
@@ -51,7 +46,7 @@ public class SliderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         //viewtpyes are 0, 1 & 2
         //0 = word definition
         //1 = article
-        //2 = insight
+        //2 = articlecategory
 
         if(viewType == 0){
             return new DefinitionViewHolder(

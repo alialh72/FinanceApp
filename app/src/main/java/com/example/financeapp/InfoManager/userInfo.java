@@ -142,6 +142,7 @@ public class userInfo {
                 reverseBalance(Double.parseDouble(transactions.get(i).getValue()));   //reverses the balance
                 transactions.remove(i);  //deletes the transaction from the arraylist
                 position = i;
+                break;
             }
         }
 
@@ -162,6 +163,7 @@ public class userInfo {
         for (int i = 0; i < transactions.size(); i++){
             if (transactions.get(i).getId().equals(newTransaction.getId())){
                 transactions.set(i, newTransaction);
+                Log.d(TAG, "updateTransaction: transactions: "+transactions.size());
 
                 if(signedin = true){
                     FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -169,6 +171,7 @@ public class userInfo {
 
                     reference.child("Transactions").child(String.valueOf(i)).setValue(newTransaction); //updates the transaction in the database
                 }
+                break;
             }
         }
 
@@ -205,8 +208,6 @@ public class userInfo {
         }
     }
 
-
-
     public double getMonthlySpending(String date) throws ParseException {
         double runningtotal = 0;
         for (Transactions t : transactions){
@@ -224,16 +225,6 @@ public class userInfo {
         return runningtotal;
     }
 
-    public double getTotalSpending() throws ParseException {
-        double runningtotal = 0;
-        for (Transactions t : transactions){
-            if (t.getType().contains("Expense")){
-                runningtotal += Math.abs(Double.parseDouble(t.getValue()));
-            }
-        }
-
-        return runningtotal;
-    }
 
     public double getMonthlyIncome(String date) throws ParseException {
         double runningtotal = 0;

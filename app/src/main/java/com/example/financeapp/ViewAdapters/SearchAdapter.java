@@ -140,6 +140,7 @@ public class SearchAdapter extends RecyclerView.Adapter{
     }
 
     public void filterList(ArrayList<Object> filteredList){
+        //called whenever the edittext is updated
         list = filteredList;
         notifyDataSetChanged();
     }

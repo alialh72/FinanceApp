@@ -111,7 +111,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         iconLayout.setBackgroundDrawable(gd);
 
         //set icon
-        int resID = mContext.getResources().getIdentifier(listGroup.get(groupPosition).toLowerCase().replace(" & ", ""), "drawable",  mContext.getPackageName());
+        String drawableName = listGroup.get(groupPosition).toLowerCase().replace(" & ", "");
+        int resID = mContext.getResources().getIdentifier(drawableName, "drawable",  mContext.getPackageName());
         icon.setImageResource(resID);
 
 

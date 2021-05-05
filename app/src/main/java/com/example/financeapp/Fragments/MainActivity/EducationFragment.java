@@ -49,9 +49,6 @@ public class EducationFragment extends Fragment {
     private ArticleCategory category1,category2;
 
 
-
-
-
     public EducationFragment() {
         // Required empty public constructor
     }
@@ -211,11 +208,11 @@ public class EducationFragment extends Fragment {
     private void loadArticleRecyclerViews(articlesCategoryEnum cat1, articlesCategoryEnum cat2){
 
         Log.d(TAG, "loadArticleRecyclerViews: "+EducationInfo.getArticlesByCategory(cat1));
-        categoryRecycler1.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+        //categoryRecycler1.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
         categoryRecycler1.setAdapter(new MiniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat1),getActivity(), false));
         categoryRecycler1.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-        categoryRecycler2.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
+        //categoryRecycler2.setNestedScrollingEnabled(false); //stops the recyclerview from scrolling
         categoryRecycler2.setAdapter(new MiniArticleRecyclerAdapter(EducationInfo.getArticlesByCategory(cat2),getActivity(), false));
         categoryRecycler2.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
     }
@@ -265,8 +262,5 @@ public class EducationFragment extends Fragment {
         Log.d(TAG, "startNewArticleCategory: startarticlecat");
         startActivity(intent);
     }
-
-
-
 
 }
