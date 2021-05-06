@@ -238,4 +238,5 @@ public class SingleTransactionActivity extends AppCompatActivity implements Merc
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
+
 }

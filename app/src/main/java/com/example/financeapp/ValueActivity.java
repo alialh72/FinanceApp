@@ -1,8 +1,5 @@
 package com.example.financeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +9,9 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.financeapp.Enums.categoriesEnum;
 
@@ -129,232 +129,63 @@ public class ValueActivity extends AppCompatActivity{
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "1";
-                        }
-                        else{
-                            numberString += "1";
-                        }
-
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(1);
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "2";
-                        }
-                        else{
-                            numberString += "2";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
-
+                numberClicked(2);
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "3";
-                        }
-                        else{
-                            numberString += "3";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
-
+                numberClicked(3);
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "4";
-                        }
-                        else{
-                            numberString += "4";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(4);
             }
         });
 
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "5";
-                        }
-                        else{
-                            numberString += "5";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(5);
             }
         });
 
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "6";
-                        }
-                        else{
-                            numberString += "6";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(6);
             }
         });
 
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "7";
-                        }
-                        else{
-                            numberString += "7";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(7);
             }
         });
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "8";
-                        }
-                        else{
-                            numberString += "8";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(8);
             }
         });
 
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "9";
-                        }
-                        else{
-                            numberString += "9";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(9);
             }
         });
 
@@ -424,6 +255,23 @@ public class ValueActivity extends AppCompatActivity{
         }
         else{
             Toast.makeText(this, "Transaction cannot be $0", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void numberClicked(int num) {
+        if (numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3) {
+            Toast.makeText(ValueActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+        } else {
+            if (numberString.length() == 8) {
+                Toast.makeText(ValueActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+            } else {
+                if (numberString.equals("0")) {
+                    numberString = String.valueOf(num);
+                } else {
+                    numberString += String.valueOf(num);
+                }
+                numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
+            }
         }
     }
 

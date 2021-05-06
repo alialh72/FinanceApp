@@ -1,8 +1,5 @@
 package com.example.financeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,13 +10,16 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.financeapp.Dialog.MerchantDialog;
 import com.example.financeapp.Enums.categoriesEnum;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.text.NumberFormat;
 import java.util.Locale;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class AddTransactionActivity extends AppCompatActivity implements MerchantDialog.MerchantDialogListener {
 
@@ -42,7 +42,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
     private String numberString = "";
 
     private String merchantName = "Cash";
-    public  String category = "Other";
+    public String category = "Other";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,20 +56,19 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         setCategoryText();
 
 
-
         //income, savings and expense buttons
-        Log.d(TAG, "onClick: type: "+type.getDisplayableType());
+        Log.d(TAG, "onClick: type: " + type.getDisplayableType());
         incomeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type != categoriesEnum.SubCategories.INCOME){
+                if (type != categoriesEnum.SubCategories.INCOME) {
                     type = categoriesEnum.SubCategories.INCOME;
                     incomeLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
                     expenseLayout.setBackgroundResource(R.drawable.button_outlines);
                     savingsLayout.setBackgroundResource(R.drawable.button_outlines);
                     plusMinus.setText("+");
-                    Log.d(TAG, "onClick: type: "+type.getDisplayableType());
-                    if(lockedcategory == true){
+                    Log.d(TAG, "onClick: type: " + type.getDisplayableType());
+                    if (lockedcategory == true) {
                         unlockCategory();
                     }
                 }
@@ -79,14 +78,14 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         expenseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type != categoriesEnum.SubCategories.EXPENSE){
+                if (type != categoriesEnum.SubCategories.EXPENSE) {
                     type = categoriesEnum.SubCategories.EXPENSE;
                     expenseLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
                     incomeLayout.setBackgroundResource(R.drawable.button_outlines);
                     savingsLayout.setBackgroundResource(R.drawable.button_outlines);
                     plusMinus.setText("-");
-                    Log.d(TAG, "onClick: type: "+type.getDisplayableType());
-                    if(lockedcategory == true){
+                    Log.d(TAG, "onClick: type: " + type.getDisplayableType());
+                    if (lockedcategory == true) {
                         unlockCategory();
                     }
                 }
@@ -96,13 +95,13 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         savingsLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (type != categoriesEnum.SubCategories.SAVINGS){
+                if (type != categoriesEnum.SubCategories.SAVINGS) {
                     type = categoriesEnum.SubCategories.SAVINGS;
                     savingsLayout.setBackgroundResource(R.drawable.button_outlines_clicked);
                     incomeLayout.setBackgroundResource(R.drawable.button_outlines);
                     expenseLayout.setBackgroundResource(R.drawable.button_outlines);
                     plusMinus.setText("~");
-                    Log.d(TAG, "onClick: type: "+type.getDisplayableType());
+                    Log.d(TAG, "onClick: type: " + type.getDisplayableType());
                     lockCategory();
                 }
             }
@@ -112,12 +111,11 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             @Override
             public void onClick(View v) {
 
-                if (!numberString.contains(".")){
-                    if (numberString.equals("")){
+                if (!numberString.contains(".")) {
+                    if (numberString.equals("")) {
                         numberString += "0.";
-                    }
-                    else{
-                        numberString+=".";
+                    } else {
+                        numberString += ".";
                     }
                     numberText.setText(numberString);
                 }
@@ -127,7 +125,7 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         buttonBackspace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (numberString.length() > 0){
+                if (numberString.length() > 0) {
                     numberString = numberString.substring(0, numberString.length() - 1);
                     numberText.setText(numberString);
                 }
@@ -135,20 +133,17 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         });
 
 
-
         button0.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
+                if (numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3) {
                     Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if(numberString.length() == 8){
+                } else {
+                    if (numberString.length() == 8) {
                         Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (!numberString.equals("0")){
+                    } else {
+                        if (!numberString.equals("0")) {
                             numberString += "0";
                         }
 
@@ -159,250 +154,77 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
                 }
 
 
-
             }
         });
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "1";
-                        }
-                        else{
-                            numberString += "1";
-                        }
-
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(1);
             }
         });
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "2";
-                        }
-                        else{
-                            numberString += "2";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
-
+                numberClicked(2);
             }
         });
 
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "3";
-                        }
-                        else{
-                            numberString += "3";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
-
+                numberClicked(3);
             }
         });
 
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "4";
-                        }
-                        else{
-                            numberString += "4";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(4);
             }
         });
 
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "5";
-                        }
-                        else{
-                            numberString += "5";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(5);
             }
         });
 
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "6";
-                        }
-                        else{
-                            numberString += "6";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(6);
             }
         });
 
         button7.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "7";
-                        }
-                        else{
-                            numberString += "7";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(7);
             }
         });
 
         button8.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "8";
-                        }
-                        else{
-                            numberString += "8";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(8);
             }
         });
 
         button9.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if(numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3){
-                    Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
-                }
-                else{
-                    if (numberString.length() == 8){
-                        Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
-                    }
-                    else{
-                        if (numberString.equals("0")){
-                            numberString = "9";
-                        }
-                        else{
-                            numberString += "9";
-                        }
-                        numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
-                    }
-                }
-
+                numberClicked(9);
             }
         });
-
-
-
 
 
     }
 
 
-    private void findViews(){
+    private void findViews() {
         numberText = findViewById(R.id.numberfield);
         plusMinus = findViewById(R.id.plusminus);
         incomeLayout = findViewById(R.id.incomeConstraint);
@@ -428,47 +250,46 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
     }
 
 
-    private void hideStatusBars(){
+    private void hideStatusBars() {
         decorView = getWindow().getDecorView();
         decorView.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
             @Override
             public void onSystemUiVisibilityChange(int visibility) {
-                if (visibility == 0){
+                if (visibility == 0) {
                     decorView.setSystemUiVisibility(hideSystemBars());
                 }
             }
         });
     }
 
-    private int hideSystemBars(){
+    private int hideSystemBars() {
         return View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_FULLSCREEN;
     }
 
-    public void GoBack(View view){
+    public void GoBack(View view) {
         finish();
     }
 
-    public void selectMerchant(View view){
+    public void selectMerchant(View view) {
         openDialog();
     }
 
-    public void selectCategory(View view){
-        if(lockedcategory == false){
+    public void selectCategory(View view) {
+        if (lockedcategory == false) {
             Intent intent = new Intent(this, TransactionCategoryActivity.class);
             startActivityForResult(intent, 1);
-        }
-        else{
+        } else {
             Toast.makeText(this, "Type 'Savings' must be category 'Savings'", Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void lockCategory(){
+    private void lockCategory() {
         category = "Savings";
         setCategoryText();
         lockedcategory = true;
     }
 
-    private void unlockCategory(){
+    private void unlockCategory() {
         category = "Other";
         setCategoryText();
         lockedcategory = false;
@@ -477,8 +298,8 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch(requestCode) {
-            case (1) : {
+        switch (requestCode) {
+            case (1): {
                 if (resultCode == Activity.RESULT_OK) {
                     category = data.getStringExtra("Category");
                     setCategoryText();
@@ -488,36 +309,34 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
         }
     }
 
-    private void openDialog(){
+    private void openDialog() {
         MerchantDialog merchantDialog = new MerchantDialog();
         merchantDialog.show(getSupportFragmentManager(), "Merchant");
     }
 
-    public void setCategoryText(){
+    public void setCategoryText() {
         categoryText.setText(category);
     }
 
     @Override
     public void applyTexts(String merchantName) {
-        if(!merchantName.equals("")){
+        if (!merchantName.equals("")) {
             this.merchantName = merchantName;
             merchantText.setText(StringUtils.abbreviate(this.merchantName, 15));
-        }
-        else{
+        } else {
             this.merchantName = "Cash";
         }
-        Log.d(TAG, "applyTexts: merchantName: "+this.merchantName);
+        Log.d(TAG, "applyTexts: merchantName: " + this.merchantName);
     }
 
 
-    public void AddTransaction(View view){
+    public void AddTransaction(View view) {
         double value;
-        if (!(numberString.equals(""))){
-            if(type.getLabel() == "Income"){
+        if (!(numberString.equals(""))) {
+            if (type.getLabel() == "Income") {
                 value = Double.parseDouble(numberString);
-            }
-            else{
-                value = Double.parseDouble("-"+numberString);
+            } else {
+                value = Double.parseDouble("-" + numberString);
             }
 
             categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
@@ -526,10 +345,25 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
-        }
-
-        else{
+        } else {
             Toast.makeText(this, "Transaction cannot be $0", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void numberClicked(int num) {
+        if (numberString.contains(".") && numberString.length() - numberString.indexOf(".") == 3) {
+            Toast.makeText(AddTransactionActivity.this, "Only two decimal places", Toast.LENGTH_SHORT).show();
+        } else {
+            if (numberString.length() == 8) {
+                Toast.makeText(AddTransactionActivity.this, "Too many digits", Toast.LENGTH_SHORT).show();
+            } else {
+                if (numberString.equals("0")) {
+                    numberString = String.valueOf(num);
+                } else {
+                    numberString += String.valueOf(num);
+                }
+                numberText.setText(NumberFormat.getNumberInstance(Locale.getDefault()).format(Double.parseDouble(numberString)));
+            }
         }
     }
 

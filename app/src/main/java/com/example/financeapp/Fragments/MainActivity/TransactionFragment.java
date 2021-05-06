@@ -5,13 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.text.InputFilter;
 import android.text.InputType;
 import android.util.Log;
@@ -25,6 +18,12 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.financeapp.FilterActivity;
 import com.example.financeapp.MainActivity;
@@ -40,8 +39,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Currency;
 
-import static com.example.financeapp.MainActivity.UserInfo;
 import static android.content.ContentValues.TAG;
+import static com.example.financeapp.MainActivity.UserInfo;
 
 public class TransactionFragment extends Fragment{
     private ImageView userButton, modifyDropdown;

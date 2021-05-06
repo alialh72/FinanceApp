@@ -1,5 +1,14 @@
 package com.example.financeapp;
 
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.GravityCompat;
@@ -7,20 +16,9 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
-import androidx.viewpager2.widget.ViewPager2;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.example.financeapp.InfoManager.educationInfo;
 import com.example.financeapp.Enums.categoriesEnum;
+import com.example.financeapp.InfoManager.educationInfo;
 import com.example.financeapp.InfoManager.userInfo;
 import com.example.financeapp.Objects.gradientColors;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -32,8 +30,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-
-import static android.content.ContentValues.TAG;
 
 public class MainActivity extends AppCompatActivity {
 

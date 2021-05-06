@@ -21,6 +21,7 @@ import androidx.viewpager2.widget.CompositePageTransformer;
 import androidx.viewpager2.widget.MarginPageTransformer;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.ArticleCategory;
@@ -30,7 +31,6 @@ import com.example.financeapp.R;
 import com.example.financeapp.Slider.Item;
 import com.example.financeapp.Slider.SliderAdapter;
 import com.example.financeapp.ViewAdapters.TransactionRecyclerAdapter;
-import com.example.financeapp.Enums.categoriesEnum;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
@@ -170,12 +170,13 @@ public class HomeFragment extends Fragment{
         //you've spending
         youveSpent.setText("You've spent "+format.format(UserInfo.getMonthlySpending(MainActivity.monthYear)) +" so far");
 
+        //checks if the user has any transactions
         if(UserInfo.returnTransactions().size() == 0){
             startSpendingPie.setVisibility(View.VISIBLE);
             spendingPieChart.setVisibility(View.GONE);
             transactionInfo.setText("Start adding transactions to track your spending");
         }
-        else if (UserInfo.getMonthlySpending(MainActivity.monthYear) == 0){
+        else if (UserInfo.getMonthlySpending(MainActivity.monthYear) == 0){  //checks if the user hasnt inputted any transactions this month but has transactions
             startSpendingPie.setVisibility(View.VISIBLE);
             spendingPieChart.setVisibility(View.GONE);
             transactionInfo.setText("Recent Transactions");
@@ -356,24 +357,20 @@ public class HomeFragment extends Fragment{
         });
 
         ArrayList<Transactions> recent = new ArrayList<>();
-        recent.addAll(dupSorted.subList(0,4));   //gets the 4 most recent transactions
-
-        //reverses the transactions that are today
-        //so that they are in order
-        ArrayList<Transactions> today = new ArrayList<>();
-        for (int i = 0; i < recent.size(); i++){
-            Transactions t = recent.get(i);
-            if (t.getDate().equals(MainActivity.date)){
-                today.add(t);
-                recent.remove(i);
+        for (Transactions t : dupSorted){
+            if(t.getDate().equals(MainActivity.date)){
+                recent.add(t); //adds the transactions that are today to the list
             }
         }
-        Collections.reverse(today);
-        today.addAll(recent);
+        Collections.reverse(recent); //reverses the transactions that are today so they are in descending order
+        dupSorted.removeAll(recent); //removes all transactions that are today from the list
 
+        recent.addAll(dupSorted); //merges both lists
 
-        return today;
+        ArrayList<Transactions> sorted = new ArrayList<>();
+        sorted.addAll(recent.subList(0, 4 > recent.size() ? recent.size() : 4)); //gets the top 4 transactions and adds it to the list sorted, checks if size is greater than 4, if so returns top 4, if false returns up to size
+
+        return sorted;
     }
-
 
 }

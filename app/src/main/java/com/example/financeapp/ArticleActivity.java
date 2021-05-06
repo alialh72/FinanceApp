@@ -1,10 +1,7 @@
 package com.example.financeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -48,7 +45,7 @@ public class ArticleActivity extends YouTubeBaseActivity {
         YouTubePlayer.OnInitializedListener onInitializedListener = new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
-                youTubePlayer.loadVideo(article.getWebsitePath());
+                youTubePlayer.loadVideo(article.getVideoToken());
             }
 
             @Override

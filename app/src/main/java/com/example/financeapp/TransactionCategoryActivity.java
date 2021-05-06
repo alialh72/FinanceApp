@@ -1,12 +1,12 @@
 package com.example.financeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ExpandableListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.ViewAdapters.ExpandableListAdapter;

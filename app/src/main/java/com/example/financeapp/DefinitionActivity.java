@@ -1,26 +1,13 @@
 package com.example.financeapp;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.financeapp.Objects.Definition;
-import com.example.financeapp.Objects.Transactions;
-import com.example.financeapp.ViewAdapters.TransactionGroupAdapter;
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.ListMultimap;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Set;
-
-import static android.content.ContentValues.TAG;
 
 public class DefinitionActivity extends AppCompatActivity {
 

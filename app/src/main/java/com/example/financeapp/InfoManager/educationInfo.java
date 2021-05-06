@@ -1,17 +1,13 @@
 package com.example.financeapp.InfoManager;
 
-import android.app.Application;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
-import com.example.financeapp.MainActivity;
+import com.example.financeapp.Enums.articlesCategoryEnum;
 import com.example.financeapp.Objects.Article;
 import com.example.financeapp.Objects.ArticleCategory;
 import com.example.financeapp.Objects.Definition;
-import com.example.financeapp.Enums.articlesCategoryEnum;
 
 import java.io.BufferedReader;
 import java.io.IOException;
