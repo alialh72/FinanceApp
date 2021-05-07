@@ -149,27 +149,7 @@ public class userInfo {
             DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
             //gets the transaction key that matches the id
-            reference.child("Transactions").orderByChild("id").equalTo(id).addChildEventListener(new ChildEventListener() {
-                @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                    Log.d(TAG, "onChildAdded: Database key: "+dataSnapshot.getKey());
-                    reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).removeValue(); //sets the new transaction
-                    reference.child("Transactions").setValue(transactions);  //reorders all the transactions in the database
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
-
-            });
+            reference.child("Transactions").setValue(transactions);
 
         }
 
@@ -192,7 +172,8 @@ public class userInfo {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                             Log.d(TAG, "onChildAdded: Database key: "+dataSnapshot.getKey());
-                            reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).setValue(newTransaction); //sets the new transaction
+                            //reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).setValue(newTransaction); //sets the new transaction
+                            reference.child("Transactions").setValue(transactions);
                         }
 
                         @Override
