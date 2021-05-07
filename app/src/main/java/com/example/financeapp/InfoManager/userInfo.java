@@ -164,7 +164,7 @@ public class userInfo {
                 double difference = Double.valueOf(newTransaction.getValue()) - value;
                 updateBalance(difference);
 
-                if (signedin = true) {
+                if (signedin == true) {
                     DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
                     //gets the transaction key that matches the id
