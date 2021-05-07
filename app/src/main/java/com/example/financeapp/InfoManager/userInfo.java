@@ -4,13 +4,16 @@ import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.MainActivity;
 import com.example.financeapp.Objects.Transactions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -30,6 +33,8 @@ public class userInfo {
     public static boolean signedin = false;
     private static double accountBalance = 0;
     public categoriesEnum.MainCategories Categories;
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance(); //database connection
 
 
     public ArrayList<Transactions> returnTransactions(){
@@ -52,26 +57,19 @@ public class userInfo {
             type = Categories.INCOME;
         }
 
-
         Log.d(TAG, "addTransaction: date: " + MainActivity.date);
 
         Transactions newTransaction = new Transactions(MainActivity.date, type, subCategory, merchant, String.valueOf(value), "");
-
         transactions.add(newTransaction);
 
         updateBalance(value);
 
         //if signed in, adds it to firebase
         if(signedin == true){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("Users");
+            DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
-            reference.child(String.valueOf(accountID)).child("Transactions").setValue(transactions);
-            reference.child(String.valueOf(accountID)).child("balance").setValue(String.valueOf(accountBalance));
+            reference.child("Transactions").setValue(transactions);
         }
-
-
-        Log.d(TAG, "addTransaction: Transactions: "+transactions);
     }
 
 
@@ -80,7 +78,6 @@ public class userInfo {
         accountID = userid;
         resetTransactions(); //deletes any stored transactions
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance(); //database connection
         DatabaseReference reference = database.getReference("Users");
 
         ((MainActivity)mContext).loadScreen();  //start load screen
@@ -148,8 +145,7 @@ public class userInfo {
 
 
         //if the user is signed in, we also have to delete it from firebase
-        if(signedin = true && position != null){
-            FirebaseDatabase database = FirebaseDatabase.getInstance(); //database connection
+        if(signedin == true && position != null){
             DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
             reference.child("Transactions").child(String.valueOf((int) position)).removeValue(); //removes the transaction from the database
@@ -160,22 +156,43 @@ public class userInfo {
     }
 
     public void updateTransaction(Transactions newTransaction){
-        for (int i = 0; i < transactions.size(); i++){
-            if (transactions.get(i).getId().equals(newTransaction.getId())){
+        for (int i = 0; i < transactions.size(); i++) {
+            if (transactions.get(i).getId().equals(newTransaction.getId())) {
+                double value = Double.valueOf(transactions.get(i).getValue());
                 transactions.set(i, newTransaction);
-                Log.d(TAG, "updateTransaction: transactions: "+transactions.size());
+                Log.d(TAG, "updateTransaction: transactions size: " + transactions.size());
+                double difference = Double.valueOf(newTransaction.getValue()) - value;
+                updateBalance(difference);
 
-                if(signedin = true){
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                if (signedin = true) {
                     DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
-                    reference.child("Transactions").child(String.valueOf(i)).setValue(newTransaction); //updates the transaction in the database
+                    //gets the transaction key that matches the id
+                    reference.child("Transactions").orderByChild("id").equalTo(String.valueOf(newTransaction.getId())).addChildEventListener(new ChildEventListener() {
+                        @Override
+                        public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                            Log.d(TAG, "onChildAdded: Database key: "+dataSnapshot.getKey());
+                            reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).setValue(newTransaction); //sets the new transaction
+                        }
+
+                        @Override
+                        public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                        @Override
+                        public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+
+                        @Override
+                        public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {}
+
+                    });
+                    break;
                 }
-                break;
             }
+
         }
-
-
     }
 
     public double returnBalance(){
@@ -185,15 +202,21 @@ public class userInfo {
     public void updateBalance(double value){
         accountBalance += value;
         Log.d(TAG, "updateBalance: New Account Balance: " + accountBalance);
+
+        if (signedin == true){
+            Log.d(TAG, "updateBalance: userisn");
+            DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
+
+            reference.child("balance").setValue(String.valueOf(accountBalance));
+        }
     }
 
     public void reverseBalance(double value){
         accountBalance -= value;
 
-        if(signedin = true){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
-            DatabaseReference reference = database.getReference("Users");
-            reference.child(String.valueOf(accountID)).child("balance").setValue(String.valueOf(accountBalance));
+        if(signedin == true){
+            DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
+            reference.child("balance").setValue(String.valueOf(accountBalance));
         }
 
     }
@@ -202,7 +225,6 @@ public class userInfo {
         accountBalance = balance;
 
         if(signedin == true){
-            FirebaseDatabase database = FirebaseDatabase.getInstance();
             DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
             reference.child("balance").setValue(String.valueOf(balance));
         }

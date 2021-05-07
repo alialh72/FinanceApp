@@ -342,6 +342,8 @@ public class AddTransactionActivity extends AppCompatActivity implements Merchan
             categoriesEnum.SubCategories subCategory = categoriesEnum.SubCategories.LOOKUP.get(category);
             MainActivity.UserInfo.addTransaction(subCategory, merchantName, value);
 
+            Toast.makeText(this, "Transaction Added", Toast.LENGTH_SHORT).show();
+
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
 
