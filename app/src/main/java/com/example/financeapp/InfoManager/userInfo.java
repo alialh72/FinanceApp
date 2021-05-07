@@ -156,6 +156,7 @@ public class userInfo {
     }
 
     public void updateTransaction(Transactions newTransaction){
+        boolean queryCompleted = false;
         for (int i = 0; i < transactions.size(); i++) {
             if (transactions.get(i).getId().equals(newTransaction.getId())) {
                 double value = Double.valueOf(transactions.get(i).getValue());
@@ -164,7 +165,7 @@ public class userInfo {
                 double difference = Double.valueOf(newTransaction.getValue()) - value;
                 updateBalance(difference);
 
-                if (signedin == true) {
+                if (signedin == true && queryCompleted == false) {
                     DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
                     //gets the transaction key that matches the id
@@ -189,8 +190,10 @@ public class userInfo {
                         public void onCancelled(@NonNull DatabaseError error) {}
 
                     });
-                    break;
+                    queryCompleted = true;
+                    Log.d(TAG, "updateTransaction: quertycompleted: "+queryCompleted);
                 }
+                break;
             }
 
         }
