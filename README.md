@@ -1,5 +1,11 @@
 # FinanceApp
 
+There are 2 preset demo users (1 and 2) that you can access through the usericon on the homepage.
+Transactions are not saved on firebase if you are not using one of these demo users.
+
+
+----------------pitch----------------
+
 Are you a teen who just got their first job? Are you an adult who has no clue how to manage your money? Are you financially illiterate?
 
 Well no fear, Team Soda is here!
