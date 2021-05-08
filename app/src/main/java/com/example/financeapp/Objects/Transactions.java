@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.Log;
 
 import com.example.financeapp.Enums.categoriesEnum;
+import com.example.financeapp.MainActivity;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -35,6 +36,14 @@ public class Transactions implements Parcelable {
         }
         else{
             transactionId = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
+
+            //checks if id isnt already taken
+            for (Transactions transaction : MainActivity.UserInfo.returnTransactions()){
+                if (transaction.getId().equals(transactionId)){   //if another transaction with same id exists, then it changes it
+                    Log.d(TAG, "Transactions: same");
+                    transactionId = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
+                }
+            }
         }
 
     }

@@ -158,23 +158,26 @@ public class userInfo {
     public void updateTransaction(Transactions newTransaction){
         boolean queryCompleted = false;
         for (int i = 0; i < transactions.size(); i++) {
-            if (transactions.get(i).getId().equals(newTransaction.getId())) {
+            if (transactions.get(i).getId().equals(newTransaction.getId()) && queryCompleted == false) {
+
+                Log.d(TAG, "updateTransaction: newtransaction id: "+newTransaction.getId()  + "  transactionid: "+transactions.get(i).getId());
+
                 double value = Double.valueOf(transactions.get(i).getValue());
                 transactions.set(i, newTransaction);
-                Log.d(TAG, "updateTransaction: transactions size: " + transactions.size());
+                Log.d(TAG, "updateTransaction: transactions size: " + transactions.size() + "  transaction i: "+i);
                 double difference = Double.valueOf(newTransaction.getValue()) - value;
                 updateBalance(difference);
 
-                if (signedin == true && queryCompleted == false) {
+                if (signedin == true) {
                     DatabaseReference reference = database.getReference("Users").child(String.valueOf(accountID));
 
                     //gets the transaction key that matches the id
                     reference.child("Transactions").orderByChild("id").equalTo(String.valueOf(newTransaction.getId())).addChildEventListener(new ChildEventListener() {
                         @Override
                         public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
-                            Log.d(TAG, "onChildAdded: Database key: "+dataSnapshot.getKey());
+                            Log.d(TAG, "onChildAdded: Database key: "+dataSnapshot.getKey() + "   transactionid: "+newTransaction.getId());
                             //reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).setValue(newTransaction); //sets the new transaction
-                            reference.child("Transactions").setValue(transactions);
+                            reference.child("Transactions").child(String.valueOf(dataSnapshot.getKey())).setValue(newTransaction);
                         }
 
                         @Override
@@ -190,9 +193,10 @@ public class userInfo {
                         public void onCancelled(@NonNull DatabaseError error) {}
 
                     });
-                    queryCompleted = true;
+
                     Log.d(TAG, "updateTransaction: quertycompleted: "+queryCompleted);
                 }
+                queryCompleted = true;
                 break;
             }
 
