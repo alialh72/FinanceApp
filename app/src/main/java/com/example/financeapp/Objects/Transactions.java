@@ -7,6 +7,7 @@ import android.util.Log;
 import com.example.financeapp.Enums.categoriesEnum;
 import com.example.financeapp.MainActivity;
 
+import java.security.SecureRandom;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static android.content.ContentValues.TAG;
@@ -35,17 +36,36 @@ public class Transactions implements Parcelable {
             transactionId = id;
         }
         else{
-            transactionId = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
+            SecureRandom random = new SecureRandom();
+            transactionId = checkId(String.valueOf(random.nextInt(1000000)));  //checks if id isnt already taken
+        }
 
-            //checks if id isnt already taken
-            for (Transactions transaction : MainActivity.UserInfo.returnTransactions()){
-                if (transaction.getId().equals(transactionId)){   //if another transaction with same id exists, then it changes it
-                    Log.d(TAG, "Transactions: same");
-                    transactionId = String.valueOf(ThreadLocalRandom.current().nextInt(1000000));
-                }
+    }
+
+    private String checkId(String transactionId){
+        boolean duplicateId = false;
+        for (Transactions transaction : MainActivity.UserInfo.returnTransactions()){
+            if (transaction.getId().equals(transactionId)){
+                duplicateId = true;  //if the id is duplicated, then it sets the bool to true
+                break;
             }
         }
 
+        if (duplicateId == false){
+            Log.d(TAG, "checkId: notduped");
+            return transactionId;  //if id is not duplicated, then it just returns the id
+        }
+
+        //loops through the list and changes the id if it is duplicated
+        for (Transactions transactions : MainActivity.UserInfo.returnTransactions()){
+            if (transactions.getId().equals(transactionId)){
+                SecureRandom random = new SecureRandom();
+                Log.d(TAG, "checkId: isduped: oldid: "+transactionId);
+                transactionId = String.valueOf(random.nextInt(1000000));
+                Log.d(TAG, "checkId: isduped: newid");
+            }
+        }
+        return checkId(transactionId);  //checks the newid for duplicates
     }
 
     protected Transactions(Parcel in) {
