@@ -120,8 +120,17 @@ public class TransactionFragment extends Fragment{
 
                         alert.setPositiveButton("Done", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                double balance = Double.parseDouble(edittext.getText().toString());
-                                applyBalanceFragment(balance);  //calls the method which sets the balance
+                                String text = edittext.getText().toString();
+
+                                //checks if there are any letters in the string
+                                if (text.matches("[0-9]+")) {
+                                    double balance = Double.parseDouble(edittext.getText().toString());
+                                    applyBalanceFragment(balance);  //calls the method which sets the balance
+                                }
+                                else{
+                                    Toast.makeText(getActivity(), "Only Numbers", Toast.LENGTH_SHORT).show();
+                                }
+
                             }
                         });
 
@@ -206,6 +215,7 @@ public class TransactionFragment extends Fragment{
         Log.d(TAG, "filterByCategory: filtered: "+filteredTransactions);
         if (filteredTransactions.size() == 0){
             Toast.makeText(getActivity(), "No transactions match that category", Toast.LENGTH_SHORT).show();
+            filteredTransactions.addAll(UserInfo.returnTransactions());
         }
         return filteredTransactions;
     }
